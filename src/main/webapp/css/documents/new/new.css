@@ -1,0 +1,14 @@
+/* 
+    Document   : new
+    Created on : 30/01/2013, 13:50:21
+    Author     : marcos
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.remove{vertical-align: bottom;}
+#browser select, input[type=text], textarea, .ui-slider-horizontal {width: 85%;}
+
+#files th:last-child{width: 32px;}
+input[type="file"]{min-width:50%}
+#submitButton{float:right;}

@@ -1,0 +1,59 @@
+
+/*Caixa do botão com dropdown*/
+.dropDownBox {                
+    position: absolute;
+    margin-left: 0;
+    padding: 0;
+    border: 1px solid #DCDCDC; 
+    background-color: #fff;                 
+
+}
+
+.dropDownBox li{                
+    font-size: 10pt;
+    font-weight: lighter;
+    padding: 8px;
+    border-bottom: 1px solid #DDDDDD;
+    list-style-type:none;
+}
+
+.dropDownBox li:last-child{
+    border-bottom: none;
+}
+
+/*Caixa do titulo do documento*/
+.documentTitleText {
+    padding-top: 0.8%;
+    padding-left: 1%;
+    text-decoration: none;
+    float: left;
+    vertical-align: middle;
+    font-size: 1.05em;
+    font-weight: bold;
+}
+
+.buttonList {
+    padding: 0.5%;
+    margin-left:auto;
+    float: right;
+}
+
+/*lista de metadados que vao logo abaixo do titulo*/
+ul .documentData {
+    margin-top: 10px;
+    list-style-type: none;
+    margin-bottom: 2%;
+}
+
+ul .documentData li {
+    padding-right: 20px;
+}
+ul .documentData li .files {
+    margin-left: 2%;
+}
+ul .documentData li .files a {
+    color: #214c5d;
+}
+
+label {font-weight: bold;}
+

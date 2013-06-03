@@ -1,0 +1,35 @@
+/* 
+    Document   : login
+    Created on : 30/01/2013, 11:27:29
+    Author     : marcos
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* Login */
+.login{
+    text-align: center;
+    margin-top: 20px;
+}
+.login-title{
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.login-error{
+    width:250px;
+    margin: 0 auto 15px auto;
+    padding-left: 10px;
+}
+
+/*.login-form{text-align: left;}*/
+
+.login-content{
+    /*background-color: #B3B3B3;*/
+    margin: 0 auto 0 auto;
+    width: 400px;
+}
+.login-form{width:175px;text-align: left; margin: 0 auto;}
+.login-form .value{margin:5px 0 15px 0;}
+.login-form .buttons{background-color: #ECEEEE;text-align: left;}
+/*.ui-icon-alert{float:left}*/

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="cognitivabrasil.repositorio.data.entities.Document" table="documents">
+    <id column="id" name="id" type="integer">
+      <generator class="sequence">
+        <param name="sequence">documents_id_seq</param>
+      </generator>
+    </id>
+    <property column="obaa_entry" name="obaaEntry" not-null="true" type="string"/>
+    <property column="obaaxml" name="obaaXml" type="string"/>
+    <property name="timestamp" type="timestamp"/>
+    <set cascade="all-delete-orphan" inverse="true" name="files" table="files">
+      <key column="document"/>
+      <one-to-many class="cognitivabrasil.repositorio.data.entities.Files"/>
+    </set>
+    <property name="deleted" type="boolean"/>
+    <many-to-one class="cognitivabrasil.repositorio.data.entities.User" column="owner" lazy="false" name="owner"/>
+  </class>
+</hibernate-mapping>

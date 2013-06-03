@@ -1,0 +1,16 @@
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form"
+     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+     version="2.0">
+    <jsp.directive.taglib prefix="sc" tagdir="/WEB-INF/tags" />
+    <jsp:directive.attribute name="values" required="true" type="java.util.Map" />
+
+    <select>
+        <option value="">-- Nenhum --</option>
+        <c:forEach items="${values}" var="entry">
+            <option value="${entry.key}" >${entry.value}</option>
+        </c:forEach>
+    </select>
+</div>

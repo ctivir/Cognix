@@ -1,0 +1,90 @@
+/* main elements */
+
+body {
+    color: #666;
+}
+
+#tab-content{
+    padding: 15px 15px 0 15px;
+}
+.ui-tabs{padding: 0}
+.ui-icon-alert{float:left; margin:0 7px 5px 0;}
+
+#dialog-form{font-size: 90%;}
+
+th {text-align: left}
+
+.hidden {display: none;}
+.clear {clear: both;}
+.floatRight {float: right}
+.center{text-align: center;}
+.smallerText {font-size: 80%;color: #444444}
+
+li {list-style-type: none;}
+
+h1 { font-size: 1.2em; margin: 0 0 .4em .8em; clear: both; padding-top: .8em}
+
+/* header and footer elements */
+#logout{
+    margin: -10px 0 5px 0;
+    float: right;
+}
+#logo{
+    vertical-align: middle;
+    text-align: left;
+}
+
+#logo img{width: 21em}
+
+#footer {
+    background:#fff;
+    border:none;
+    margin:5px 0 0 10px;
+    font-size: 85%;
+}
+
+#footer .new {
+    float:left;
+}
+
+#footer a {color: #2f8d88;}
+
+.showClick{cursor: pointer}
+
+/*mainframe*/
+#headerWrapper, #wrapper, #footterWrapper {
+    width:950px;
+    min-width: 950px;
+    max-width: 950px;
+    margin-right: auto;
+    margin-left: auto;
+
+    /* fix max-width incompatibility in IE6 */
+    width:expression(document.body.clientWidth > 950? "950px": "auto" );
+
+    overflow:hidden;
+    display:block;
+}
+
+#wrapper{padding-bottom: 15px;}
+
+#main {
+    overflow:hidden;
+    display:box;
+    padding: 1em 0 1em 2em;
+}
+
+/* lista das entidades*/
+div#entities-list { margin: 15px 0; clear: both;}
+div#entities-list table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+div#entities-list table td, div#entities-list table th {padding: .4em 5px; }
+
+/*css3 tabela com linhas coloridas*/
+table.zebra tbody tr:nth-child(odd) {background: #d2e2e9}
+table.zebra tbody tr:nth-child(even) {background: white}
+
+div.error,span.error, label.error{color:red;}
+input.error,textarea.error{border-color: red;}
+label.error,input.error{margin-top: 5px;}
+#message{margin: 5px 0 20px 15px}
+#message.success{color:#22C162; font-weight: bold;}

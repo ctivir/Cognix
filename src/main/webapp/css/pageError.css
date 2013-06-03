@@ -1,0 +1,20 @@
+/* 
+    Document   : pageError
+    Created on : 28/01/2013, 17:04:30
+    Author     : marcos
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body {
+    font: 100% "Arial", sans-serif;
+    width: 600px;
+    margin: 30px auto;    
+    text-align: center
+}
+
+h1{font-size: 130%}
+
+#logo{width: 45%; margin-bottom: 40px;}
+
+#txtError a{color:#44697D; font-weight: bold}

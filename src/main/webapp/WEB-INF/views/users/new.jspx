@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form"
+     xmlns:cgbr="urn:jsptagdir:/WEB-INF/tags"
+     version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+
+    <div id="dialog-form" title="Adicionar Usuário">
+        <form:form modelAttribute="userDto" id="entityUpdateForm" method="post">
+            <fieldset>
+                <legend>Informações do Usuário</legend>
+                <div class="fields">
+                    <c:if test="${not empty message}">
+                        <div id="message" class="${message.type}">${message.message}</div>
+                    </c:if>
+
+                    <cgbr:springinput path="nome" label="Nome" />
+                    <cgbr:springinput path="username" label="Login" cssClass="smalltext" />
+                    <cgbr:sprinSelect path="role" label="Tipo de usuário" items="${roleList}" />
+                    <cgbr:springPassword path="password" label="Senha" />
+                    <cgbr:springPassword path="confirmPass" label="Repita a senha" />
+                </div>
+            </fieldset>
+
+        </form:form>
+    </div>
+</div>

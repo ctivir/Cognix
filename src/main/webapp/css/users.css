@@ -1,0 +1,31 @@
+td:last-child{text-align: right; }
+/*margin para os botões de editar e excluir da tabela usuarios*/
+td:last-child a{margin-left: 5px; }
+
+/* Formulario */
+fieldset { padding:0; margin:1em 0;border:none;border-top:1px solid #ccc;}
+input, select { height:20px}
+input, textarea, select { border:1px solid #B3B3B3; }
+
+.fields{margin-top: 10px;}
+.fields p{margin-left: 15px;font-size: 15px;}
+
+.formLine{margin-bottom: 15px;clear: both;}
+.formLine label {
+    width:150px;
+    float:left;
+    margin: 5px 15px 0 5px;
+    text-align: right; 
+}
+.formLine .value{margin-left: 175px; margin-right: 25px;}
+.formLine .value input,.formLine .value textarea {width: 100%;}
+.formLine .value input.smalltext{width:8em}
+.formLine .value input.withButton{width:80%; margin-right: 10px;}
+.formLine .value input.tinytext,input.tinytext{width:6em}
+.formLine .informativo{margin: 0 0 5px 180px; font-size: 95%; color: #666}
+.formLine label.seminput{margin-top: 0}
+.formLine .button {
+    margin-left: 127px;
+}
+
+div.error,span.error {margin-left: 180px;}

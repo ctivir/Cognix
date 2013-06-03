@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="dataset.xsd">
+         
+         <documents id="1" obaa_entry="test1"/>
+         <documents id="2" obaa_entry="test2"/>
+         <documents id="3" obaa_entry="test3"/>
+         <documents id="4" obaa_entry="test4"/>
+         <documents id="5" obaa_entry="test5"/>
+         <documents id="6" obaa_entry="test6"/>
+         
+         
+         
+         
+         <files id="1" name="teste.pdf" location="/tmp/" document="1" size="345"/>
+         <files id="2" name="teste2.pdf" location="" document="1" size="345"/>
+         <files id="3" name="teste3.pdf" location="" document="2" size="345"/>
+
+</dataset>

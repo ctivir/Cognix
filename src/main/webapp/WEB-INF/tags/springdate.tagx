@@ -1,0 +1,19 @@
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+    <jsp.directive.taglib prefix="sc" tagdir="/WEB-INF/tags" />
+    <jsp:directive.attribute name="path" required="true" />
+    <jsp:directive.attribute name="label" required="false" />
+    <jsp:directive.attribute name="cssClass" required="false" />
+
+    <form:errors path="${path}" cssClass="error" />
+    <div class="formLine">
+        <form:label path="${path}" cssErrorClass="error">${label}:</form:label>
+            <div class="value">
+            <form:input path="${path}"
+                        cssErrorClass="dataMask smalltext error ui-corner-all ${cssClass}"
+                        cssClass="dataMask smalltext ui-widget-content ui-corner-all ${cssClass}" />
+        </div>
+    </div>
+</div>

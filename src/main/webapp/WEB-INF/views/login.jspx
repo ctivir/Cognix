@@ -1,0 +1,100 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:tiles="http://tiles.apache.org/tags-tiles"
+      xmlns:spring="http://www.springframework.org/tags">
+    <jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat" />
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:directive.page pageEncoding="UTF-8" />
+    <head>
+        <spring:url value="/images/favicon.ico" var="favicon" />
+        <link rel="shortcut icon" href="${favicon}" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+        <!-- jQuery and jQuery UI -->
+        <spring:url value="/css/custom-theme/jquery-ui-1.10.0.custom.min.css" var="jquery_ui_theme_css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${jquery_ui_theme_css}" />
+
+        <spring:url value="/scripts/jquery-1.9.1.min.js" var="jquery_url" />
+        <script src="${jquery_url}" type="text/javascript"><jsp:text/></script>
+
+        <spring:url value="/scripts/jquery-ui-1.10.0.custom.min.js" var="jquery_ui_url" />
+        <script src="${jquery_ui_url}" type="text/javascript"><jsp:text/></script>
+
+        <spring:url value="/scripts/default.js" var="jsDefault" />
+        <script src="${jsDefault}" type="text/javascript"><jsp:text/></script>
+
+        <c:url value="/" var="urlRoot" />
+        <script>
+            window.urlRoot = "${urlRoot}";
+        </script>
+
+        <spring:url value="/css/standard.css" var="standard_css_url" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${standard_css_url}" />
+        
+        <spring:url value="/css/login.css" var="login_css_url" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${login_css_url}" />
+
+        <title>Repositório Cognitiva Brasil</title>
+        
+        <script type="text/javascript">
+            $(function() {
+                $( "#login" ).button({
+                    icons: {
+                        primary: "ui-icon-key"
+                    }
+                });
+            });
+        </script>
+    </head>
+
+    <body class="spring">
+
+        <div id="headerWrapper">
+            <tiles:insertAttribute name="header" ignore="true" />
+        </div>
+
+        <div id="wrapper" class="ui-widget ui-widget-content ui-corner-all login">
+            <div class="login-title ui-widget  ui-corner-all ui-widget-header">
+                Digite seu usuário e sua senha para acessar o sistema
+            </div>
+
+            <c:if test="${param.error == true }">
+                <div class="ui-state-error ui-corner-all login-error">
+                    <p>
+                        <span class="ui-icon ui-icon-alert"><jsp:text/></span>
+                        <strong>Erro: </strong> Usuário ou senha incorreto.
+                    </p>
+                </div>
+            </c:if>
+            
+            <c:url var="postLoginUrl" value="/j_spring_security_check" />
+            <form name="login" action="${postLoginUrl}" method="POST">
+                <div class="login-form">    
+                    <label>Usuário: </label>
+                    <div class="value">
+                        <input name="j_username" id="user" maxlength="20" type="text" class="smalltext ui-corner-all" />
+                    </div>
+
+                    <label>Senha: </label>
+                    <div class="value">
+                        <input name="j_password" id="passwd" type="password" class="smalltext ui-corner-all" />
+                    </div>
+
+                    <div class="value verticalAlign">
+                        <input name="_spring_security_remember_me" type="checkbox" /> Continuar conectado
+                    </div>
+                    <div class="value">
+                        <button id="login" type="submit">Login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+                
+        <div id="footterWrapper">
+            <tiles:insertAttribute name="footer" ignore="true" />
+        </div>
+
+    </body>
+</html>

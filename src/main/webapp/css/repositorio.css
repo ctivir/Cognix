@@ -1,0 +1,61 @@
+
+ul#icons {
+    margin: 0;
+    padding: 0;
+}
+
+ul#icons li {
+    margin: 2px;
+    position: relative;
+    padding: 4px 0;
+    cursor: pointer;
+    float: left;
+    list-style: none;
+}
+
+ul#icons span.ui-icon {
+    float: left;
+    margin: 0 4px;
+}
+
+.button span.ui-icon {
+    margin: 0 5px 0 0;
+    position: absolute;
+    left: .2em;
+    top: 50%;
+    margin-top: -8px;
+}
+
+
+.titulo{
+    font-size: 130%;
+    font-weight: bold;
+    color: #39829f;
+    margin-top: 2%;
+    text-decoration: underline;
+}
+
+
+.LinhaEntrada{
+    margin-top: 1.5%;
+}
+.LinhaEntrada label{
+    float:left;
+    text-align:right;
+    width:40%;
+}
+
+.LinhaEntrada .Value{
+    margin:0 0 20px 41%;
+}
+.LinhaEntrada .Buttons{
+    margin:0 0 10px 0%;
+    padding-top:2%;
+    text-align:center;
+
+}
+.LinhaEntrada .Buttons input{
+    border: 1px solid #d8dcdf; background: #eeeeee url(images/ui-bg_highlight-hard_100_eeeeee_1x100.png) 50% 50% repeat-x; font-weight: bold; color: #004276;
+}
+
+

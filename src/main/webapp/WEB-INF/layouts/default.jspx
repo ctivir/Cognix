@@ -1,0 +1,72 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:tiles="http://tiles.apache.org/tags-tiles"
+      xmlns:spring="http://www.springframework.org/tags">
+    <jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat" />
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:directive.page pageEncoding="UTF-8" />
+    <head>
+        <c:url value="/images/favicon.ico" var="favicon" />
+        <link rel="shortcut icon" href="${favicon}" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+        <!-- jQuery and jQuery UI -->
+        <c:url value="/css/custom-theme/jquery-ui-1.10.0.custom.min.css" var="jquery_ui_theme_css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${jquery_ui_theme_css}" />
+
+        <c:url value="/scripts/jquery-1.9.1.min.js" var="jquery_url" />
+        <script src="${jquery_url}" type="text/javascript"><jsp:text/></script>
+
+        <c:url value="/scripts/jquery-ui-1.10.0.custom.min.js" var="jquery_ui_url" />
+        <script src="${jquery_ui_url}" type="text/javascript"><jsp:text/></script>
+
+        <c:url value="/scripts/default.js" var="jsDefault" />
+        <script src="${jsDefault}" type="text/javascript"><jsp:text/></script>
+
+        <c:url value="/" var="urlRoot" />
+        <script>
+            window.urlRoot = "${urlRoot}";
+        </script>
+
+        <c:url value="/css/standard.css" var="app_css_url" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${app_css_url}" />
+
+        <title>Repositório Cognitiva Brasil</title>
+    </head>
+
+
+    <body>
+        <div id="dialog-form" title="Adicionar"><jsp:text/></div>
+
+        <div class="dialog-confirm hidden" title="Confirmação">
+            <p>
+                <span class="ui-icon ui-icon-alert"><jsp:text/></span>
+                Deseja realmente <span id="msgApagar"><jsp:text/></span>
+            </p>
+        </div>
+
+        <div class="ui-widget hidden" id="dialog-error" title="Erro">
+            <div class="ui-state-error ui-corner-all">
+                <p>
+                    <span class="ui-icon ui-icon-alert"><jsp:text/></span>
+                    <strong id="error-type">Erro: </strong> <span id="errorThrown"><jsp:text/></span>
+                </p>
+            </div>
+        </div>
+
+        <div id="headerWrapper">
+            <tiles:insertAttribute name="header" ignore="true" />
+            <c:url var="logoutUrl1" value="/j_spring_security_logout" />
+            <a id="logout" href="${logoutUrl1}"> Sair</a>
+        </div>
+
+        <div id="wrapper" class="ui-widget ui-widget-content ui-corner-all">
+                <tiles:insertAttribute name="body" />
+        </div>
+        <div id="footterWrapper">
+            <tiles:insertAttribute name="footer" ignore="true" />
+        </div>
+    </body>
+</html>
