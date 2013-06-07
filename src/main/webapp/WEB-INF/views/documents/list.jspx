@@ -40,75 +40,77 @@
             <ul>
                 <c:if test="${empty documents}">Nenhum documento cadastrado</c:if>
                 <c:forEach var="doc" items="${documents}" varStatus="status">
+                    <c:if test="${doc.title != 'IndexOutOfBounds'}"> 
+                        <div class="ui-state-default ui-corner-all">
+                            <div class="documentTitleText">
+                                <a href="${docUrl}/${doc.id}">
+                                    <c:if test="${empty doc.title}">
+                                        Título não informado
+                                    </c:if>
+                                    ${doc.title}</a>
+                            </div>
+                            <security:authorize access="hasRole('${permDocAdmin}') or ${currentUser == doc.owner.username}">
+                                <span class="buttonList">
 
-                    <div class="ui-state-default ui-corner-all">
-                        <div class="documentTitleText">
-                            <a href="${docUrl}/${doc.id}">
-                                <c:if test="${empty doc.title}">
-                                    Título não informado
-                                </c:if>
-                                ${doc.title}</a>
-                        </div>
-                        <security:authorize access="hasRole('${permDocAdmin}') or ${currentUser == doc.owner.username}">
-                            <span class="buttonList">
+                                    <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
+                                    <c:url var="edit" value="/documents/${doc.id}/edit"/>
 
-                                <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
-                                <c:url var="edit" value="/documents/${doc.id}/edit"/>
+                                    <a class="delete confirmLink" 
+                                       title="excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!" 
+                                       href="${deleteDoc}" id="dialog_link">
+                                        apagar</a>
+                                    <a class="editar" href="${edit}" id="edit_link">editar</a>
 
-                                <a class="delete confirmLink" 
-                                   title="excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!" 
-                                   href="${deleteDoc}" id="dialog_link">
-                                    apagar</a>
-                                <a class="editar" href="${edit}" id="edit_link">editar</a>
+                                    <span>
+                                        <button class="relation_link">criar relação</button>
 
-                                <span>
-                                    <button class="relation_link">criar relação</button>
+                                        <ul class="ui-corner-all hidden relation_dropdown"> 
 
-                                    <ul class="ui-corner-all hidden relation_dropdown"> 
-
-                                        <li><a href="${docUrl}/new?versionOf=${doc.id}">Criar Versão</a></li>
-                                        <!--                                <li><a>&Eacute; formato de</a></li>
-                                                                            <li><a>Tem formatos</a></li>
-                                                                            <li><a>Referencia</a></li>
-                                                                            <li><a>&Eacute; referenciado por</a></li>
-                                                                            <li><a>&Eacute; baseado em</a></li>
-                                                                            <li><a>&Eacute; base para</a></li>
-                                                                            <li><a>Requer</a></li>
-                                                                            <li><a>&Eacute; requerido por</a></li>-->
-                                    </ul>                                
+                                            <li><a href="${docUrl}/new?versionOf=${doc.id}">Criar Versão</a></li>
+                                            <!--                                <li><a>&Eacute; formato de</a></li>
+                                                                                <li><a>Tem formatos</a></li>
+                                                                                <li><a>Referencia</a></li>
+                                                                                <li><a>&Eacute; referenciado por</a></li>
+                                                                                <li><a>&Eacute; baseado em</a></li>
+                                                                                <li><a>&Eacute; base para</a></li>
+                                                                                <li><a>Requer</a></li>
+                                                                                <li><a>&Eacute; requerido por</a></li>-->
+                                        </ul>                                
+                                    </span>
                                 </span>
-                            </span>
-                        </security:authorize>
-                        <div class="clear"><jsp:text/></div>
-                    </div>
+                            </security:authorize>
+                            <div class="clear"><jsp:text/></div>
+                        </div>
 
-                    <ul class="documentData">
 
-                        <li class="obaaEntry">
-                            <label>Obaa Entry: </label>
-                            <span class="value">${doc.obaaEntry}</span></li>
-                        <li><label>Data: </label> <span class="value">${doc.timestampFormatted}</span>
-                        </li>
+                        <ul class="documentData">
 
-                        <c:if test="${!empty doc.files}">
-                            <li>
-                                <label>Arquivo<c:if test="${doc.files.size() > 1}">s</c:if></label>
-                                    <div class="files ">
-                                    <c:forEach var="file" items="${doc.files }">
-                                        <c:url var="location" value="/files/${file.id}" />
-                                        <div>                                            
-                                            <a class="" href="${location}">${file.name}</a> 
-                                            <span class="smallerText">
-                                                <c:if test="${!empty file.contentType}"> (${file.contentType})</c:if>
-                                                <c:if test="${file.size > 0}"> ${file.sizeFormatted}</c:if>
-                                                </span>
-                                            </div>
-
-                                    </c:forEach>
-                                </div>
+                            <li class="obaaEntry">
+                                <label>Obaa Entry: </label>
+                                <span class="value">${doc.obaaEntry}</span></li>
+                            <li><label>Data: </label> <span class="value">${doc.timestampFormatted}</span>
                             </li>
-                        </c:if>
-                    </ul>
+
+                            <c:if test="${!empty doc.files}">
+                                <li>
+                                    <label>Arquivo<c:if test="${doc.files.size() > 1}">s</c:if></label>
+                                        <div class="files ">
+                                        <c:forEach var="file" items="${doc.files }">
+                                            <c:url var="location" value="/files/${file.id}" />
+                                            <div>                                            
+                                                <a class="" href="${location}">${file.name}</a> 
+                                                <span class="smallerText">
+                                                    <c:if test="${!empty file.contentType}"> (${file.contentType})</c:if>
+                                                    <c:if test="${file.size > 0}"> ${file.sizeFormatted}</c:if>
+                                                    </span>
+                                                </div>
+
+                                        </c:forEach>
+                                    </div>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </c:if>
                 </c:forEach>
             </ul>
         </div>

@@ -32,6 +32,7 @@ import cognitivabrasil.repositorio.data.entities.Files;
 import cognitivabrasil.repositorio.data.services.DocumentsService;
 import cognitivabrasil.repositorio.data.services.FilesService;
 import cognitivabrasil.util.Message;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -41,29 +42,22 @@ import cognitivabrasil.util.Message;
 @Controller
 public class FileController {
 
-org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileController.class);
+    org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileController.class);
     @Autowired
     FilesService fileService;
-
     @Autowired
-    private DocumentsService documentsService ;
-    
-    
+    private DocumentsService documentsService;
     private Files files = null;
     private static final String RESP_SUCCESS = "{\"jsonrpc\" : \"2.0\", \"result\" : \"success\", \"id\" : \"id\"}";
     private static final String RESP_ERROR = "{\"jsonrpc\" : \"2.0\", \"error\" : {\"code\": 101, \"message\": \"Falha ao abrir o input stream.\"}, \"id\" : \"id\"}";
     public static final String FILEPATH = "/var/cognitiva/repositorio";
     //public static final String FILEPATH = "/home/zemba/Documents/upload";
 
-    
-    
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public String add(Model model) {
         return "files/new";
     }
-        
-    
-    
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public void getFile(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
         Files f = fileService.get(id);
@@ -92,7 +86,6 @@ org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileController.c
             }
         }
     }
-    
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     @ResponseBody
@@ -118,50 +111,50 @@ org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileController.c
         return new Message(Message.SUCCESS, "Arquivo excluido com sucesso", "upload");
     }
 
-    
-    
-
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody
-    public String upload(HttpServletResponse response,@RequestBody MultipartFile file, @RequestParam String name, @RequestParam int chunks, @RequestParam int chunk) throws IOException {
-    	if (files == null) {
+    public String upload(HttpServletResponse response,
+            @RequestBody MultipartFile file, @RequestParam String name,
+            @RequestParam int chunks, @RequestParam int chunk, @RequestParam int docId)
+            throws IOException {
+        if (files == null) {
             files = new Files();
             files.setSize(0L);
         }
 
+        System.out.println(docId);
+
         String responseString = RESP_SUCCESS;
-        
+
         System.out.println(file.getOriginalFilename());
-        
-        File uploadFile = new File(FILEPATH,  name );
-        
+
+        File uploadFile = new File(FILEPATH, name);
+
         BufferedOutputStream bufferedOutput;
         try {
-			bufferedOutput = new BufferedOutputStream(new FileOutputStream(uploadFile, true));
-	        byte[] data = file.getBytes(); 
-			bufferedOutput.write( data );
-	        bufferedOutput.close();
-		} catch (IOException e) {
+            bufferedOutput = new BufferedOutputStream(new FileOutputStream(uploadFile, true));
+            byte[] data = file.getBytes();
+            bufferedOutput.write(data);
+            bufferedOutput.close();
+        } catch (IOException e) {
             log.error("Erro ao salvar o arquivo.", e);
             files = null;
             responseString = RESP_ERROR;
             throw e;
-		}
-        finally {
-        	files.setName(   file.getOriginalFilename()  ) ;
-        	files.setRandomName( name  );
-        	files.setContentType(file.getContentType());
-        	files.setPartialSize(file.getSize());
+        } finally {
+            files.setName(file.getOriginalFilename());
+            files.setRandomName(name);
+            files.setContentType(file.getContentType());
+            files.setPartialSize(file.getSize());
         }
-        
+
         if (chunk == chunks - 1) {
-            files.setLocation(FILEPATH + "/" + name );
-            files.setDocument( documentsService.get(100)  ) ;
+            files.setLocation(FILEPATH + "/" + name);
+            files.setDocument(documentsService.get(docId));
             fileService.save(files);
             file = null;
         }
 
         return responseString;
-    }    
-    
+    }
 }

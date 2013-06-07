@@ -220,9 +220,32 @@ public final class DocumentsController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newShow(Model model) {
         Document d = new Document();
-        d.setMetadata(new OBAA());
+      
+        OBAA lo = new OBAA();
+                
+        lo.setGeneral(new General());
+        
+        List<Identifier> identifiers = new ArrayList();        
+        identifiers.add(new Identifier());        
+        lo.getGeneral().setIdentifiers(identifiers);
+        //o documento precisa ser salvo para gerar um id da base
+        docService.save(d);
+        docService.flush();
+        
+        String uri = createUri(d);
+        
+        lo.getGeneral().getIdentifiers().get(0).setEntry(uri);
+        lo.getGeneral().getIdentifiers().get(0).setCatalog("URI");
+        
+        d.setObaaEntry(lo.getGeneral().getIdentifiers().get(0).getEntry());
+           
+        d.setMetadata(lo);
+        docService.save(d);
+        docService.flush();
+        
         model.addAttribute("doc", d);
         model.addAttribute("obaa", d.getMetadata());
+        
         return "documents/new";
     }
 
@@ -448,15 +471,17 @@ public final class DocumentsController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String newDo(@ModelAttribute("doc") Document d,
-            BindingResult result, Model model, final HttpServletRequest request) {
-        d.setOwner(UsersController.getCurrentUser());
-        return setOBAAFiles(d, request);
+    public String newDo(final HttpServletRequest request, @RequestParam int id) {
+        System.out.println(id);
+        Document doc = docService.get(id);
+        doc.setOwner(UsersController.getCurrentUser());
+        return setOBAAFiles(doc, request);
     }
 
     private String setOBAAFiles(Document d, final HttpServletRequest request) {
         log.debug("Trying to save");
 
+        //TODO: não é mais multipart
         Assert.state(request instanceof MultipartHttpServletRequest,
                 "request !instanceof MultipartHttpServletRequest");
         final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
@@ -471,8 +496,9 @@ public final class DocumentsController {
         OBAA obaa = OBAA.fromHashMap(parMap);
         
         // split the keywords
-        List<Keyword> splittedKeywords = new ArrayList<Keyword>();
-        if (obaa.getGeneral().getKeywords() != null) {
+        List<Keyword> splittedKeywords = new ArrayList<>();
+        if (obaa.getGeneral().getKeywords().size() > 0) {
+        //if (obaa.getGeneral().getKeywords() != null) {
             for (String k : obaa.getGeneral().getKeywords()) {
                 for (String nk : k.split("\\s*[,;]\\s*")) {
                     splittedKeywords.add(new Keyword(nk));
@@ -499,7 +525,8 @@ public final class DocumentsController {
              size = Integer.valueOf(originalTechical.getSize());
          }
         
-        for (MultipartFile file : files.values()) {
+         //TODO: não é mais multipart
+/*        for (MultipartFile file : files.values()) {
             cognitivabrasil.repositorio.data.entities.Files f = new cognitivabrasil.repositorio.data.entities.Files();
 
             if (file.getOriginalFilename() != null
@@ -522,8 +549,8 @@ public final class DocumentsController {
                 }
 
                 d.addFile(f);
-                docService.save(d);
-                docService.flush();
+//                docService.save(d);
+//                docService.flush();
 
                 try {
                     log.debug("Saving " + file.getOriginalFilename());
@@ -532,14 +559,11 @@ public final class DocumentsController {
                     log.error(e);
                 } 
             }
-        }
+        }*/
 
         t.setSize(size); // somatorio to tamanho de todos os arquivos
         obaa.setTechnical(t);
         d.setMetadata(obaa);
-
-
-        String uri = createUri(d);
 
         if (obaa.getTechnical() == null) {
             log.warn("Technical was null");
@@ -548,14 +572,12 @@ public final class DocumentsController {
         List<String> l = obaa.getTechnical().getLocation();
 
         if (l == null || l.isEmpty()) {
-            obaa.getTechnical().addLocation(uri);
+            obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());
         } else {
             //não faz nada essa operação abaixo, getLocation devolve uma cópia
-            obaa.getTechnical().getLocation().set(0, uri);
+            obaa.getTechnical().getLocation().set(0, obaa.getGeneral().getIdentifiers().get(0).getEntry());
         }
-
-        obaa.getGeneral().getIdentifiers().get(0).setCatalog("URI");
-        obaa.getGeneral().getIdentifiers().get(0).setEntry(uri);
+        
 
         Metametadata meta = new Metametadata();
 

@@ -30,6 +30,8 @@
     <link rel="stylesheet" type="text/css" href="${cssScreen}" />
     <link rel="stylesheet" type="text/css" href="${new_css}" />
 
+    <script>window.docId="${doc.id}";</script>
+    
     <script type="text/javascript" src="${formwizard}"><jsp:text/></script>
     <script type="text/javascript" src="${treeview}"><jsp:text/></script>
     <script type="text/javascript" src="${treeviewEdit}"><jsp:text/></script>
@@ -37,7 +39,7 @@
     <script type="text/javascript" src="${jsFormDate}"><jsp:text/></script>
     <script type="text/javascript" src="${jsMaskedinput}"><jsp:text/></script>
 
-
+    
 
     <cgbr:tabs tabNumber="1" />
     <div id="tab-content">
@@ -55,11 +57,20 @@
             <form:form id="newobject" method="post" modelAttribute="doc"
                        acceptCharset="utf-8" enctype="multipart/form-data">
 
+                <form:hidden path="id" />
+                
                 <ul id="browser" class="filetree">
+                    
+                    <fieldset class="sectionwrap marcador single" id="arquivos">
+                        <legend>Arquivos</legend>      
+
+                        <cgbr:upload />
+                    </fieldset>
 
                     <fieldset class="sectionwrap marcador single" id="general">
                         <legend>Informações Gerais</legend>
 
+                        
                         <c:choose>
                             <c:when test="${empty obaa.general.identifiers}">
                                 <li class="identifier marcador multi" id="identifiers">
@@ -797,18 +808,7 @@
                                     </c:forEach>
                                 </table>
                             </div>
-                        </c:if>
-                        <button id="addFile" class="hidden">Adicionar arquivo</button>
-                        <div class="LinhaEntrada" id="uploads">
-                            <p><legend>Selecione o(s) arquivo(s) referente(s) a esse objeto</legend></p>
-                            <form:errors path="files" cssClass="ValueErro" />
-                            <div class="label">Arquivos:</div>
-                            <div class="uploadField value">
-                                <input id="impFile" class="last" name="file" type="file" />
-                                <button id="rmFile" class="hidden">remover</button>
-                            </div>
-                            <div class="plusone" id="addfile"><jsp:text/></div>
-                        </div>
+                        </c:if>                        
 
                         <button class="next" id="submitButton" type="submit" >Salvar</button>
                     </fieldset>

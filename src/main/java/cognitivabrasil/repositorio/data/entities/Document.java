@@ -163,7 +163,7 @@ public class Document implements java.io.Serializable, HibernateOaiDocument {
             return "Sem título";
         }
         try {
-            return getMetadata().getTitles().get(0);
+            return getMetadata().getGeneral().getTitles().get(0);
         } catch (NullPointerException e) {
             log.error(e);
             return "NullPointer";

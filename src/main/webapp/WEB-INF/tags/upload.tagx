@@ -1,0 +1,25 @@
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"     
+     version="2.0">
+    <jsp.directive.taglib prefix="sc" tagdir="/WEB-INF/tags" />
+
+    <c:url var="uploadcss" value="/scripts/upload/plupload/jquery.ui.plupload/css/jquery.ui.plupload.css" />
+    <c:url var="jqueryPluploadFull" value="/scripts/upload/plupload/plupload.full.js" />
+    <c:url var="jqueryUiPlupload" value="/scripts/upload/plupload/jquery.ui.plupload/jquery.ui.plupload.js" />
+    <c:url var="jqueryPluploadLang" value="/scripts/upload/plupload/i18n/pt-br.js" />
+    <c:url var="uploadJs" value="/scripts/upload/upload.js" />
+
+    <link rel="stylesheet" href="${uploadcss}"/>    
+    <script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js" type="text/javascript"><jsp:text/></script>    
+    <script src="${jqueryPluploadFull}" type="text/javascript"><jsp:text/></script>
+    <script src="${jqueryUiPlupload}" type="text/javascript"><jsp:text/></script>
+    <script src="${jqueryPluploadLang}" type="text/javascript"><jsp:text/></script>
+    <script src="${uploadJs}" type="text/javascript"><jsp:text/></script>
+
+   
+
+    <div id="uploader">
+        <p>Seu navegador não possui suporte a Flash, Silverlight, Gears, BrowserPlus ou HTML5.</p>
+    </div>
+
+</div>

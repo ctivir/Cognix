@@ -2,7 +2,7 @@ var myform = new formtowizard({
     formid : 'newobject',                
     revealfx : [ 'slide', 500 ]
     ,
-    validate: ['titulo', 'impFile']
+    validate: ['titulo']
 });      
                                    
 var numerate = function() {
@@ -10,7 +10,7 @@ var numerate = function() {
                 
     $("input, select, textarea").each(
         function() {
-            if($(this).attr("type") === "button" || $(this).attr("type") === "file") {                
+            if($(this).attr("type") === "button" || $(this).attr("type") === "file" || $(this).attr("type") === "hidden") {                
                 return;
             }
             var $this = $(this);
@@ -372,7 +372,7 @@ var addInputFile = function(){
     $("#addFile").hide();
     $("#rmFile").show();
     updateHeightForm();
-}
+};
 
 var refreshInputs = function() {     
     numerate();
@@ -411,6 +411,10 @@ var refreshInputs = function() {
 };
 
 
-var updateHeightForm = function(){
+var updateHeightForm = function(){    
     myform.loadsection('actual', true);
 }
+
+$(window).bind("load", function() {    
+    updateHeightForm();
+});
