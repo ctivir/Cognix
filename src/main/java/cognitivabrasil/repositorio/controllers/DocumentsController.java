@@ -481,15 +481,7 @@ public final class DocumentsController {
     private String setOBAAFiles(Document d, final HttpServletRequest request) {
         log.debug("Trying to save");
 
-        //TODO: não é mais multipart
-        Assert.state(request instanceof MultipartHttpServletRequest,
-                "request !instanceof MultipartHttpServletRequest");
         final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-        /*
-         * extract files
-         */
-        final Map<String, MultipartFile> files = multiRequest.getFileMap();
-        // Assert.state(files.size() > 0, "0 files exist");
 
         Map<String, String[]> parMap = multiRequest.getParameterMap();
 
@@ -509,9 +501,7 @@ public final class DocumentsController {
 
 
         log.debug("Title: " + obaa.getGeneral().getTitles());
-        /*
-         * process files
-         */
+
         
         Technical t = obaa.getTechnical();
         

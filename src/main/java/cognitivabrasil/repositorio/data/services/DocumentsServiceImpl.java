@@ -85,7 +85,6 @@ public class DocumentsServiceImpl implements DocumentsService {
                 log.error("Could not delete file", e);
             }
         }
-//        getSession().delete(d);
         d.setObaaXml(null);
         d.setTimestamp(new Date());
         d.isDeleted(true);
