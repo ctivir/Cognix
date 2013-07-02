@@ -15,7 +15,7 @@
     <script src="${jsUser}" type="text/javascript"><jsp:text/></script>
 
     <div id="dialog-form" title="Editar Usuário">
-        <form:form modelAttribute="userDto" id="entityUpdateForm" method="post">
+        <form:form modelAttribute="userDto" id="entityUpdateForm" acceptCharset="utf-8" method="post">
             <fieldset>
                 <legend>Informações do Usuário</legend>
                 <div class="fields">

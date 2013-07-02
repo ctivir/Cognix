@@ -488,7 +488,7 @@
                             <jsp:useBean id="edContext" class="cognitivabrasil.obaa.Educational.Context" >
                                 <jsp:setProperty name="edContext" property="locale" value="pt-BR" />
                             </jsp:useBean>
-                            <cgbr:htmlCheckbox selecteds="${doc.metadata.educational.contexts}" values="${edContext.mapOfTerms}" />
+                            <cgbr:htmlCheckbox selecteds="${obaa.educational.contexts}" values="${edContext.mapOfTerms}" />
                         </li>
 
                         <li class="marcador single" id="learningContentType">
