@@ -8,7 +8,7 @@
 
     <!--Style-->
     <c:url var="cssWizard" value="/css/documents/new/formwizard.css" />
-    <c:url var="cssTreeview" value="/css/treeview/jquery.treeview.css" />
+    <c:url var="cssTreeview" value="/css/documents/treeview/jquery.treeview.css" />
     <c:url var="cssScreen" value="/css/documents/screen.css" />   
     <c:url var="new_css" value="/css/documents/new/new.css" />
     

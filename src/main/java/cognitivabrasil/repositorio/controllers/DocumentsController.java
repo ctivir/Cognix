@@ -190,9 +190,9 @@ public final class DocumentsController {
         String versionUri = createUri(dVersion);
         Identifier versionId = new Identifier("URI", versionUri);
         versionObaa.getGeneral().getIdentifiers().clear();
-        
+
         //esvaziar o location para gerar um novo
-        versionObaa.getTechnical().getLocation().clear();   
+        versionObaa.getTechnical().getLocation().clear();
 
         //Cria relação de versão no orginial
         Relation originalRelation = new Relation();
@@ -220,32 +220,34 @@ public final class DocumentsController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newShow(Model model) {
         Document d = new Document();
-      
-        OBAA lo = new OBAA();
-                
-        lo.setGeneral(new General());
-        
-        List<Identifier> identifiers = new ArrayList();        
-        identifiers.add(new Identifier());        
-        lo.getGeneral().setIdentifiers(identifiers);
+
         //o documento precisa ser salvo para gerar um id da base
         docService.save(d);
         docService.flush();
-        
+
         String uri = createUri(d);
-        
-        lo.getGeneral().getIdentifiers().get(0).setEntry(uri);
-        lo.getGeneral().getIdentifiers().get(0).setCatalog("URI");
-        
-        d.setObaaEntry(lo.getGeneral().getIdentifiers().get(0).getEntry());
-           
-        d.setMetadata(lo);
+
+        OBAA obaa = new OBAA();
+
+        obaa.setGeneral(new General());
+
+        List<Identifier> identifiers = new ArrayList();
+        Identifier i = new Identifier();
+        i.setEntry(uri);
+        i.setCatalog("URI");
+
+        identifiers.add(i);
+        obaa.getGeneral().setIdentifiers(identifiers);
+
+        d.setObaaEntry(i.getEntry());
+
+        d.setMetadata(obaa);
         docService.save(d);
         docService.flush();
-        
+
         model.addAttribute("doc", d);
         model.addAttribute("obaa", d.getMetadata());
-        
+
         return "documents/new";
     }
 
@@ -256,7 +258,7 @@ public final class DocumentsController {
         OBAA lo = new OBAA();
 
         General general = new General();
-        general.addLanguage("pt-BR");        
+        general.addLanguage("pt-BR");
         Structure s = new Structure();
         s.setText("coleção");
         general.setStructure(s);
@@ -266,7 +268,7 @@ public final class DocumentsController {
         lo.setGeneral(general);
 
         LifeCycle lifeCycle = new LifeCycle();
-        lifeCycle.setVersion("1");        
+        lifeCycle.setVersion("1");
         lifeCycle.setStatus("finalized");
 
         cognitivabrasil.obaa.LifeCycle.Contribute contribute;
@@ -356,7 +358,7 @@ public final class DocumentsController {
         model.addAttribute("obaa", d.getMetadata());
         return "documents/new";
     }
-    
+
     @RequestMapping(value = "/new", params = "hq", method = RequestMethod.GET)
     public String newHq(Model model) {
         Document d = new Document();
@@ -364,7 +366,7 @@ public final class DocumentsController {
         OBAA lo = new OBAA();
 
         General general = new General();
-        general.addLanguage("pt-BR");        
+        general.addLanguage("pt-BR");
         Structure s = new Structure();
         s.setText("atomic");
         general.setStructure(s);
@@ -422,10 +424,10 @@ public final class DocumentsController {
         Educational educational = new Educational();
         educational.setInteractivityType("expositive");
         educational.addLearningResourceType("narrative_text");
-        educational.setInteractivityLevel("very_low");        
-        educational.addLanguage("pt-BR");        
+        educational.setInteractivityLevel("very_low");
+        educational.addLanguage("pt-BR");
         educational.addContext("school");
-        educational.setDifficulty("very_easy");        
+        educational.setDifficulty("very_easy");
         Duration dur = new Duration();
         dur.set(15, Calendar.MINUTE);
         educational.setTypicalLearningTime(dur);
@@ -472,7 +474,6 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
-        System.out.println(id);
         Document doc = docService.get(id);
         doc.setOwner(UsersController.getCurrentUser());
         return setOBAAFiles(doc, request);
@@ -486,11 +487,11 @@ public final class DocumentsController {
         Map<String, String[]> parMap = multiRequest.getParameterMap();
 
         OBAA obaa = OBAA.fromHashMap(parMap);
-        
+
         // split the keywords
         List<Keyword> splittedKeywords = new ArrayList<>();
         if (obaa.getGeneral().getKeywords().size() > 0) {
-        //if (obaa.getGeneral().getKeywords() != null) {
+
             for (String k : obaa.getGeneral().getKeywords()) {
                 for (String nk : k.split("\\s*[,;]\\s*")) {
                     splittedKeywords.add(new Keyword(nk));
@@ -502,54 +503,54 @@ public final class DocumentsController {
 
         log.debug("Title: " + obaa.getGeneral().getTitles());
 
-        
+
         Technical t = obaa.getTechnical();
-        
+
         Technical originalTechical = d.getMetadata().getTechnical();
-        
+
         int size;
-        
-         if(originalTechical.getSize()==null){
-             size=0;
-         } else {
-             size = Integer.valueOf(originalTechical.getSize());
-         }
-        
-         //TODO: não é mais multipart
+
+        if (originalTechical.getSize() == null) {
+            size = 0;
+        } else {
+            size = Integer.valueOf(originalTechical.getSize());
+        }
+
+        //TODO: não é mais multipart
 /*        for (MultipartFile file : files.values()) {
-            cognitivabrasil.repositorio.data.entities.Files f = new cognitivabrasil.repositorio.data.entities.Files();
+         cognitivabrasil.repositorio.data.entities.Files f = new cognitivabrasil.repositorio.data.entities.Files();
 
-            if (file.getOriginalFilename() != null
-                    && !file.getOriginalFilename().isEmpty()) {
+         if (file.getOriginalFilename() != null
+         && !file.getOriginalFilename().isEmpty()) {
 
-                f.setName(file.getOriginalFilename());
-                f.setContentType(file.getContentType());
-                f.setLocation("/var/cognitiva/repositorio/");
-                f.setSize(file.getSize());
-                f.setDocument(d);
+         f.setName(file.getOriginalFilename());
+         f.setContentType(file.getContentType());
+         f.setLocation("/var/cognitiva/repositorio/");
+         f.setSize(file.getSize());
+         f.setDocument(d);
 
-                size += (int) file.getSize();
+         size += (int) file.getSize();
 
-                List<String> format = t.getFormat();
+         List<String> format = t.getFormat();
                 
-                if (format != null) {
-                    if (!format.contains(file.getContentType())) {
-                        t.addFormat(file.getContentType());
-                    }
-                }
+         if (format != null) {
+         if (!format.contains(file.getContentType())) {
+         t.addFormat(file.getContentType());
+         }
+         }
 
-                d.addFile(f);
-//                docService.save(d);
-//                docService.flush();
+         d.addFile(f);
+         //                docService.save(d);
+         //                docService.flush();
 
-                try {
-                    log.debug("Saving " + file.getOriginalFilename());
-                    file.transferTo(new File(LOCAL, f.getId().toString()));
-                } catch (IllegalStateException | IOException e) {
-                    log.error(e);
-                } 
-            }
-        }*/
+         try {
+         log.debug("Saving " + file.getOriginalFilename());
+         file.transferTo(new File(LOCAL, f.getId().toString()));
+         } catch (IllegalStateException | IOException e) {
+         log.error(e);
+         } 
+         }
+         }*/
 
         t.setSize(size); // somatorio to tamanho de todos os arquivos
         obaa.setTechnical(t);
@@ -567,7 +568,7 @@ public final class DocumentsController {
             //não faz nada essa operação abaixo, getLocation devolve uma cópia
             obaa.getTechnical().getLocation().set(0, obaa.getGeneral().getIdentifiers().get(0).getEntry());
         }
-        
+
 
         Metametadata meta = new Metametadata();
 

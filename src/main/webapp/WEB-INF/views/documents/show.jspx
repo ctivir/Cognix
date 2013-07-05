@@ -22,7 +22,7 @@
 
         <div id="entities-list" class="ui-widget">
 
-            <c:url var="cssTreeview" value="/css/treeview/jquery.treeview.show.css" />
+            <c:url var="cssTreeview" value="/css/documents/treeview/jquery.treeview.show.css" />
             <c:url var="cssScreen" value="/css/documents/screen.css" />
             <c:url var="treeview" value="/scripts/documents/jquery.treeview.js" />
             <c:url var="showDoc" value="/scripts/showDocument.js" />

@@ -122,11 +122,7 @@ public class FileController {
             files.setSize(0L);
         }
 
-        System.out.println(docId);
-
         String responseString = RESP_SUCCESS;
-
-        System.out.println(file.getOriginalFilename());
 
         File uploadFile = new File(FILEPATH, name);
 
