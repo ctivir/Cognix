@@ -18,28 +18,32 @@ import cognitivabrasil.obaa.Relation.Relation;
 import cognitivabrasil.obaa.Rights.Rights;
 import cognitivabrasil.obaa.Technical.*;
 import cognitivabrasil.repositorio.data.entities.Document;
-import cognitivabrasil.repositorio.data.services.DocumentsService;
+import cognitivabrasil.repositorio.data.entities.Files;
 import cognitivabrasil.repositorio.data.entities.User;
+import cognitivabrasil.repositorio.data.services.DocumentsService;
 import cognitivabrasil.util.Message;
 import cognitivabrasil.util.VCarder;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
@@ -624,5 +628,75 @@ public final class DocumentsController {
 
     private boolean isManagerForThisDocument(Document d, HttpServletRequest request) {
         return (UsersController.getCurrentUser().equals(d.getOwner()) || request.isUserInRole(User.MANAGE_DOC));
+    }
+
+    /**
+     * Criado apenas para salvar em um diretório todos os objetos da base com o seu respectivo metadado.
+     * @return
+     * @throws IOException
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/dvd", method = RequestMethod.GET)
+    @ResponseBody
+    public String dvd()
+            throws IOException, Exception {
+        String location = LOCAL + "dvd/";
+
+        List<Document> docs = docService.getAll();
+
+        for (Document doc : docs) {
+            System.out.println("\n doc "+doc.getId());
+            String data = doc.getMetadata().getLifeCycle().getContribute().get(0).getDate();
+            
+            doc.getMetadata().getMetametadata().getContribute().get(0).setDate(data);
+            String destinationPath = location + "doc-" + doc.getId();
+            File documentPath = new File(destinationPath);
+            if (documentPath.isDirectory()) {// se o caminho informado nao for um
+                throw new Exception("Já existe a pasta: " + location + "document-" + doc.getId());
+
+            }
+            
+            documentPath.mkdirs();// cria o diretorio
+            Set<Files> files = doc.getFiles();
+            int numberFiles = 0;
+            for (Files f : files) {
+                if(f.getLocation().isEmpty()){
+                    throw new IOException("A localização do documento está em branco.");
+                }
+                File sourceFile = new File(f.getLocation());
+                File destinationFile = new File(destinationPath + "/" + f.getName());
+
+                copy(sourceFile, destinationFile);
+                numberFiles++;
+            }
+            if(numberFiles==0){
+                throw new Exception("O Documento "+doc.getId()+" não possui nenhum arquivo!");
+            }
+            Serializer serializer = new Persister();
+            File xmlFile = new File(destinationPath+"/obaa.xml");
+            serializer.write(doc.getMetadata(), xmlFile);
+        }
+        return "ok";
+    }
+
+    /**
+     * Copia arquivos de um local para o outro
+     *
+     * @param origem - Arquivo de origem
+     * @param destino - Arquivo de destino
+     * @throws IOException
+     */
+    private static void copy(File origem, File destino) throws IOException {
+        OutputStream out;
+        try (InputStream in = new FileInputStream(origem)) {
+            out = new FileOutputStream(destino);
+            byte[] buffer = new byte[1024];
+            int lenght;
+            while ((lenght = in.read(buffer)) > 0) {
+                out.write(buffer, 0, lenght);
+            }
+        }
+        out.close();
+        
     }
 }
