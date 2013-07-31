@@ -93,7 +93,7 @@ public class DocumentsControllerTest extends AbstractTransactionalJUnit4SpringCo
             kinds.add(relation.getKind());
         }      
         
-        assertThat(kinds, hasItem("isVersionOf"));
+        assertThat(kinds, hasItem("hasVersion"));
                 
     }
 }

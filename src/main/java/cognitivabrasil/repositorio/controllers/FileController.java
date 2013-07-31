@@ -50,8 +50,7 @@ public class FileController {
     private Files files = null;
     private static final String RESP_SUCCESS = "{\"jsonrpc\" : \"2.0\", \"result\" : \"success\", \"id\" : \"id\"}";
     private static final String RESP_ERROR = "{\"jsonrpc\" : \"2.0\", \"error\" : {\"code\": 101, \"message\": \"Falha ao abrir o input stream.\"}, \"id\" : \"id\"}";
-    public static final String FILEPATH = "/var/cognitiva/repositorio";
-    //public static final String FILEPATH = "/home/zemba/Documents/upload";
+    public static final String FILEPATH = "/var/cognitiva/repositorio";    
 
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public String add(Model model) {
