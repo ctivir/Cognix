@@ -18,7 +18,6 @@ import cognitivabrasil.obaa.Relation.Relation;
 import cognitivabrasil.obaa.Rights.Rights;
 import cognitivabrasil.obaa.Technical.*;
 import cognitivabrasil.repositorio.data.entities.Document;
-import cognitivabrasil.repositorio.data.entities.Files;
 import cognitivabrasil.repositorio.data.entities.User;
 import cognitivabrasil.repositorio.data.services.DocumentsService;
 import cognitivabrasil.util.Message;
@@ -520,9 +519,9 @@ public final class DocumentsController {
         } else {
             size = Integer.valueOf(originalTechical.getSize());
         }
-
+        
         //TODO: não é mais multipart
-/*        for (MultipartFile file : files.values()) {
+    /*for (MultipartFile file : files.values()) {
          cognitivabrasil.repositorio.data.entities.Files f = new cognitivabrasil.repositorio.data.entities.Files();
 
          if (file.getOriginalFilename() != null

@@ -115,7 +115,7 @@ public class FileController {
     public String upload(HttpServletResponse response,
             @RequestBody MultipartFile file, @RequestParam String name,
             @RequestParam int chunks, @RequestParam int chunk, @RequestParam int docId)
-            throws IOException {
+            throws IOException {        
         if (files == null) {
             files = new Files();
             files.setSize(0L);
@@ -147,7 +147,7 @@ public class FileController {
             files.setLocation(FILEPATH + "/" + name);
             files.setDocument(documentsService.get(docId));
             fileService.save(files);
-            file = null;
+            files = null;
         }
 
         return responseString;

@@ -15,7 +15,7 @@ public class Files {
     private Document document;
     private Long size;
     private String randomName;
-
+    
     public Integer getId() {
         return id;
     }
