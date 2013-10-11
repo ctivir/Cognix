@@ -1,4 +1,4 @@
-$(function() {        
+$(function() {       
     $("#uploader").plupload({
         // General settings
         runtimes: 'gears,flash,browserplus,silverlight,html5,html4',

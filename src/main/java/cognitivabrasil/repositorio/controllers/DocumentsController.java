@@ -45,7 +45,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-
 /**
  * Controller para documentos
  *
@@ -89,17 +88,52 @@ public final class DocumentsController {
 
             if (!d.isDeleted()) {
                 OBAA metadata = d.getMetadata();
-                String data = metadata.getLifeCycle().getContribute().get(0).getDate();
-                metadata.getMetametadata().getContribute().get(0).setDate(data);               
 
+                String location = metadata.getGeneral().getIdentifiers().get(0).getEntry();
+                List<String> formatList = metadata.getTechnical().getFormat();
+
+                boolean contains = false;
+                for (String format : formatList) {
+                    if (format.equals("application/zip")) {
+                        contains = true;
+                    }
+                }
+
+                if (contains) {
+                    System.err.println("Objeto Zip: ");
+                    if (!metadata.getGeneral().getTitles().isEmpty()) {
+                        System.err.println(metadata.getGeneral().getTitles().get(0));
+                    }
+
+                    System.err.println(location);
+                    location = "http://feb.ufrgs.br/resources" + location.substring(location.lastIndexOf("/"));
+                    System.out.println("NOVO LOCATION: "+location);
+                    
+                    List<Location> locList = new ArrayList<>();
+                    Location lo = new Location();
+                    lo.setText(location);
+                    locList.add(lo);
+                    metadata.getTechnical().setLocation(locList);
+                    
+                    System.out.println("GET LOCATION: "+ metadata.getTechnical().getLocation().get(0));
+                    
+                    
+//                    locationList.clear();
+//                    locationList.add(entry);
+//                    System.out.println("Entry: "+entry);
+//                    System.out.println("Adicionado a location que era: "+locationList.get(0));                    
+                }
+
+//                metadata.getMetametadata().getContribute().get(0).setDate(data);               
+//
                 d.setMetadata(metadata);
-
+//
                 docService.save(d);
                 docService.flush();
             }
 
         }
-        return "documents/index";
+        return "documents/";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
@@ -214,6 +248,10 @@ public final class DocumentsController {
         //abre a tela de edição de metadados da versão
         Document dv = new Document();
         dv.setMetadata(versionObaa);
+
+        //o documento precisa ser salvo para gerar um id da base
+        docService.save(dv);
+        docService.flush();
 
         model.addAttribute("doc", dv);
         model.addAttribute("obaa", dv.getMetadata());
@@ -629,13 +667,14 @@ public final class DocumentsController {
     private boolean isManagerForThisDocument(Document d, HttpServletRequest request) {
         return (UsersController.getCurrentUser().equals(d.getOwner()) || request.isUserInRole(User.MANAGE_DOC));
     }
-    
-    
+
     /**
-     * Criado apenas para salvar em um diretório todos os objetos da base com o seu respectivo metadado.
+     * Criado apenas para salvar em um diretório todos os objetos da base com o
+     * seu respectivo metadado.
+     *
      * @return
      * @throws IOException
-     * @throws Exception 
+     * @throws Exception
      */
     @RequestMapping(value = "/dvd", method = RequestMethod.GET)
     @ResponseBody
@@ -646,9 +685,9 @@ public final class DocumentsController {
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
-            System.out.println("\n doc "+doc.getId());
+            System.out.println("\n doc " + doc.getId());
             String data = doc.getMetadata().getLifeCycle().getContribute().get(0).getDate();
-            
+
             doc.getMetadata().getMetametadata().getContribute().get(0).setDate(data);
             String destinationPath = location + "doc-" + doc.getId();
             File documentPath = new File(destinationPath);
@@ -656,7 +695,7 @@ public final class DocumentsController {
                 throw new Exception("Já existe a pasta: " + location + "document-" + doc.getId());
 
             }
-            
+
             documentPath.mkdirs();// cria o diretorio
 //            Set<Files> files = doc.getFiles();
 //            int numberFiles = 0;
@@ -674,7 +713,7 @@ public final class DocumentsController {
 //                throw new Exception("O Documento "+doc.getId()+" não possui nenhum arquivo!");
 //            }
             Serializer serializer = new Persister();
-            File xmlFile = new File(destinationPath+"/obaa.xml");
+            File xmlFile = new File(destinationPath + "/obaa.xml");
             serializer.write(doc.getMetadata(), xmlFile);
         }
         return "ok";
@@ -698,6 +737,6 @@ public final class DocumentsController {
             }
         }
         out.close();
-        
+
     }
 }

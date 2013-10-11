@@ -11,7 +11,7 @@
     <c:url var="cssTreeview" value="/css/documents/treeview/jquery.treeview.css" />
     <c:url var="cssScreen" value="/css/documents/screen.css" />   
     <c:url var="new_css" value="/css/documents/new/new.css" />
-    
+
     <!--Scripts-->
     <c:url var="formwizard" value="/scripts/documents/new/formwizard.js" />
     <c:url var="treeview" value="/scripts/documents/jquery.treeview.js" />
@@ -19,7 +19,7 @@
     <c:url var="jsList" value="/scripts/documents/new/new.js" />
     <c:url var="jsFormDate" value="/scripts/documents/new/formDate.js" />
     <c:url var="jsMaskedinput" value="/scripts/documents/new/jquery.maskedinput-1.3.1.min.js" />    
-    
+
 
     <jsp:useBean id="booleanElement" class="cognitivabrasil.obaa.BooleanElement" >
         <jsp:setProperty name="booleanElement" property="locale" value="pt-BR" />
@@ -30,8 +30,8 @@
     <link rel="stylesheet" type="text/css" href="${cssScreen}" />
     <link rel="stylesheet" type="text/css" href="${new_css}" />
 
-    <script>window.docId="${doc.id}";</script>
-    
+    <script>window.docId = "${doc.id}";</script>
+
     <script type="text/javascript" src="${formwizard}"><jsp:text/></script>
     <script type="text/javascript" src="${treeview}"><jsp:text/></script>
     <script type="text/javascript" src="${treeviewEdit}"><jsp:text/></script>
@@ -39,7 +39,7 @@
     <script type="text/javascript" src="${jsFormDate}"><jsp:text/></script>
     <script type="text/javascript" src="${jsMaskedinput}"><jsp:text/></script>
 
-    
+
 
     <cgbr:tabs tabNumber="1" />
     <div id="tab-content">
@@ -58,9 +58,9 @@
                        acceptCharset="utf-8" enctype="multipart/form-data">
 
                 <form:hidden path="id" />
-                
+
                 <ul id="browser" class="filetree">
-                    
+
                     <fieldset class="sectionwrap marcador single" id="arquivos">
                         <legend>Arquivos</legend>      
 
@@ -70,7 +70,7 @@
                     <fieldset class="sectionwrap marcador single" id="general">
                         <legend>Informações Gerais</legend>
 
-                        
+
                         <c:choose>
                             <c:when test="${empty obaa.general.identifiers}">
                                 <li class="identifier marcador multi" id="identifiers">
@@ -571,7 +571,26 @@
                     <fieldset class="sectionwrap marcador single" id="technical">
                         <legend>Técnico</legend>
 
-                        <li><a class ="addInParent" id="addLocation" value="+ Localização">+ Localização</a></li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.technical.location}">
+                                <li class="addLocation marcador multi" id="location">
+                                    <span class="file">Localização </span>
+                                    <input id="location" name="technical.location[]" type="text" />                           
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+
+                                <c:forEach var="location" items="${obaa.technical.location}">
+                                    <li class="addLocation marcador multi" id="location">
+                                        <span class="file">Localização </span>
+                                        <input id="location" name="technical.location[]" type="text" value="${location}" />                                        
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class ="addInParent" id="location" value="+ Localização">+ Localização</a></li>
 
                         <c:choose>
                             <c:when test="${empty obaa.technical.requirement}">
