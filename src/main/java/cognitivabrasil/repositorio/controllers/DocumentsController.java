@@ -18,6 +18,7 @@ import cognitivabrasil.obaa.Relation.Relation;
 import cognitivabrasil.obaa.Rights.Rights;
 import cognitivabrasil.obaa.Technical.*;
 import cognitivabrasil.repositorio.data.entities.Document;
+import cognitivabrasil.repositorio.data.entities.Files;
 import cognitivabrasil.repositorio.data.entities.User;
 import cognitivabrasil.repositorio.data.services.DocumentsService;
 import cognitivabrasil.util.Message;
@@ -43,7 +44,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
  * Controller para documentos
@@ -55,7 +55,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public final class DocumentsController {
 
     public final String LOCAL = "/var/cognitiva/repositorio/";
-    Logger log = Logger.getLogger(DocumentsController.class);
+    private static final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
     DocumentsService docService;
     @Autowired
@@ -524,9 +524,7 @@ public final class DocumentsController {
     private String setOBAAFiles(Document d, final HttpServletRequest request) {
         log.debug("Trying to save");
 
-        final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-
-        Map<String, String[]> parMap = multiRequest.getParameterMap();
+        Map<String, String[]> parMap = request.getParameterMap();
 
         OBAA obaa = OBAA.fromHashMap(parMap);
 
@@ -550,49 +548,18 @@ public final class DocumentsController {
 
         Technical originalTechical = d.getMetadata().getTechnical();
 
-        int size;
+        Long size;
 
         if (originalTechical.getSize() == null) {
-            size = 0;
+            size = 0L;
+            for (Files f : d.getFiles()) {
+                size += f.getSize();
+            }
         } else {
-            size = Integer.valueOf(originalTechical.getSize());
+            size = Long.valueOf(originalTechical.getSize());
         }
         
-        //TODO: não é mais multipart
-    /*for (MultipartFile file : files.values()) {
-         cognitivabrasil.repositorio.data.entities.Files f = new cognitivabrasil.repositorio.data.entities.Files();
-
-         if (file.getOriginalFilename() != null
-         && !file.getOriginalFilename().isEmpty()) {
-
-         f.setName(file.getOriginalFilename());
-         f.setContentType(file.getContentType());
-         f.setLocation("/var/cognitiva/repositorio/");
-         f.setSize(file.getSize());
-         f.setDocument(d);
-
-         size += (int) file.getSize();
-
-         List<String> format = t.getFormat();
-                
-         if (format != null) {
-         if (!format.contains(file.getContentType())) {
-         t.addFormat(file.getContentType());
-         }
-         }
-
-         d.addFile(f);
-         //                docService.save(d);
-         //                docService.flush();
-
-         try {
-         log.debug("Saving " + file.getOriginalFilename());
-         file.transferTo(new File(LOCAL, f.getId().toString()));
-         } catch (IllegalStateException | IOException e) {
-         log.error(e);
-         } 
-         }
-         }*/
+        
 
         t.setSize(size); // somatorio to tamanho de todos os arquivos
         obaa.setTechnical(t);

@@ -7,10 +7,12 @@
     <jsp.directive.taglib prefix="sc" tagdir="/WEB-INF/tags" />
     <jsp:directive.attribute name="values" required="true" type="java.util.Map" />
     <jsp:directive.attribute name="selected" required="true" type="java.lang.String" />
-    
-    <select>
+    <jsp:directive.attribute name="classe" required="false" type="java.lang.String" />
+        
+    <select class="${classe}">
         <option value="">-- Nenhum --</option>
         <c:forEach items="${values}" var="entry" varStatus="i">
+            
             <c:choose>
                 <c:when test="${selected == entry.key}">
                     <option value="${entry.key}" selected="selected" >${entry.value}</option>

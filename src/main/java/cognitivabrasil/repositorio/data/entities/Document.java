@@ -32,7 +32,7 @@ public class Document implements java.io.Serializable, HibernateOaiDocument {
     public Document() {
         obaaEntry = "";
         deleted = false;
-        files = new HashSet<Files>();
+        files = new HashSet<>();
     }
 
     public Integer getId() {

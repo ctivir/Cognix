@@ -12,3 +12,7 @@
 #files th:last-child{width: 32px;}
 input[type="file"]{min-width:50%}
 #submitButton{float:right;}
+#files table{width: 100%;text-align: center; border: none}
+#files td:first-child{text-align: left;}
+.infoBox{margin-bottom: 10px;}
+.sliderSelect {border: transparent;background: transparent;-webkit-appearance: none; appearance: none; text-indent: 0.01px;text-overflow: '';margin-bottom: 5px}

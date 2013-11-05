@@ -3,6 +3,7 @@ package cognitivabrasil.repositorio.data.entities;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+import javax.persistence.Column;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 
@@ -14,8 +15,8 @@ public class Files {
     private String contentType;
     private Document document;
     private Long size;
-    private String randomName;
-    
+    private String randomName;    
+
     public Integer getId() {
         return id;
     }
