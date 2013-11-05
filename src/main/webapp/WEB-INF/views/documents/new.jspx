@@ -1,0 +1,833 @@
+<div id="content" xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"     
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:cgbr="urn:jsptagdir:/WEB-INF/tags"
+     xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+
+    <!--Style-->
+    <c:url var="cssWizard" value="/css/documents/new/formwizard.css" />
+    <c:url var="cssTreeview" value="/css/documents/treeview/jquery.treeview.css" />
+    <c:url var="cssScreen" value="/css/documents/screen.css" />   
+    <c:url var="new_css" value="/css/documents/new/new.css" />
+
+    <!--Scripts-->
+    <c:url var="formwizard" value="/scripts/documents/new/formwizard.js" />
+    <c:url var="treeview" value="/scripts/documents/jquery.treeview.js" />
+    <c:url var="treeviewEdit" value="/scripts/documents/new/jquery.treeview.edit.js" />    
+    <c:url var="jsNew" value="/scripts/documents/new/new.js" />
+    <c:url var="jsFormDate" value="/scripts/documents/new/formDate.js" />
+    <c:url var="jsMaskedinput" value="/scripts/documents/new/jquery.maskedinput-1.3.1.min.js" />
+    <c:url var="jsmutate" value="/scripts/mutate/mutate.min.js" />
+    <c:url var="jsmutateEv" value="/scripts/mutate/mutate.events.js" />
+
+
+    <jsp:useBean id="booleanElement" class="cognitivabrasil.obaa.BooleanElement" >
+        <jsp:setProperty name="booleanElement" property="locale" value="pt-BR" />
+    </jsp:useBean>
+
+    <link rel="stylesheet" type="text/css" href="${cssWizard}" />
+    <link rel="stylesheet" type="text/css" href="${cssTreeview}" />
+    <link rel="stylesheet" type="text/css" href="${cssScreen}" />
+    <link rel="stylesheet" type="text/css" href="${new_css}" />
+
+    <script>window.docId = "${doc.id}";</script>
+
+    <script type="text/javascript" src="${formwizard}"><jsp:text/></script>
+    <script type="text/javascript" src="${treeview}"><jsp:text/></script>
+    <script type="text/javascript" src="${treeviewEdit}"><jsp:text/></script>
+    <script type="text/javascript" src="${jsmutateEv}"><jsp:text/></script>
+    <script type="text/javascript" src="${jsmutate}"><jsp:text/></script>
+    <script type="text/javascript" src="${jsNew}"><jsp:text/></script>
+    <script type="text/javascript" src="${jsFormDate}"><jsp:text/></script>
+    <script type="text/javascript" src="${jsMaskedinput}"><jsp:text/></script>
+
+
+
+    <div id="dialog-confirm-rm-file" title="Apagar?" class="hidden">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"><jsp:text/></span>
+            Esta operação irá apagar o <span id="confirm-file"><jsp:text/></span>. <br/>Deseja prosseguir?</p>
+    </div>
+
+    <div id="entities-list" class="ui-widget">
+        <form id="newobject" method="POST" modelAttribute="doc"
+              acceptCharset="utf-8">
+            <div id="insideForm">
+                <input type="hidden" name="id" id="id" value="${doc.id}" />
+
+                <ul id="browser" class="filetree">
+
+                    <fieldset class="sectionwrap marcador single" id="arquivos">
+                        <legend>Arquivos</legend>
+
+                        <c:if test="${!empty doc.files}">
+                            <div id="files">
+                                <table class="zebra">
+                                    <th>Arquivos</th><th>Formato</th><th><jsp:text/></th>
+                                        <c:forEach var="file" items="${doc.files }" varStatus="status">
+                                        <tr>
+                                            <td>
+                                                <c:url var="location" value="/files/${file.id}" />
+                                                <a class="" href="${location}">${file.name }</a>
+                                                <span class="smallerText">
+                                                    <c:if test="${file.size > 0}"> (${file.sizeFormatted})</c:if>
+                                                    </span>
+                                                </td>
+                                                <td> <c:if test="${!empty file.contentType}">${file.contentType}</c:if></td>
+                                                <td>
+                                                    <span class="buttonList">
+                                                    <c:url var="deleteFile" value="/files/${file.id}/delete" />
+                                                    <a class="delete btNoTxt delete_link" name="${file.name}" href="${deleteFile}" id="dialog_link">apagar</a>
+                                                </span>
+                                                <div class="clear"> </div>
+
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </table>
+                            </div>
+                        </c:if>
+                        <div id="uploadwrap">
+                            
+                            <cgbr:upload />
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="sectionwrap marcador single" id="general">
+                        <legend>Informações Gerais</legend>
+
+
+                        <c:choose>
+                            <c:when test="${empty obaa.general.identifiers}">
+                                <li class="identifier marcador multi" id="identifiers">
+                                    <span class="folder">Identificador</span>
+                                    <ul>
+                                        <li class="marcador single" id="catalog">
+                                            <span class="file">Catálogo</span>
+                                            <input type="text" id="catalog"
+                                                   name="general.identifiers[].catalog" value="URI" disabled="disabled" />
+                                        </li>
+
+                                        <li class="marcador single" id="entry">
+                                            <span class="file ">Entry</span>
+                                            <input
+                                                id="Entry" name="general.identifiers[].entry" type="text"
+                                                value="gerado automaticamente" disabled="disabled" />
+                                        </li>
+                                    </ul>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="identifier" items="${obaa.general.identifiers}" varStatus="i">
+                                    <li class="identifier marcador multi" id="identifiers">
+                                        <span class="folder">Identificador</span>
+                                        <ul>
+                                            <li class="marcador single" id="catalog">
+                                                <span class="file">Catálogo</span>
+                                                <c:choose>
+                                                    <c:when test="${i.index==0}">
+                                                        <input type="text" id="catalog"
+                                                               name="general.identifiers[].catalog" value="${identifier.catalog}"
+                                                               disabled="disabled" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input type="text" id="catalog"
+                                                               name="general.identifiers[].catalog" value="${identifier.catalog}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                            </li>
+
+                                            <li class="marcador single" id="entry">
+                                                <span class="file ">Entry</span>
+                                                <c:choose>
+                                                    <c:when test="${i.index==0}">
+                                                        <input id="Entry" name="general.identifiers[].entry" type="text"
+                                                               value="${identifier.entry}" disabled="disabled"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input id="Entry" name="general.identifiers[].entry" type="text"
+                                                               value="${identifier.entry}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class="add" id="identifier" value="+ Identificador">+ Identificador</a></li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.general.titles}">
+                                <li class="addTitle marcador multi" id="titles">
+                                    <span class="file">*Título </span>
+                                    <input id="titulo" name="general.titles[]" type="text" />                           
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="title" items="${obaa.general.titles}">
+                                    <li class="addTitle marcador multi" id="titles">
+                                        <span class="file">*Título </span>
+                                        <input id="titulo" name="general.titles[]" type="text" value="${title}" />
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li> <a class ="addInParent"  id="addTitle" value="+ Título">+ Título</a></li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.general.languages}">
+                                <li class="lang marcador multi" id="languages">
+                                    <span class="file">Idioma</span>
+                                    <input id="language" name="general.languages[]" type="text" />
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="language" items="${obaa.general.languages}">
+                                    <li class="lang marcador multi" id="languages">
+                                        <span class="file">Idioma</span>
+                                        <input id="language" name="general.languages[]" type="text" value="${language}" />
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li>
+                            <a class ="addInParent" id="lang" value="+ Idioma" >
+                                + Idioma
+                            </a>
+                        </li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.general.descriptions}">
+                                <li class="desc marcador multi" id="descriptions">
+                                    <span class="file">Descrição</span>
+                                    <textarea id='description' type='text' rows="4"><jsp:text/></textarea>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="descriptions" items="${obaa.general.descriptions}">
+                                    <li class="desc marcador multi" id="descriptions">
+                                        <span class="file">Descrição</span>
+                                        <textarea id='description' type='text' rows="4">${descriptions}</textarea>
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class ="addInParent"  id="desc" value="+ Descrição">+ Descrição</a></li>
+
+
+                        <c:choose>
+                            <c:when test="${empty obaa.general.keywords}">
+                                <li class="key-w marcador multi" id="keywords">
+                                    <span class="file">Palavra-chave</span>
+                                    <input id="keyword" type="text" />
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="keywords" items="${obaa.general.keywords}">
+                                    <li class="key-w marcador multi" id="keywords">
+                                        <span class="file">Palavra-chave</span>
+                                        <input id="keyword" type="text" value="${keywords}" />
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class ="addInParent" id="key-w" value="+ Palavra-chave">+ Palavra-chave</a></li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.general.coverages}">
+                                <li class="cov marcador multi" id="coverages">
+                                    <span class="file">Cobertura</span>
+                                    <input id="coverage" type="text" />
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="coverage" items="${obaa.general.coverages}">
+                                    <li class="cov marcador multi" id="coverages">
+                                        <span class="file">Cobertura</span>
+                                        <input id="coverage" type="text" value="${coverage}" />
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class ="addInParent" id="cov" value="+ Cobertura">+ Cobertura</a></li>
+
+
+                        <li class="struct marcador single" id="structure">
+                            <span class="file">Estrutura</span> 
+                            <jsp:useBean id="structure" class="cognitivabrasil.obaa.General.Structure" >
+                                <jsp:setProperty name="structure" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            <cgbr:htmlSelect selected="${obaa.general.structure}" values="${structure.mapOfTerms}" />
+                        </li>
+
+                        <li class="aggregationLevel marcador single" id="aggregationLevel">
+                            <span class="file">Nível de agregação</span>
+                            <jsp:useBean id="aggregation" class="cognitivabrasil.obaa.General.AggregationLevel" />
+                            <cgbr:htmlRadio id="aggregationLevel" rdName="general.aggregationLevel" selected="${obaa.general.aggregationLevel}" values="${aggregation.mapOfTerms}" />
+                        </li>
+
+                    </fieldset>
+
+                    <fieldset class="sectionwrap marcador single" id="lifeCycle">
+
+                        <legend>Ciclo de Vida</legend>
+
+
+                        <li class="version marcador single" id="version">
+                            <span class="file">Versão</span>
+                            <input id="impVersion" name="lifeCycle.version" type="text" value="${obaa.lifeCycle.version}" />
+                        </li>
+
+                        <li class="status marcador single" id="status">
+                            <span class="file">Estado</span>
+                            <jsp:useBean id="lifeCycleStatus" class="cognitivabrasil.obaa.LifeCycle.Status" >
+                                <jsp:setProperty name="lifeCycleStatus" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            <cgbr:htmlSelect selected="${obaa.lifeCycle.status}" values="${lifeCycleStatus.mapOfTerms}" />
+                        </li>
+
+                        <jsp:useBean id="contributeRole" class="cognitivabrasil.obaa.LifeCycle.Role" >
+                            <jsp:setProperty name="contributeRole" property="locale" value="pt-BR" />
+                        </jsp:useBean>
+                        <c:choose>
+                            <c:when test="${empty obaa.lifeCycle.contribute}">
+                                <li class="contribute marcador multi" id="contribute">
+                                    <span class="folder">Contribuinte</span>
+                                    <ul>
+                                        <li class="role marcador single" id="role">
+                                            <span class="file">Papel</span>                                            
+                                            <cgbr:htmlSelectSimple values="${contributeRole.mapOfTerms}" />
+                                        </li>
+
+                                        <li class="entity marcador multi" id="entity">
+                                            <span class="file ">Entidade</span>
+                                            <input id="entity" name="lifeCycle.contribute[].entity[]" type="text" value="" />
+                                        </li>
+                                        <li><a class ="addInParent" name="addEntity" id="entity">+ Entidade</a></li>
+
+                                        <li class="date marcador single" id="date">
+                                            <span class="file ">Data</span>
+                                            <input id="iptDate" name="lifeCycle.contribute[].date" type="text"
+                                                   value="" class="dataMask datepicker" />
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="contribute" items="${obaa.lifeCycle.contribute}">
+                                    <li class="contribute marcador multi" id="contribute">
+                                        <span class="folder">Contribuinte</span>
+                                        <ul>
+                                            <li class="role marcador single" id="role">
+                                                <span class="file">Papel</span>
+                                                <cgbr:htmlSelect selected="${contribute.role}" values="${contributeRole.mapOfTerms}" />
+                                            </li>
+                                            <ul>
+                                                <c:forEach var="entity" items="${contribute.entity}">
+                                                    <li class="entity marcador multi" id="entity">
+                                                        <span class="file ">Entidade</span>
+                                                        <input id="entity" name="lifeCycle.contribute[].entity" type="text" value="${entity}" />
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                            <li><a class ="addInParent" id="entity">+ Entidade</a></li>
+
+                                            <li class="date marcador single" id="date">
+                                                <span class="file ">Data</span>
+                                                <input id="iptDate" name="lifeCycle.contribute[].date" 
+                                                       type="text" value="${contribute.date}"/>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class="add" id="contribute">+ Contribuinte</a></li>
+
+                    </fieldset>
+
+                    <fieldset class="sectionwrap marcador single" id="rights">
+                        <legend>Direitos</legend>
+                        <li class="cost marcador single" id="cost">
+                            <span class="file">Tem custo</span>
+
+                            <cgbr:htmlRadio id="cost" rdName="rights.cost"  selected="${obaa.rights.cost}" values="${booleanElement.mapOfTerms}" />
+                        </li>
+
+                        <li class="copyright marcador single" id="copyright">
+                            <span class="file">Tem declaração de direitos autorais</span>
+                            <cgbr:htmlRadio id="copyright" rdName="rights.copyright"  selected="${obaa.rights.copyright}" values="${booleanElement.mapOfTerms}" />
+                        </li>
+
+                        <li class="description marcador single" id="rights.description">
+                            <span class="file">Condições de uso</span>
+                            <textarea id='description2' name="rights.description" type='text' cols="35" rows="4" >${obaa.rights.description}</textarea>
+                        </li>
+                    </fieldset>
+
+                    <fieldset class="sectionwrap marcador single" id="educational">
+                        <legend>Educacional</legend>
+
+                        <li class="marcador single" id="interactivityType">
+                            <span class="file">Tipo de Interatividade</span>
+                            <jsp:useBean id="interactivityType" class="cognitivabrasil.obaa.Educational.InteractivityType" >
+                                <jsp:setProperty name="interactivityType" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            <cgbr:htmlSelect selected="${obaa.educational.interactivityType}" values="${interactivityType.mapOfTerms}" />
+                        </li>
+
+
+                        <li class="marcador multi" id="intendedEndUserRole">
+                            <span class="file">Público Alvo</span>
+                            <jsp:useBean id="intendedEndUserRole" class="cognitivabrasil.obaa.Educational.IntendedEndUserRole" >
+                                <jsp:setProperty name="intendedEndUserRole" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            <cgbr:htmlCheckbox selecteds="${obaa.educational.intendedEndUserRoles}" values="${intendedEndUserRole.mapOfTerms}" />
+                        </li>
+
+                        <jsp:useBean id="learningResourceType" class="cognitivabrasil.obaa.Educational.LearningResourceType" >
+                            <jsp:setProperty name="learningResourceType" property="locale" value="pt-BR" />
+                        </jsp:useBean>
+                        <c:choose>
+                            <c:when test="${empty obaa.educational.learningResourceTypes}">
+                                <li class="learningResourceType marcador multi" id="learningResourceType">
+                                    <span class="file">Tipo de Recurso</span>
+                                    <cgbr:htmlSelectSimple values="${learningResourceType.mapOfTerms}" />                                    
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="loopLearningResourceType" items="${obaa.educational.learningResourceTypes}">
+                                    <li class="learningResourceType marcador multi" id="learningResourceType">
+                                        <span class="file">Tipo de Recurso</span>
+                                        <cgbr:htmlSelect selected="${loopLearningResourceType}" values="${learningResourceType.mapOfTerms}" />                                        
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class="addInParent" id="learningResourceType">+ Tipo de Recurso</a></li>
+
+                        <li class="interactivityLevel marcador single" id="interactivityLevel">
+                            <span class="file">Nível de Interatividade</span>
+                            
+                            <jsp:useBean id="interactivityLevel" class="cognitivabrasil.obaa.Educational.InteractivityLevel" >
+                                <jsp:setProperty name="interactivityLevel" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            
+                            <cgbr:htmlSelect selected="${obaa.educational.interactivityLevel}" values="${interactivityLevel.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
+                                                      
+                            <div class="slider" id="interactivityLevelSlider"></div>
+                        </li>
+
+                        <li class="semanticDensity marcador single" id="semanticDensity">
+                            <span class="file">Densidade Semântica</span>
+                            
+                            <jsp:useBean id="semanticDensity" class="cognitivabrasil.obaa.Educational.SemanticDensity" >
+                                <jsp:setProperty name="semanticDensity" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            
+                            <cgbr:htmlSelect selected="${obaa.educational.semanticDensity}" values="${semanticDensity.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
+                            
+                            <div class="slider" id="semanticDensitySlider"></div>
+
+                        </li>
+
+                        <li class="difficulty marcador single" id="difficulty">
+                            <span class="file">Nível de Dificuldade</span>
+                               
+                            <jsp:useBean id="difficulty" class="cognitivabrasil.obaa.Educational.Difficulty" >
+                                <jsp:setProperty name="difficulty" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                                                        
+                            <cgbr:htmlSelect selected="${obaa.educational.difficulty}" values="${difficulty.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
+                            <div class="slider" id="difficultySlider"><jsp:text/></div>                            
+                            
+                        </li>
+
+                        
+                        <c:choose>
+                            <c:when test="${empty obaa.educational.typicalAgeRanges}">
+                                <li class="typicalAgeRanges marcador multi" id="typicalAgeRanges">
+                                    <span class="file">Intervalo de Idade Típico</span>
+                                    <div id="TypicalAgeRanges">
+                                        <label for="age"><jsp:text/></label>
+                                        <input type="text" id="age" readonly="readonly" style="border:0;" />
+                                        <div id="slider-range"><jsp:text/></div>
+                                    </div>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="typicalAgeRanges" items="${obaa.educational.typicalAgeRanges}">
+                                    <li class="typicalAgeRanges marcador multi" id="typicalAgeRanges">
+                                        <span class="file">Intervalo de Idade Típico</span>
+                                        <div id="TypicalAgeRanges">
+                                            <label for="age"><jsp:text/></label>
+                                            <input type="text" id="age" readonly="readonly" style="border:0;" value="${typicalAgeRanges}" />
+                                            <div id="slider-range"><jsp:text/></div>
+                                        </div>
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li class="typicalLearningTime marcador single" id="typicalLearningTime">
+                            <span class="file">Tempo Típico de Aprendizado</span>
+                            <input id="typicalLearningTime" name="educational.typicalLearningTime" type="text" value="${obaa.educational.typicalLearningTime}" />
+                        </li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.educational.descriptions}">
+                                <li class="description3 marcador multi" id="description">
+                                    <span class="file">Descrição</span>
+                                    <textarea id='description' name="educational.description" type='text' cols="35" rows="4"><jsp:text/></textarea>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="description" items="${obaa.educational.descriptions}">
+                                    <li class="description3 marcador multi" id="description">
+                                        <span class="file">Descrição</span>
+                                        <textarea id='description' name="educational.description" type='text' cols="35" rows="4">${description}</textarea>
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class ="addInParent" id="description3">+ Descrição Educacional</a></li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.educational.languages}">
+                                <li class="language marcador multi" id="language">
+                                    <span class="file">Idioma</span>
+                                    <input id="language" name="educational.language" type="text" />
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="language" items="${obaa.educational.languages}">
+                                    <li class="language marcador multi" id="language">
+                                        <span class="file">Idioma</span>
+                                        <input id="language" name="educational.language" type="text" value="${language}" />
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class ="addInParent"  id="language">+ Idioma</a></li>
+
+                        <li class="contexts marcador multi" id="contexts">
+                            <span class="file">Contexto</span>
+                            <jsp:useBean id="edContext" class="cognitivabrasil.obaa.Educational.Context" >
+                                <jsp:setProperty name="edContext" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            <cgbr:htmlCheckbox selecteds="${obaa.educational.contexts}" values="${edContext.mapOfTerms}" />
+                        </li>
+
+                        <li class="marcador single" id="learningContentType">
+                            <span class="file">Tipo do conteúdo</span>
+                            <jsp:useBean id="learningContentType" class="cognitivabrasil.obaa.Educational.LearningContentType" >
+                                <jsp:setProperty name="learningContentType" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            <cgbr:htmlSelect selected="${obaa.educational.learningContentType}" values="${learningContentType.mapOfTerms}" />
+                        </li>    
+                        <li class="marcador single interation" id="interaction">
+                            <span class="folder">Interação</span>                           
+                            <ul>
+                                <li class="marcador single" id="interactionType">
+                                    <span class="file">Tipo de interação</span>
+                                    <input id="interactionType" name="interactionType" type="text" value="${obaa.educational.interaction.interactionType}" />
+                                </li>
+
+                                <li class="marcador single" id="perception">
+                                    <span class="file">Percepção</span>
+                                    <jsp:useBean id="perception" class="cognitivabrasil.obaa.Educational.Perception" >
+                                        <jsp:setProperty name="perception" property="locale" value="pt-BR" />
+                                    </jsp:useBean>
+                                    <cgbr:htmlSelect selected="${obaa.educational.interaction.perception}" values="${perception.mapOfTerms}" />                                
+                                </li>
+
+                                <li class="marcador single" id="synchronism">
+                                    <span class="file">Requer Sincronismo</span>
+                                    <cgbr:htmlRadio id="" rdName="educational.interaction.synchronism"  selected="${obaa.educational.interaction.synchronism}" values="${booleanElement.mapOfTerms}" />
+                                </li>
+
+                                <li class="file marcador single" id="coPresence">
+                                    <span class="file">Requer Copresença</span>
+                                    <cgbr:htmlRadio id="" rdName="educational.interaction.coPresence"  selected="${obaa.educational.interaction.coPresence}" values="${booleanElement.mapOfTerms}" />
+                                </li>
+
+                                <li class="file marcador single" id="reciprocity">
+                                    <span class="file">Reciprocidade</span>
+                                    <jsp:useBean id="reciprocity" class="cognitivabrasil.obaa.Educational.Reciprocity" >
+                                        <jsp:setProperty name="reciprocity" property="locale" value="pt-BR" />
+                                    </jsp:useBean>
+                                    <cgbr:htmlRadio id="" rdName="educational.interaction.reciprocity"  selected="${obaa.educational.interaction.reciprocity}" values="${reciprocity.mapOfTerms}" />
+                                </li>
+                            </ul>
+                        </li>
+
+
+                    </fieldset>
+
+                    <fieldset class="sectionwrap marcador single" id="accessibility">
+                        <legend>Acessibilidade</legend>
+                        <li class="resourceDescription marcador single" id="resourceDescription">
+                            <span class="file">Descrição do Recurso</span>
+                            <ul>                                    
+                                <li class="primary marcador single" id="primary">
+                                    <span class="file">Primário</span>
+                                    <ul>
+                                        <li class="hasVisual marcador single" id="hasVisual">
+                                            <span class="file">É Visual</span>
+                                            <cgbr:htmlRadio id="" rdName="accessibility.resourceDescription.primary.hasVisual" selected="${obaa.accessibility.resourceDescription.primary.hasVisual}" values="${booleanElement.mapOfTerms}" />
+                                        </li>
+                                        <li class="marcador single" id="hasAuditory">
+                                            <span class="file">É Auditivo</span>
+                                            <cgbr:htmlRadio id="" rdName="accessibility.resourceDescription.primary.hasAuditory"  selected="${obaa.accessibility.resourceDescription.primary.hasAuditory}" values="${booleanElement.mapOfTerms}" />
+                                        </li>
+                                        <li class="marcador single" id="hasText">
+                                            <span class="file">É Textual</span>
+                                            <cgbr:htmlRadio id="" rdName="educational.interaction.hasText"  selected="${obaa.accessibility.resourceDescription.primary.hasText}" values="${booleanElement.mapOfTerms}" />
+                                        </li>
+                                        <li class="marcador single" id="hasTactile">
+                                            <span class="file">É Tátil</span>
+                                            <cgbr:htmlRadio id="" rdName="educational.interaction.hasTactile"  selected="${obaa.accessibility.resourceDescription.primary.hasTactile}" values="${booleanElement.mapOfTerms}" />
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </fieldset>
+
+                    <fieldset class="sectionwrap marcador single" id="technical">
+                        <legend>Técnico</legend>
+
+                        <li><a class ="addInParent" id="addLocation" value="+ Localização">+ Localização</a></li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.technical.requirement}">
+                                <li class="requirement marcador multi" id="requirement">
+                                    <span class="folder">Requisitos</span>
+                                    <ul>
+                                        <li class="orComposite marcador multi" id="orComposite">
+                                            <span class="folder">Compositor ou:</span>
+                                            <ul>
+                                                <li class="marcador single" id="type">
+                                                    <span class="file">Tipo</span>
+                                                    <input id="type" name="technical.requirements.orComposite.type" type="text"/>
+                                                </li>
+                                                <li class="name marcador single" id="name">
+                                                    <span class="file">Nome</span>
+                                                    <input id="name" name="technical.requirements.orComposite.name" type="text" />
+                                                </li>
+                                                <li class="marcador single" id="minimumVersion">
+                                                    <span class="file">Versão mínima</span>
+                                                    <input id="minimumVersion" name="technical.requirements.orComposite.minimumVersion" type="text" />
+                                                </li>
+                                                <li class="marcador single" id="maximumVersion">
+                                                    <span class="file">Versão máxima</span>
+                                                    <input id="maximumVersion" name="technical.requirements.orComposite.maximumVersion" type="text" />
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li><a class ="addInParent" id="orComposite">+ Compositor ou</a></li>
+
+                                    </ul>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="requirement" items="${obaa.technical.requirement}">
+
+                                    <li class="requirement marcador multi" id="requirement">
+                                        <span class="folder">Requisitos</span>
+                                        <ul>
+                                            <c:forEach var="orComposite" items="${requirement.orComposite}" varStatus="i">
+                                                <li class="orComposite marcador multi" id="orComposite">
+                                                    <span class="folder">Compositor ou:</span>
+                                                    <ul>
+                                                        <c:if test="${!empty orComposite.type}">
+                                                            <li class="marcador single" id="type">
+                                                                <span class="file">Tipo</span>
+                                                                <input id="type" name="technical.requirement[].orComposite[].type" type="text" value="${orComposite.type}" />
+                                                            </li>
+                                                        </c:if>
+                                                        <c:if test="${!empty orComposite.name}">
+                                                            <li class="name marcador single" id="name">
+                                                                <span class="file">Nome</span>
+                                                                <input id="name" name="technical.requirement[].orComposite[].name" type="text" value="${orComposite.name}" />
+                                                            </li>
+                                                        </c:if>
+                                                        <c:if test="${!empty orComposite.minimumVersion}">
+                                                            <li class="marcador single" id="minimumVersion">
+                                                                <span class="file">Versão mínima</span>
+                                                                <input id="minimumVersion" name="technical.requirement[].orComposite[].minimumVersion" type="text" value="${orComposite.minimumVersion}" />
+                                                            </li>
+                                                        </c:if>
+                                                        <c:if test="${!empty orComposite.maximumVersion}">
+                                                            <li class="marcador single" id="maximumVersion">
+                                                                <span class="file">Versão máxima</span>
+                                                                <input id="maximumVersion" name="technical.requirement[].orComposite[].maximumVersion" type="text" value="${orComposite.maximumVersion}" />
+                                                            </li>
+                                                        </c:if>
+                                                    </ul>
+                                                </li>
+                                            </c:forEach>
+
+                                            <li><a class ="addInParent" id="orComposite">+ Compositor ou</a></li>
+
+                                        </ul>
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li><a class ="add" id="requirement">+ Requisitos</a></li>
+
+                        <li class="marcador single" id="installationRemarks">
+                            <span class="file">Notas da Instalação</span>
+                            <input id="installationRemarks" name="technical.installationRemarks" type="text" value="${obaa.technical.installationRemarks}" />
+                        </li>
+
+                        <li class="marcador single" id="otherPlatformRequirements">
+                            <span class="file">Outros Requisitos</span>
+                            <input id="otherPlatformRequirements" name="technical.otherPlatformRequirements" type="text" value="${obaa.technical.otherPlatformRequirements}" />
+                        </li>
+
+                        <li class="marcador single" id="duration">
+                            <span class="file">Duração</span>
+                            <input id="duration" name="technical.duration" type="text" value="${obaa.technical.duration}" />
+                        </li>
+
+                        <li class="marcador multi" id="supportedPlatforms">
+                            <span class="file">Plataformas Suportadas</span>
+                            <jsp:useBean id="supportedPlatforms" class="cognitivabrasil.obaa.Technical.SupportedPlatform" >
+                                <jsp:setProperty name="supportedPlatforms" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            <cgbr:htmlCheckbox selecteds="${obaa.technical.supportedPlatforms}" values="${supportedPlatforms.mapOfTerms}" />
+                        </li>
+
+                        <c:choose>
+                            <c:when test="${empty obaa.technical.platformSpecificFeatures}">
+                                <li class="platformSpecificFeatures marcador multi" id="platformSpecificFeatures">
+                                    <span class="folder">Característica Específica da Plataforma</span>
+                                    <ul>                                     
+                                        <li class="specificRequirements marcador multi" id="specificRequirements">
+                                            <span class="folder">Requisitos Especificos</span>
+                                            <ul>                                        
+                                                <li class="specificOrComposite marcador multi" id="specificOrComposites">
+                                                    <span class="folder">Compositor ou</span>
+                                                    <ul>                                                
+                                                        <li class="marcador single" id="specificType">
+                                                            <span class="file">Tipo</span>
+                                                            <input name="technical.specificRequirement[].specificOrComposite[].specificType" type="text" value="${specificOrComposite.specificType}" />
+                                                        </li>
+                                                        <li class="marcador single" id="specificName">
+                                                            <span class="file">Nome</span>
+                                                            <input name="technical.specificRequirement[].specificOrComposite[].specificName" type="text" value="${specificOrComposite.specificName}" />
+                                                        </li>
+                                                        <li class="marcador single" id="specificMinimumVersion">
+                                                            <span class="file">Versão Mínima</span>
+                                                            <input name="technical.specificRequirement[].specificOrComposite[].specificminimumVersion" type="text" value="${specificOrComposite.specificMinimumVersion}" />
+                                                        </li>
+                                                        <li class="marcador single" id="specificMaximumVersion">
+                                                            <span class="file">Versão Máxima</span>
+                                                            <input name="technical.specificRequirement[].specificOrComposite[].specificmaximumVersion" type="text" value="${specificOrComposite.specificMaximumVersion}" />
+                                                        </li>
+                                                    </ul>
+                                                </li>
+
+                                                <li><a class ="addInParent" id="orComposite">+ Compositor ou</a></li>
+
+                                            </ul>
+                                        </li>
+                                        <li class="marcador single" id="installationRemarks">
+                                            <span class="file">Observações específicas de instalação</span>
+                                            <input id="installationRemarks" name="technical.platformSpecificFeature.specificInstallationRemarks" type="text" value="${platformSpecificFeature.specificInstallationRemarks}" />
+                                        </li>
+
+                                        <li class="marcador single" id="otherPlatformRequirements">
+                                            <span class="file">Outros requisitos específicos de plataforma</span>
+                                            <input id="specificOtherPlatformRequirements" name="technical.platformSpecificFeatures.specificOtherPlatformRequirements" type="text" value="${platformSpecificFeature.specificOtherPlatformRequirements}" />
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </c:when>
+
+                            <c:otherwise>
+                                <c:forEach var="platformSpecificFeature" items="${obaa.technical.platformSpecificFeatures}">
+                                    <li class="marcador multi" id="platformSpecificFeatures">                                    
+                                        <span class="folder">Característica Específica da Plataforma</span>
+                                        <ul>
+                                            <c:forEach var="specificRequirement" items="${platformSpecificFeature.specificRequirements}">
+                                                <li class="specificRequirements marcador multi" id="specificRequirements">
+                                                    <span class="folder">Requisitos Especificos</span>
+                                                    <ul>
+                                                        <c:forEach var="specificOrComposite" items="${specificRequirement.specificOrComposites}" varStatus="i">
+                                                            <li class="specificOrComposites marcador multi" id="specificOrComposites">
+                                                                <span class="folder">Compositor ou</span>
+                                                                <ul>
+                                                                    <c:if test="${!empty specificOrComposite.specificType}">
+                                                                        <li class="marcador single" id="specificType">
+                                                                            <span class="file">Tipo</span>
+                                                                            <input id="type" name="technical.specificRequirements[].specificOrComposites[].specificType" type="text" value="${specificOrComposite.specificType}" />
+                                                                        </li>
+                                                                    </c:if>
+                                                                    <c:if test="${!empty specificOrComposite.specificName}">
+                                                                        <li class="name marcador single" id="specificName">
+                                                                            <span class="file">Nome</span>
+                                                                            <input id="name" name="technical.specificRequirements[].specificOrComposites[].specificName" type="text" value="${specificOrComposite.specificName}" />
+                                                                        </li>
+                                                                    </c:if>
+                                                                    <c:if test="${!empty specificOrComposite.specificMinimumVersion}">
+                                                                        <li class="marcador single" id="specificMinimumVersion">
+                                                                            <span class="file">Versão mínima</span>
+                                                                            <input id="minimumVersion" name="technical.specificRequirements[].specificOrComposites[].specificMinimumVersion" type="text" value="${specificOrComposite.specificMinimumVersion}" />
+                                                                        </li>
+                                                                    </c:if>
+                                                                    <c:if test="${!empty specificOrComposite.specificMaximumVersion}">
+                                                                        <li class="marcador single" id="specificMaximumVersion">
+                                                                            <span class="file">Versão máxima</span>
+                                                                            <input id="maximumVersion" name="technical.specificRequirements[].specificOrComposites[].specificMaximumVersion" type="text" value="${specificOrComposite.specificMaximumVersion}" />
+                                                                        </li>
+                                                                    </c:if>
+                                                                </ul>
+                                                            </li>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </li>
+
+                                                <li><a class ="addInParent" id="specificOrComposites">+ Compositor ou</a></li>
+                                                </c:forEach>
+                                        </ul>
+                                    </li>                                    
+                                </c:forEach>
+
+                            </c:otherwise>                                    
+                        </c:choose>
+
+                        <li><a class ="add" id="platformSpecificFeatures">+ Característica específica da plataforma</a></li>
+
+
+                        <button class="next" id="submitButton" type="submit" >Salvar</button>
+                    </fieldset>
+
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
