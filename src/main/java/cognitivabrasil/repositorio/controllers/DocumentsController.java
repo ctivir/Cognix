@@ -114,20 +114,11 @@ public final class DocumentsController {
                     lo.setText(location);
                     locList.add(lo);
                     metadata.getTechnical().setLocation(locList);
-                    
-                    System.out.println("GET LOCATION: "+ metadata.getTechnical().getLocation().get(0));
-                    
-                    
-//                    locationList.clear();
-//                    locationList.add(entry);
-//                    System.out.println("Entry: "+entry);
-//                    System.out.println("Adicionado a location que era: "+locationList.get(0));                    
+                   
                 }
-
-//                metadata.getMetametadata().getContribute().get(0).setDate(data);               
-//
+         
                 d.setMetadata(metadata);
-//
+                
                 docService.save(d);
                 docService.flush();
             }
@@ -378,119 +369,6 @@ public final class DocumentsController {
 
         Rights rights = new Rights();
         rights.setCost(false);
-
-        lo.setRights(rights);
-
-        Accessibility accessibility = new Accessibility();
-        ResourceDescription resourceDescription = new ResourceDescription();
-        Primary primary = new Primary();
-        primary.setVisual(true);
-        primary.setAuditory(false);
-        primary.setText(true);
-        primary.setTactile(false);
-
-        resourceDescription.setPrimary(primary);
-        accessibility.setResourceDescription(resourceDescription);
-
-        lo.setAccessibility(accessibility);
-
-        d.setMetadata(lo);
-
-        model.addAttribute("doc", d);
-        model.addAttribute("obaa", d.getMetadata());
-        return "documents/new";
-    }
-
-    @RequestMapping(value = "/new", params = "hq", method = RequestMethod.GET)
-    public String newHq(Model model) {
-        Document d = new Document();
-
-        OBAA lo = new OBAA();
-
-        General general = new General();
-        general.addLanguage("pt-BR");
-        Structure s = new Structure();
-        s.setText("atomic");
-        general.setStructure(s);
-        general.setAggregationLevel(1);
-        general.addKeyword("quadrinhos");
-        general.addKeyword("reciclagem");
-        general.addKeyword("");
-        lo.setGeneral(general);
-
-        LifeCycle lifeCycle = new LifeCycle();
-        lifeCycle.setVersion("1");
-        lifeCycle.setStatus("finalized");
-
-        cognitivabrasil.obaa.LifeCycle.Contribute contribute;
-        contribute = new cognitivabrasil.obaa.LifeCycle.Contribute();
-
-        VCarder autor = new VCarder();
-        autor.setName("Editora", "Nes", "Nes Editora");
-
-        contribute.addEntity(autor.getVCard());
-        contribute.setRole("publisher");
-
-        // today date
-        Date date = new Date();
-        DateFormat dateFormat;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        contribute.setDate(dateFormat.format(date));
-        lifeCycle.addContribute(contribute);
-
-        lo.setLifeCycle(lifeCycle);
-
-        Technical technical = new Technical();
-
-        Requirement requirement = new Requirement();
-        OrComposite orComposite = new OrComposite();
-        orComposite.setType("operatingSystem");
-        orComposite.setName("multiOs");
-
-        OrComposite orComposite2 = new OrComposite();
-        orComposite2.setType("browser");
-        orComposite2.setName("any");
-
-        requirement.addOrComposite(orComposite);
-        requirement.addOrComposite(orComposite2);
-        technical.addRequirement(requirement);
-
-        List location = new ArrayList();
-        technical.setLocation(location);
-
-        technical.setOtherPlatformRequirements("É necessário um programa como o Acrobat Reader que permite a leitura de arquivos no formato PDF.");
-        technical.addSupportedPlatforms("Web");
-
-        lo.setTechnical(technical);
-
-        Educational educational = new Educational();
-        educational.setInteractivityType("expositive");
-        educational.addLearningResourceType("narrative_text");
-        educational.setInteractivityLevel("very_low");
-        educational.addLanguage("pt-BR");
-        educational.addContext("school");
-        educational.setDifficulty("very_easy");
-        Duration dur = new Duration();
-        dur.set(15, Calendar.MINUTE);
-        educational.setTypicalLearningTime(dur);
-
-        educational.addIntendedEndUserRole("student");
-
-        Interaction interaction = new Interaction();
-        interaction.setInteractionType("Objeto-sujeito");
-        interaction.setCoPresence(false);
-        interaction.setSynchronism(false);
-        interaction.setPerception("visual");
-        interaction.setReciprocity("1-1");
-
-        educational.setInteraction(interaction);
-
-        lo.setEducational(educational);
-
-        Rights rights = new Rights();
-        rights.setCost(false);
-        rights.setCopyright(true);
-        rights.setDescription("Todos os direitos autorais reservados a Nes Editora sob registro na Fundação Biblioteca Nacional e no Ministério da Cultura.");
 
         lo.setRights(rights);
 
