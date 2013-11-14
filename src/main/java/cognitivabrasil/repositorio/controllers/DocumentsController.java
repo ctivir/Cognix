@@ -437,8 +437,6 @@ public final class DocumentsController {
             size = Long.valueOf(originalTechical.getSize());
         }
         
-        
-
         t.setSize(size); // somatorio to tamanho de todos os arquivos
         obaa.setTechnical(t);
         d.setMetadata(obaa);

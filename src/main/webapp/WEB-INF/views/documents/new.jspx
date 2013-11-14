@@ -615,8 +615,6 @@
                     <fieldset class="sectionwrap marcador single" id="technical">
                         <legend>Técnico</legend>
 
-                        <li><a class ="addInParent" id="addLocation" value="+ Localização">+ Localização</a></li>
-
                         <c:choose>
                             <c:when test="${empty obaa.technical.requirement}">
                                 <li class="requirement marcador multi" id="requirement">
