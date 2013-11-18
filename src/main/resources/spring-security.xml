@@ -17,7 +17,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         
         <intercept-url pattern="/scripts/.*" access="permitAll" />
         <intercept-url pattern="/css/.*" access="permitAll" />
-        <intercept-url pattern="/images/.*" access="permitAll" />
+        <intercept-url pattern="/images/.*" access="permitAll" />        
 
         <!-- allow any user to view (GET) the pages. Changes should only be effected
      			with POST requests -->
@@ -31,6 +31,12 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
                         access="permitAll" />
 
         <intercept-url  pattern="/login.*" method="GET"
+                        access="permitAll" />
+        
+        <intercept-url  pattern="/documents" method="GET"
+                        access="permitAll" />
+        
+        <intercept-url  pattern="/" method="GET"
                         access="permitAll" />
         
         <intercept-url pattern="/documents/new"

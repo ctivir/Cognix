@@ -1,5 +1,5 @@
 $(function() {       
-    $("#uploader").plupload({
+    $("#uploader").pluploadQueue({
         // General settings
         runtimes: 'gears,flash,browserplus,silverlight,html5,html4',
         url: window.urlRoot+'files/uploadFile',

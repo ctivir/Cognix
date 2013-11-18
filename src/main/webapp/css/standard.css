@@ -53,15 +53,10 @@ h1 { font-size: 1.2em; margin: 0 0 .4em .8em; clear: both; padding-top: .8em}
 
 /*mainframe*/
 #headerWrapper, #wrapper, #footterWrapper {
-    width:950px;
-    min-width: 950px;
     max-width: 950px;
     margin-right: auto;
     margin-left: auto;
-
-    /* fix max-width incompatibility in IE6 */
-    width:expression(document.body.clientWidth > 950? "950px": "auto" );
-
+    margin-top:45px;
     overflow:hidden;
     display:block;
 }

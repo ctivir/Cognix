@@ -16,11 +16,9 @@
     <c:url var="formwizard" value="/scripts/documents/new/formwizard.js" />
     <c:url var="treeview" value="/scripts/documents/jquery.treeview.js" />
     <c:url var="treeviewEdit" value="/scripts/documents/new/jquery.treeview.edit.js" />    
-    <c:url var="jsNew" value="/scripts/documents/new/new.js" />
+    <c:url var="jsList" value="/scripts/documents/new/new.js" />
     <c:url var="jsFormDate" value="/scripts/documents/new/formDate.js" />
-    <c:url var="jsMaskedinput" value="/scripts/documents/new/jquery.maskedinput-1.3.1.min.js" />
-    <c:url var="jsmutate" value="/scripts/mutate/mutate.min.js" />
-    <c:url var="jsmutateEv" value="/scripts/mutate/mutate.events.js" />
+    <c:url var="jsMaskedinput" value="/scripts/documents/new/jquery.maskedinput-1.3.1.min.js" />    
 
 
     <jsp:useBean id="booleanElement" class="cognitivabrasil.obaa.BooleanElement" >
@@ -37,62 +35,57 @@
     <script type="text/javascript" src="${formwizard}"><jsp:text/></script>
     <script type="text/javascript" src="${treeview}"><jsp:text/></script>
     <script type="text/javascript" src="${treeviewEdit}"><jsp:text/></script>
-    <script type="text/javascript" src="${jsmutateEv}"><jsp:text/></script>
-    <script type="text/javascript" src="${jsmutate}"><jsp:text/></script>
-    <script type="text/javascript" src="${jsNew}"><jsp:text/></script>
+    <script type="text/javascript" src="${jsList}"><jsp:text/></script>
     <script type="text/javascript" src="${jsFormDate}"><jsp:text/></script>
     <script type="text/javascript" src="${jsMaskedinput}"><jsp:text/></script>
 
 
 
-    <div id="dialog-confirm-rm-file" title="Apagar?" class="hidden">
-        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"><jsp:text/></span>
-            Esta operação irá apagar o <span id="confirm-file"><jsp:text/></span>. <br/>Deseja prosseguir?</p>
-    </div>
+    <cgbr:tabs tabNumber="1" />
+    <div id="tab-content">
 
-    <div id="entities-list" class="ui-widget">
-        <form id="newobject" method="POST" modelAttribute="doc"
-              acceptCharset="utf-8">
-            <div id="insideForm">
-                <input type="hidden" name="id" id="id" value="${doc.id}" />
+        <div id="dialog-confirm-rm-file" title="Apagar?" class="hidden">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"><jsp:text/></span>
+                Esta operação irá apagar o <span id="confirm-file"><jsp:text/></span>. <br/>Deseja prosseguir?</p>
+        </div>
+
+        <c:if test="${not empty message}">
+            <div id="message" class="${message.type}">${message.message}</div>
+        </c:if>
+
+        <div id="entities-list" class="ui-widget">
+            <form:form id="newobject" method="post" modelAttribute="doc"
+                       acceptCharset="utf-8" enctype="multipart/form-data">
+
+                <form:hidden path="id" />
 
                 <ul id="browser" class="filetree">
 
                     <fieldset class="sectionwrap marcador single" id="arquivos">
-                        <legend>Arquivos</legend>
+                        <legend>Arquivos</legend>      
+                        <input id="validation_locate_file" name="validation_locate_file" type="hidden" />
+                        <c:choose>
+                            <c:when test="${empty obaa.technical.location}">
+                                <li class="addLocation marcador multi" id="location">
+                                    <span class="file">Localização </span>
+                                    <input id="location" name="technical.location[]" type="text" />                           
+                                </li>
+                            </c:when>
+                            <c:otherwise>
 
-                        <c:if test="${!empty doc.files}">
-                            <div id="files">
-                                <table class="zebra">
-                                    <th>Arquivos</th><th>Formato</th><th><jsp:text/></th>
-                                        <c:forEach var="file" items="${doc.files }" varStatus="status">
-                                        <tr>
-                                            <td>
-                                                <c:url var="location" value="/files/${file.id}" />
-                                                <a class="" href="${location}">${file.name }</a>
-                                                <span class="smallerText">
-                                                    <c:if test="${file.size > 0}"> (${file.sizeFormatted})</c:if>
-                                                    </span>
-                                                </td>
-                                                <td> <c:if test="${!empty file.contentType}">${file.contentType}</c:if></td>
-                                                <td>
-                                                    <span class="buttonList">
-                                                    <c:url var="deleteFile" value="/files/${file.id}/delete" />
-                                                    <a class="delete btNoTxt delete_link" name="${file.name}" href="${deleteFile}" id="dialog_link">apagar</a>
-                                                </span>
-                                                <div class="clear"> </div>
-
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </table>
-                            </div>
-                        </c:if>
-                        <div id="uploadwrap">
-                            
-                            <cgbr:upload />
-                        </div>
-
+                                <c:forEach var="location" items="${obaa.technical.location}">
+                                    <li class="addLocation marcador multi" id="location">
+                                        <span class="file">Localização </span>
+                                        <input id="location" name="technical.location[]" type="text" value="${location}" />                                        
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>                                    
+                        
+                        <li><a class ="addInParent" id="location" value="+ Localização">+ Localização</a></li>
+                                    
+                        <cgbr:upload />
+                        
                     </fieldset>
 
                     <fieldset class="sectionwrap marcador single" id="general">
@@ -406,14 +399,14 @@
                             <c:when test="${empty obaa.educational.learningResourceTypes}">
                                 <li class="learningResourceType marcador multi" id="learningResourceType">
                                     <span class="file">Tipo de Recurso</span>
-                                    <cgbr:htmlSelectSimple values="${learningResourceType.mapOfTerms}" />                                    
+                                    <cgbr:htmlSelectSimple values="${learningResourceType.mapOfTerms}" />
                                 </li>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="loopLearningResourceType" items="${obaa.educational.learningResourceTypes}">
                                     <li class="learningResourceType marcador multi" id="learningResourceType">
                                         <span class="file">Tipo de Recurso</span>
-                                        <cgbr:htmlSelect selected="${loopLearningResourceType}" values="${learningResourceType.mapOfTerms}" />                                        
+                                        <cgbr:htmlSelect selected="${loopLearningResourceType}" values="${learningResourceType.mapOfTerms}" />
                                     </li>
                                 </c:forEach>
                             </c:otherwise>
@@ -423,42 +416,26 @@
 
                         <li class="interactivityLevel marcador single" id="interactivityLevel">
                             <span class="file">Nível de Interatividade</span>
-                            
-                            <jsp:useBean id="interactivityLevel" class="cognitivabrasil.obaa.Educational.InteractivityLevel" >
-                                <jsp:setProperty name="interactivityLevel" property="locale" value="pt-BR" />
-                            </jsp:useBean>
-                            
-                            <cgbr:htmlSelect selected="${obaa.educational.interactivityLevel}" values="${interactivityLevel.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
-                                                      
-                            <div class="slider" id="interactivityLevelSlider"></div>
+                            <label for="level"><jsp:text/></label>
+                            <input name="level" class="SliderText" readonly="readonly" type="text" id="level" style="border:0;" value="${obaa.educational.interactivityLevel}" />
+                            <div class="Slider" id="levelSlider"></div>
                         </li>
 
                         <li class="semanticDensity marcador single" id="semanticDensity">
                             <span class="file">Densidade Semântica</span>
-                            
-                            <jsp:useBean id="semanticDensity" class="cognitivabrasil.obaa.Educational.SemanticDensity" >
-                                <jsp:setProperty name="semanticDensity" property="locale" value="pt-BR" />
-                            </jsp:useBean>
-                            
-                            <cgbr:htmlSelect selected="${obaa.educational.semanticDensity}" values="${semanticDensity.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
-                            
-                            <div class="slider" id="semanticDensitySlider"></div>
+                            <label for="density"><jsp:text/></label>
+                            <input name="educational.semanticDensity" readonly="readonly" type="text" id="density" style="border:0;" value="${obaa.educational.semanticDensity}" />
+                            <div class="Slider" id="densitySlider"></div>
 
                         </li>
 
                         <li class="difficulty marcador single" id="difficulty">
                             <span class="file">Nível de Dificuldade</span>
-                               
-                            <jsp:useBean id="difficulty" class="cognitivabrasil.obaa.Educational.Difficulty" >
-                                <jsp:setProperty name="difficulty" property="locale" value="pt-BR" />
-                            </jsp:useBean>
-                                                        
-                            <cgbr:htmlSelect selected="${obaa.educational.difficulty}" values="${difficulty.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
-                            <div class="slider" id="difficultySlider"><jsp:text/></div>                            
-                            
+                            <label for="amount"><jsp:text/></label>
+                            <input type="text" id="amount" readonly="readonly" style="border:0;" value="${obaa.educational.difficulty}" />
+                            <div id="Difficulty"><jsp:text/></div>
                         </li>
 
-                        
                         <c:choose>
                             <c:when test="${empty obaa.educational.typicalAgeRanges}">
                                 <li class="typicalAgeRanges marcador multi" id="typicalAgeRanges">
@@ -613,7 +590,7 @@
                     </fieldset>
 
                     <fieldset class="sectionwrap marcador single" id="technical">
-                        <legend>Técnico</legend>
+                        <legend>Técnico</legend>                                               
 
                         <c:choose>
                             <c:when test="${empty obaa.technical.requirement}">
@@ -821,11 +798,43 @@
                         <li><a class ="add" id="platformSpecificFeatures">+ Característica específica da plataforma</a></li>
 
 
+
+
+
+                        <c:if test="${!empty doc.files}">
+                            <div id="files">
+                                <table class="zebra">
+                                    <th>Arquivos</th><th>Formato</th><th><jsp:text/></th>
+                                        <c:forEach var="file" items="${doc.files }" varStatus="status">
+                                        <tr>
+                                            <td>
+                                                <c:url var="location" value="/files/${file.id}" />
+                                                <a class="" href="${location}">${file.name }</a>
+                                                <span class="smallerText">
+                                                    <c:if test="${file.size > 0}"> (${file.sizeFormatted})</c:if>
+                                                    </span>
+                                                </td>
+                                                <td> <c:if test="${!empty file.contentType}">${file.contentType}</c:if></td>
+                                                <td>
+                                                    <span class="buttonList">
+                                                    <c:url var="deleteFile" value="/files/${file.id}/delete" />
+                                                    <a class="delete btSemTexto delete_link" name="${file.name}" href="${deleteFile}" id="dialog_link">apagar</a>
+                                                </span>
+                                                <div class="clear"> </div>
+
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </table>
+                            </div>
+                        </c:if>                        
+
                         <button class="next" id="submitButton" type="submit" >Salvar</button>
                     </fieldset>
 
                 </ul>
-            </div>
-        </form>
+
+            </form:form>
+        </div>
     </div>
 </div>
