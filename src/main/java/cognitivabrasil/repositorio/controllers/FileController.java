@@ -143,13 +143,13 @@ public class FileController {
             files.setPartialSize(file.getSize());
         }
 
-        if (chunk == chunks - 1) {
+        if ((chunk == chunks - 1) || chunks == 0) {
             files.setLocation(FILEPATH + "/" + name);
             files.setDocument(documentsService.get(docId));
             fileService.save(files);
             files = null;
         }
-
+        
         return responseString;
     }
 }
