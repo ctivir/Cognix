@@ -1,7 +1,7 @@
 $(function() {       
     $("#uploader").pluploadQueue({
         // General settings
-        runtimes : 'html5,gears,flash,browserplus,silverlight',
+        runtimes : 'gears,flash,browserplus,silverlight,html5',
         url: window.urlRoot+'files/uploadFile',
         max_file_size: '1024mb',
         chunk_size: '1mb',
@@ -17,7 +17,7 @@ $(function() {
         // Post init events, bound after the internal events
         init : {
             FileUploaded: function(up) {
-                alert('teste');
+                $('#validation_locate_file').val('sucess');
             },
             BeforeUpload: function(up, file) {
                 //send the file name to controller

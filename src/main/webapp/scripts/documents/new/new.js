@@ -2,7 +2,7 @@ var myform = new formtowizard({
     formid : 'newobject', 
     home: window.urlRoot,
     revealfx : [ 'slide', 500 ],
-    validate: ['titulo', 'location']
+    validate: ['titulo', 'validation_locate_file']
 });
 
 var numerate = function() {
