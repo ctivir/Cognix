@@ -1,7 +1,7 @@
 $(function() {       
     $("#uploader").pluploadQueue({
         // General settings
-        runtimes: 'gears,flash,browserplus,silverlight,html5,html4',
+        runtimes : 'html5,gears,flash,browserplus,silverlight',
         url: window.urlRoot+'files/uploadFile',
         max_file_size: '1024mb',
         chunk_size: '1mb',
@@ -13,6 +13,16 @@ $(function() {
         silverlight_xap_url: window.urlRoot + '/scripts/upload/plupload/plupload.silverlight.xap',
         multipart_params: {
             'docId': docId
+        },
+        // Post init events, bound after the internal events
+        init : {
+            FileUploaded: function(up) {
+                alert('teste');
+            },
+            BeforeUpload: function(up, file) {
+                //send the file name to controller
+                up.settings.multipart_params["filename"] = file.name;
+            }
         }
     });
 });

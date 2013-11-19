@@ -114,7 +114,7 @@ public class FileController {
     @ResponseBody
     public String upload(HttpServletResponse response,
             @RequestBody MultipartFile file, @RequestParam String name,
-            @RequestParam int chunks, @RequestParam int chunk, @RequestParam int docId)
+            @RequestParam int chunks, @RequestParam int chunk, @RequestParam int docId, @RequestParam String filename)
             throws IOException {        
         if (files == null) {
             files = new Files();
@@ -137,7 +137,7 @@ public class FileController {
             responseString = RESP_ERROR;
             throw e;
         } finally {
-            files.setName(file.getOriginalFilename());
+            files.setName(filename);
             files.setRandomName(name);
             files.setContentType(file.getContentType());
             files.setPartialSize(file.getSize());

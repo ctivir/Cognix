@@ -107,18 +107,18 @@ public final class DocumentsController {
 
                     System.err.println(location);
                     location = "http://feb.ufrgs.br/resources" + location.substring(location.lastIndexOf("/"));
-                    System.out.println("NOVO LOCATION: "+location);
-                    
+                    System.out.println("NOVO LOCATION: " + location);
+
                     List<Location> locList = new ArrayList<>();
                     Location lo = new Location();
                     lo.setText(location);
                     locList.add(lo);
                     metadata.getTechnical().setLocation(locList);
-                   
+
                 }
-         
+
                 d.setMetadata(metadata);
-                
+
                 docService.save(d);
                 docService.flush();
             }
@@ -436,7 +436,7 @@ public final class DocumentsController {
         } else {
             size = Long.valueOf(originalTechical.getSize());
         }
-        
+
         t.setSize(size); // somatorio to tamanho de todos os arquivos
         obaa.setTechnical(t);
         d.setMetadata(obaa);
@@ -561,6 +561,11 @@ public final class DocumentsController {
         }
         return "ok";
     }
+    
+    @RequestMapping(value="/new/generateMetadata", method = RequestMethod.POST)
+    public OBAA generateMetadata(Document d){
+        return metadataFromFile(d);
+    }
 
     /**
      * Copia arquivos de um local para o outro
@@ -582,4 +587,32 @@ public final class DocumentsController {
         out.close();
 
     }
+    /**
+     * Works only if the files are uploaded and not in a remote location
+     * @param d
+     * @return 
+     */
+    private static OBAA metadataFromFile(Document d) {
+        
+        Set<Files> files = d.getFiles();
+        
+        boolean allPdf = true;
+        for(Files file:files){
+            String mime = file.getContentType();
+            System.out.println("MIME Type: "+mime);
+            
+            if (!mime.equals("application/pdf")){
+                allPdf = false;
+            }
+        }
+        
+        //all PDF
+        if (allPdf){
+            System.out.println("\n*\n*\n*ALL PDF*\n*\n*\n");
+            
+        }
+           
+        return null;
+    }
+    
 }
