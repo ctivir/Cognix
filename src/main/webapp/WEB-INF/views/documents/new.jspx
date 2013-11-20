@@ -372,7 +372,7 @@
 
                         <li class="description marcador single" id="rights.description">
                             <span class="file">Condições de uso</span>
-                            <textarea id='description2' name="rights.description" type='text' cols="35" rows="4" >${obaa.rights.description}</textarea>
+                            <textarea id='description2' name="description" type='text' cols="35" rows="4" >${obaa.rights.description}</textarea>
                         </li>
                     </fieldset>
 
@@ -733,12 +733,12 @@
 
                                             </ul>
                                         </li>
-                                        <li class="marcador single" id="installationRemarks">
+                                        <li class="marcador single" id="specificInstallationRemarks">
                                             <span class="file">Observações específicas de instalação</span>
                                             <input id="installationRemarks" name="technical.platformSpecificFeature.specificInstallationRemarks" type="text" value="${platformSpecificFeature.specificInstallationRemarks}" />
                                         </li>
 
-                                        <li class="marcador single" id="otherPlatformRequirements">
+                                        <li class="marcador single" id="specificOtherPlatformRequirements">
                                             <span class="file">Outros requisitos específicos de plataforma</span>
                                             <input id="specificOtherPlatformRequirements" name="technical.platformSpecificFeatures.specificOtherPlatformRequirements" type="text" value="${platformSpecificFeature.specificOtherPlatformRequirements}" />
                                         </li>
