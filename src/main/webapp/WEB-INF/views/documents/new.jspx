@@ -67,7 +67,7 @@
 
                     <fieldset class="sectionwrap marcador single" id="arquivos">
                         <legend>Arquivos</legend>      
-                        <input id="validation_locate_file" name="validation_locate_file" type="hidden" />
+                        <input id="validation_locate_file" name="validation_locate_file" value="" type="hidden" />
                         <c:choose>
                             <c:when test="${empty obaa.technical.location}">
                                 <li class="addLocation marcador multi" id="location">

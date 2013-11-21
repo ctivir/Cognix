@@ -17,7 +17,7 @@ $(function() {
         // Post init events, bound after the internal events
         init : {
             FileUploaded: function(up) {
-                $('#validation_locate_file').val('sucess');
+                $('#validation_locate_file').val('file');
             },
             BeforeUpload: function(up, file) {
                 //send the file name to controller

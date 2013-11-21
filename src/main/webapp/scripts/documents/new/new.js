@@ -46,7 +46,22 @@ var numerate = function() {
 };
 
 $(function() {
-
+    
+    $('input#location').on('keyup',function(){
+            if($(this).val() == ''){
+                if($('#validation_locate_file').val() == 'location'){
+                    $('#validation_locate_file').val('');
+                }
+            }else{
+                if($('#validation_locate_file').val() != 'file'){
+                    $('#validation_locate_file').val('location');
+                }
+            }
+        
+    });
+    $('.addInParent').addClass('glyphicon glyphicon-plus-sign btn btn-default');
+    $('.add').addClass('glyphicon glyphicon-plus-sign btn btn-default');    
+    
     $("#browser").treeview();
 
 
