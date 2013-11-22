@@ -2,7 +2,9 @@ package cognitivabrasil.repositorio.data.entities;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.Column;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
@@ -87,8 +89,11 @@ public class Files {
 
     public String getSizeFormatted() {
         String[] powerOfByte = {"Bytes", "KB", "MB", "GB", "TB"};
+        if (this.size == null || this.size <= 0) {
+            return "Tamanho não definido";
+        }
         int potencia = 0;
-        int proxima = 0;
+        int proxima;
         boolean testaPotenciaActual;
         boolean testaPotenciaSeguinte;
         do {
@@ -100,7 +105,13 @@ public class Files {
         } while (!(testaPotenciaActual && testaPotenciaSeguinte));
 
         potencia--;
-        DecimalFormat myFormatter = new DecimalFormat("##.#");
+
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        otherSymbols.setDecimalSeparator(',');
+        otherSymbols.setGroupingSeparator('.');
+
+        DecimalFormat myFormatter = new DecimalFormat("##.#", otherSymbols);
+
 
         return myFormatter.format(this.size / Math.pow(2, potencia * 10)) + " " + powerOfByte[potencia];
     }
