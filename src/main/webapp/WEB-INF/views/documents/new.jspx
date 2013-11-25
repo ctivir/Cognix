@@ -420,24 +420,39 @@
 
                         <li class="interactivityLevel marcador single" id="interactivityLevel">
                             <span class="file">Nível de Interatividade</span>
-                            <label for="level"><jsp:text/></label>
-                            <input name="level" class="SliderText" readonly="readonly" type="text" id="level" style="border:0;" value="${obaa.educational.interactivityLevel}" />
-                            <div class="Slider" id="levelSlider"></div>
+                            
+                            <jsp:useBean id="interactivityLevel" class="cognitivabrasil.obaa.Educational.InteractivityLevel" >
+                                <jsp:setProperty name="interactivityLevel" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            
+                            <cgbr:htmlSelect selected="${obaa.educational.interactivityLevel}" values="${interactivityLevel.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
+                                                      
+                            <div class="slider" id="interactivityLevelSlider"></div>
                         </li>
 
                         <li class="semanticDensity marcador single" id="semanticDensity">
                             <span class="file">Densidade Semântica</span>
-                            <label for="density"><jsp:text/></label>
-                            <input name="educational.semanticDensity" readonly="readonly" type="text" id="density" style="border:0;" value="${obaa.educational.semanticDensity}" />
-                            <div class="Slider" id="densitySlider"></div>
+                            
+                            <jsp:useBean id="semanticDensity" class="cognitivabrasil.obaa.Educational.SemanticDensity" >
+                                <jsp:setProperty name="semanticDensity" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                            
+                            <cgbr:htmlSelect selected="${obaa.educational.semanticDensity}" values="${semanticDensity.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
+                            
+                            <div class="slider" id="semanticDensitySlider"></div>
 
                         </li>
 
                         <li class="difficulty marcador single" id="difficulty">
                             <span class="file">Nível de Dificuldade</span>
-                            <label for="amount"><jsp:text/></label>
-                            <input type="text" id="amount" readonly="readonly" style="border:0;" value="${obaa.educational.difficulty}" />
-                            <div id="Difficulty"><jsp:text/></div>
+                               
+                            <jsp:useBean id="difficulty" class="cognitivabrasil.obaa.Educational.Difficulty" >
+                                <jsp:setProperty name="difficulty" property="locale" value="pt-BR" />
+                            </jsp:useBean>
+                                                        
+                            <cgbr:htmlSelect selected="${obaa.educational.difficulty}" values="${difficulty.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
+                            <div class="slider" id="difficultySlider"><jsp:text/></div>                            
+                            
                         </li>
 
                         <c:choose>

@@ -1,8 +1,8 @@
-$(function() {       
+$(function() {
     $("#uploader").pluploadQueue({
         // General settings
-        runtimes : 'gears,flash,browserplus,silverlight,html5',
-        url: window.urlRoot+'files/uploadFile',
+        runtimes: 'gears,flash,browserplus,silverlight,html5',
+        url: window.urlRoot + 'files/uploadFile',
         max_file_size: '1024mb',
         chunk_size: '1mb',
         unique_names: true,
@@ -15,9 +15,27 @@ $(function() {
             'docId': docId
         },
         // Post init events, bound after the internal events
-        init : {
+        init: {
             FileUploaded: function(up) {
                 $('#validation_locate_file').val('file');
+
+                if (this.total.queued == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: window.urlRoot + "documents/new/generateMetadata",
+                        data: {
+                            id: docId
+                        },
+                        success: function(result) {
+                            // Suggestions based on the files
+                            makeSuggestions(result);
+                        },
+                        error: function() {
+                            alert("error");
+                        },
+                        datatype: "json"
+                    });
+                }
             },
             BeforeUpload: function(up, file) {
                 //send the file name to controller
@@ -25,4 +43,31 @@ $(function() {
             }
         }
     });
+
+    var makeSuggestions = function(suggestions) {
+     
+        //General
+        $('#titulo').val(suggestions.title);
+        $('#language').val(suggestions.language);
+        $('#structure select').val(suggestions.structure);        
+        $('#aggregationLevel input[value='+suggestions.aggregationLevel+']').prop('checked', true);
+                
+        //Educational
+        //testar depois que estiver arrumado        
+        $('#interactivityType select').val(suggestions.interactivityType);                
+        $('#interactivityLevel input').val(suggestions.interactivityLevel);
+        
+//        perception
+//        synchronism
+//        copresense
+//        reciprocity
+//        
+//        //Accessibility
+//        Visual("true");
+//        Auditory("false");
+//        Tactil("false");
+
+
+        alert(suggestions.title);
+    };
 });
