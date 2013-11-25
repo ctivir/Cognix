@@ -50,6 +50,7 @@ import org.springframework.web.bind.annotation.*;
  * Controller para documentos
  *
  * @author Paulo Schreiner <paulo@jorjao81.com>
+ * @author Marcos Nunes <marcos@cognitiva.com.br>
  */
 @Controller("documents")
 @RequestMapping("/documents")

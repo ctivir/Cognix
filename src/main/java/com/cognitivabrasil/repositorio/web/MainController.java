@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller("main")
 public final class MainController {
 
-    Logger log = Logger.getLogger(MainController.class);
+    private final Logger log = Logger.getLogger(MainController.class);
 
     public MainController() {
-        log.info("Loaded MainController");
+        log.debug("Loaded MainController");
     }
 
     @RequestMapping("/")
@@ -29,10 +29,7 @@ public final class MainController {
     /**
      * Método para realizar o login.
      *
-     * @param login Passado por HTTP
-     * @param password Passado por HTTP
-     * @return Redirect para adm caso autentique, permanece nesta página com uma
-     * mensagem de erro caso contrário
+     * @return manda para pagina de login
      */
     @RequestMapping("/login")
     public String logando() {
