@@ -24,7 +24,7 @@ public class ObaaDto {
     private String reciprocity;
     private String tipicalLearningTime;
     private String eduLanguage;
-    private String syncronism;
+    private String synchronism;
     
     //Accessibility
     private String visual;
@@ -242,12 +242,12 @@ public class ObaaDto {
         this.supportedPlatforms = supportedPlatforms;
     }
         
-    public String getSyncronism() {
-        return syncronism;
+    public String getSynchronism() {
+        return synchronism;
     }
 
-    public void setSyncronism(String syncronism) {
-        this.syncronism = syncronism;
+    public void setSynchronism(String synchronism) {
+        this.synchronism = synchronism;
     }    
     
 }

@@ -55,21 +55,21 @@ $(function() {
         $('#aggregationLevel input[value=' + suggestions.aggregationLevel + ']').prop('checked', true);
         $('#language').val(lang);
 
-        //Educational
-        //testar depois que estiver arrumado        
+        //Educational        
         $('#interactivityType select').val(suggestions.interactivityType);
         $('#interactivityLevel input').val(suggestions.interactivityLevel);
         $('#eduLanguage').val(lang);
         
-//        perception
-//        synchronism
-//        copresense
-//        reciprocity
-//        
-//        //Accessibility
-//        Visual("true");
-//        Auditory("false");
-//        Tactil("false");
+        $('#perception select').val(suggestions.perception);        
+        $('#synchronism input[value=' + suggestions.synchronism + ']').prop('checked', true);
+        $('#coPresence input[value=' + suggestions.copresense + ']').prop('checked', true);
+        $('#reciprocity input[value=' + suggestions.reciprocity + ']').prop('checked', true);
+        
+        //Accessibility
+        $('#hasVisual input[value=' + suggestions.visual + ']').prop('checked', true);
+        $('#hasAuditory input[value=' + suggestions.auditory + ']').prop('checked', true);
+        $('#hasTactile input[value=' + suggestions.tactil + ']').prop('checked', true);
+        
 
         
     };

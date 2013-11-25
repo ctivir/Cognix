@@ -645,9 +645,9 @@ public final class DocumentsController {
 
             //Educational
             suggestions.setInteractivityType("expositive");
+            
             suggestions.setPerception("visual");
-
-            suggestions.setSyncronism("false");
+            suggestions.setSynchronism("false");
             suggestions.setCopresense("false");
             suggestions.setReciprocity("1-1");
 
