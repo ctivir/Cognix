@@ -58,10 +58,10 @@
         </c:if>
 
         <div id="entities-list" class="ui-widget">
-            <form:form id="newobject" method="post" modelAttribute="doc"
-                       acceptCharset="utf-8" enctype="multipart/form-data">
+            <form id="newobject" method="POST" modelAttribute="doc"
+              acceptCharset="utf-8">
 
-                <form:hidden path="id" />
+                <input type="hidden" name="id" id="id" value="${doc.id}" />
 
                 <ul id="browser" class="filetree">
 
@@ -853,7 +853,7 @@
 
                 </ul>
 
-            </form:form>
+            </form>
         </div>
     </div>
 </div>

@@ -14,7 +14,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class UserDto {
     
     private String username;
-    private String nome;
+    private String name;
     private String role;
     private String password;
     private String confirmPass;
@@ -26,7 +26,7 @@ public class UserDto {
 
     public UserDto(String username, String nome, String password, int id, String role) {
         this.username = username;
-        this.nome = nome;
+        this.name = nome;
         this.password = password;
         this.id = id;
         this.role = role;
@@ -34,7 +34,7 @@ public class UserDto {
 
     public UserDto(User u) {
         this.username = u.getUsername();
-        this.nome = u.getName();
+        this.name = u.getName();
         this.password = u.getPassword();
         this.id = u.getId();
         this.role = u.getRole();
@@ -56,12 +56,12 @@ public class UserDto {
         this.username = username;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome.replaceAll("\\+", " ");
+    public void setName(String nome) {
+        this.name = nome.replaceAll("\\+", " ");
     }
 
     public String getRole() {
@@ -110,7 +110,7 @@ public class UserDto {
         if (u == null) {
             u = new User();
         }
-        u.setName(nome);
+        u.setName(name);
         u.setUsername(username);
         u.setRole(role);
         if (!isBlank(password)) {

@@ -17,7 +17,7 @@
                         <div id="message" class="${message.type}">${message.message}</div>
                     </c:if>
 
-                    <cgbr:springinput path="nome" label="Nome" />
+                    <cgbr:springinput path="name" label="Nome" />
                     <cgbr:springinput path="username" label="Login" cssClass="smalltext" />
                     <cgbr:sprinSelect path="role" label="Tipo de usuário" items="${roleList}" />
                     <cgbr:springPassword path="password" label="Senha" />

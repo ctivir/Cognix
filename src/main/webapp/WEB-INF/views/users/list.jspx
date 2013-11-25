@@ -49,7 +49,7 @@
                         <tbody>
                             <c:forEach items="${users}" var="user">
                                 <tr>
-                                    <td>${user.nome}</td>
+                                    <td>${user.name}</td>
                                     <td>${user.username}</td>
                                     <td>${user.roleNameText}</td>
                                     <td>
@@ -68,7 +68,7 @@
 
                                             <security:authorize access="hasRole('PERM_MANAGE_USERS')">
                                                 <c:url value="/users/${user.id}/delete" var="deletarUrl" />
-                                                <a class="delete btSemTexto confirmLink" title="excluir o usuário ${user.nome}" href="${deletarUrl}">Excluir</a>
+                                                <a class="delete btSemTexto confirmLink" title="excluir o usuário ${user.name}" href="${deletarUrl}">Excluir</a>
                                             </security:authorize>
 
                                             

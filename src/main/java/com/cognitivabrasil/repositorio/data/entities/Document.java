@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -79,8 +80,7 @@ public class Document implements java.io.Serializable {
         if (this.created == null) {
             return "";
         } else {
-            SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            return dataFormat.format(this.created);
+            return this.created.toString("dd/MM/yyyy HH:mm:ss");
         }
     }
 

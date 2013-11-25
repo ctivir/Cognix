@@ -139,7 +139,7 @@ public class UsersController {
             return "ajax";
         }
         
-        uDto.setNome(u.getName());
+        uDto.setName(u.getName());
         uDto.setUsername(u.getUsername());
         uDto.setRole(u.getRole());
 

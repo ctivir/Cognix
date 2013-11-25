@@ -38,7 +38,7 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
-        ValidationUtils.rejectIfEmpty(errors, "nome", "required.nome", "É necessário informar um nome");
+        ValidationUtils.rejectIfEmpty(errors, "name", "required.name", "É necessário informar um nome");
         ValidationUtils.rejectIfEmpty(errors, "username", "required.username", "Informar o login");
         ValidationUtils.rejectIfEmpty(errors, "role", "required.role", "Informar o tipo de usuário");
 
