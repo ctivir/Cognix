@@ -556,10 +556,12 @@ public final class DocumentsController {
         }
         return "ok";
     }
-    
-    @RequestMapping(value="/new/generateMetadata", method = RequestMethod.POST)
-    public OBAA generateMetadata(Document d){
-        return metadataFromFile(d);
+
+    @RequestMapping(value = "/new/generateMetadata", method = RequestMethod.POST)
+    @ResponseBody
+    public ObaaDto generateMetadata(int id) {
+        Document doc = docService.get(id);
+        return metadataFromFile(doc);
     }
 
     /**
@@ -582,32 +584,96 @@ public final class DocumentsController {
         out.close();
 
     }
+
     /**
      * Works only if the files are uploaded and not in a remote location
+     *
      * @param d
-     * @return 
+     * @return
      */
-    private static OBAA metadataFromFile(Document d) {
-        
+    private ObaaDto metadataFromFile(Document d) {
+
+        ObaaDto suggestions = new ObaaDto();
         List<Files> files = d.getFiles();
-        
+
+        boolean empty = false;
+
+        /*Images*/
+        boolean allImg = true;
+        final String IMAGE_STARTS = "image";
+
+        /*Applications*/
         boolean allPdf = true;
-        for(Files file:files){
+        final String PDF_MIMETYPE = "application/pdf";
+        boolean allDoc = true;
+        final String DOC_MIMETYPE = "application/msword";
+
+        /*Empty verification*/
+        if (files.isEmpty()) {
+            empty = true;
+        }
+
+        for (Files file : files) {
+
             String mime = file.getContentType();
-            System.out.println("MIME Type: "+mime);
-            
-            if (!mime.equals("application/pdf")){
+            System.out.println("MIME Type: " + mime);
+
+            if (!mime.startsWith(IMAGE_STARTS)) {
+                allImg = false;
+            }
+
+            if (!mime.equals(PDF_MIMETYPE)) {
                 allPdf = false;
             }
+
+            if (!mime.equals(DOC_MIMETYPE)) {
+                allDoc = false;
+            }
+            String fileName = file.getName();
+
+            // to remove the file extension
+            suggestions.setTitle(fileName.substring(0, fileName.lastIndexOf(".")));
         }
-        
+
+        //all image
+        if (allImg && !empty) {
+
+            //General
+            suggestions.setStructure("atomic");
+            suggestions.setAggregationLevel("1");
+
+            //Educational
+            suggestions.setInteractivityType("expositive");
+            suggestions.setPerception("visual");
+
+            suggestions.setSyncronism("false");
+            suggestions.setCopresense("false");
+            suggestions.setReciprocity("1-1");
+
+            //Accessibility
+            suggestions.setVisual("true");
+            suggestions.setAuditory("false");
+            suggestions.setTactil("false");
+
+
+        }
+
         //all PDF
-        if (allPdf){
+        if (allPdf && !empty) {
             System.out.println("\n*\n*\n*ALL PDF*\n*\n*\n");
-            
         }
-           
-        return null;
+
+        //all DOC
+        if (allDoc && !empty) {
+            System.out.println("\n*\n*\n*ALL DOC*\n*\n*\n");
+        }
+
+
+        //Title Suggestion
+        if (files.size() != 1) {
+            suggestions.setTitle("");
+        }
+
+        return suggestions;
     }
-    
 }
