@@ -39,6 +39,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
  * @author paulo
  * 
  */
+@Ignore
 public class CreationTest {
 
 	static WebClient webClient;
