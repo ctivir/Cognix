@@ -742,7 +742,7 @@
                                     <c:url var="location" value="/files/${file.id}" />
                                     <a class="" href="${location}">${file.name }</a>
                                     <span class="smallerText">
-                                        <c:if test="${file.size > 0}"> (${file.sizeFormatted})</c:if>
+                                        <c:if test="${file.sizeInBytes > 0}"> (${file.sizeFormatted})</c:if>
                                         </span>
                                     </td>
                                     <td> <c:if test="${!empty file.contentType}"> ${file.contentType}</c:if></td>
