@@ -508,14 +508,14 @@
                             <c:when test="${empty obaa.educational.languages}">
                                 <li class="language marcador multi" id="language">
                                     <span class="file">Idioma</span>
-                                    <input id="language" name="educational.language" type="text" />
+                                    <input id="eduLanguage" name="educational.language" type="text" />
                                 </li>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="language" items="${obaa.educational.languages}">
                                     <li class="language marcador multi" id="language">
                                         <span class="file">Idioma</span>
-                                        <input id="language" name="educational.language" type="text" value="${language}" />
+                                        <input id="eduLanguage" name="educational.language" type="text" value="${language}" />
                                     </li>
                                 </c:forEach>
                             </c:otherwise>

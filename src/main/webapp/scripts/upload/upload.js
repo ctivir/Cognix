@@ -45,17 +45,21 @@ $(function() {
     });
 
     var makeSuggestions = function(suggestions) {
-     
+
+        var lang = window.navigator.userLanguage || window.navigator.language;
+        
         //General
         $('#titulo').val(suggestions.title);
         $('#language').val(suggestions.language);
-        $('#structure select').val(suggestions.structure);        
-        $('#aggregationLevel input[value='+suggestions.aggregationLevel+']').prop('checked', true);
-                
+        $('#structure select').val(suggestions.structure);
+        $('#aggregationLevel input[value=' + suggestions.aggregationLevel + ']').prop('checked', true);
+        $('#language').val(lang);
+
         //Educational
         //testar depois que estiver arrumado        
-        $('#interactivityType select').val(suggestions.interactivityType);                
+        $('#interactivityType select').val(suggestions.interactivityType);
         $('#interactivityLevel input').val(suggestions.interactivityLevel);
+        $('#eduLanguage').val(lang);
         
 //        perception
 //        synchronism
@@ -67,7 +71,6 @@ $(function() {
 //        Auditory("false");
 //        Tactil("false");
 
-
-        alert(suggestions.title);
+        
     };
 });
