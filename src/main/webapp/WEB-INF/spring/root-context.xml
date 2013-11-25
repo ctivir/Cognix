@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+             xmlns:p="http://www.springframework.org/schema/p"
+             xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+             xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/data/jpa
+http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
+http://www.springframework.org/schema/jdbc
+http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <context:component-scan base-package="com.cognitivabrasil.repositorio" />
+                
+    <beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </beans:bean>
+    
+    <tx:annotation-driven />
+		
+    <beans profile="prod">
+
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+              destroy-method="close" p:driverClassName="org.postgresql.Driver"
+              p:url="jdbc:postgresql://localhost/repositorio" p:username="cognitiva"
+              p:password="rep@cognitiva" />
+        
+        <beans:bean id="entityManagerFactory"
+                    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="dataSource" />
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+            </property>
+            <property name="packagesToScan" value="com.cognitivabrasil.repositorio.data" />
+            <property name="jpaProperties">
+                <props>
+                    <prop key="hibernate.dialect">
+                        org.hibernate.dialect.PostgreSQLDialect
+                    </prop>
+                    <prop key="hibernate.max_fetch_depth">3</prop>
+                    <prop key="hibernate.jdbc.fetch_size">50</prop>
+                    <prop key="hibernate.jdbc.batch_size">10</prop>
+                    <prop key="hibernate.show_sql">false</prop>
+                </props>
+            </property>
+        </beans:bean>
+        
+    </beans>
+    <beans profile="test,it">
+        
+        <beans:bean id="entityManagerFactory"
+                    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="dataSource" />
+            <property name="packagesToScan" value="com.cognitivabrasil.repositorio.data" />
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">				</bean>
+            </property>
+            <property name="jpaProperties">
+                <props>
+                    <prop key="hibernate.dialect">
+                        org.hibernate.dialect.H2Dialect
+                    </prop>
+                    <prop key="hibernate.max_fetch_depth">3</prop>
+                    <prop key="hibernate.jdbc.fetch_size">50</prop>
+                    <prop key="hibernate.jdbc.batch_size">10</prop>
+                    <prop key="hibernate.show_sql">false</prop>
+                </props>
+            </property>
+        </beans:bean>
+   
+        <jdbc:embedded-database id="dataSource" type="H2">
+            <jdbc:script location="classpath:schema.sql" />
+            <jdbc:script location="classpath:test-data.sql" />
+            
+        </jdbc:embedded-database>	
+        
+        <beans:bean id="passwordEncoder"
+                    class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+    </beans> 
+    
+    <beans profile="prod,test,it">
+        <util:properties id="serverConfig" location="classpath:config.properties"/>
+        <context:annotation-config />
+        <jpa:repositories base-package="com.cognitivabrasil.repositorio.data.repositories"
+                          entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="transactionManager" />
+        <bean id="applicationContextProvider" class="spring.ApplicationContextProvider"/>
+    </beans>
+    
+    
+       
+</beans:beans>

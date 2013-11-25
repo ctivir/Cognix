@@ -1,72 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
-    </session-config>
-    <welcome-file-list>
-        <welcome-file>/index</welcome-file>
-    </welcome-file-list>
+    <context-param>
+        <param-name>spring.profiles.default</param-name>
+        <param-value>prod</param-value>
+    </context-param>
     
-  <!--SPRING-->
+    <!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml, classpath:spring-security.xml</param-value>
+        <param-value>/WEB-INF/spring/root-context.xml,/WEB-INF/spring/spring-security.xml</param-value>
     </context-param>
-        <!-- LOG4J -->
+	
+    <!-- Creates the Spring Container shared by all Servlets and Filters -->
     <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
-    <context-param>
-        <param-name>log4jConfigLocation</param-name>
-        <param-value>/WEB-INF/log4j.xml</param-value>
-    </context-param>   
-        
-    
-    <listener>
-        <listener-class>
-            org.springframework.web.context.ContextLoaderListener
-        </listener-class>
-    </listener>
-    
-    <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>
-        
+
+    <!-- Processes application requests -->
     <servlet>
-        <servlet-name>main</servlet-name>
-        <servlet-class>
-            org.springframework.web.servlet.DispatcherServlet
-        </servlet-class>
-    </servlet>    
+        <servlet-name>appServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+		
     <servlet-mapping>
-        <servlet-name>main</servlet-name>
+        <servlet-name>appServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+        
+    <!--SPRING SECURITY -->
+    <listener> 
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class> 
+    </listener> 
     
-    
-    <context-param>
-        <param-name>properties</param-name>
-        <param-value>dummy.properties</param-value>
-    </context-param>
-    
-    <servlet>
-        <servlet-name>OAIHandler</servlet-name>
-        <servlet-class>ORG.oclc.oai.server.OAIHandler</servlet-class>
-        <!-- Load this servlet at server startup time -->
-        <load-on-startup>11</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>OAIHandler</servlet-name>
-        <url-pattern>/oai</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>OAIHandler</servlet-name>
-        <url-pattern>/servlet/OAIHandler</url-pattern>
-    </servlet-mapping>
+    <filter> 
+        <filter-name>springSecurityFilterChain</filter-name> 
+        <filter-class> 
+            org.springframework.web.filter.DelegatingFilterProxy 
+        </filter-class> 
+    </filter>     
+    <filter-mapping> 
+        <filter-name>springSecurityFilterChain</filter-name> 
+        <url-pattern>/*</url-pattern> 
+    </filter-mapping>
     
     <filter>
         <filter-name>charsetFilter</filter-name>
@@ -80,31 +63,40 @@
         <filter-name>charsetFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+
     <filter>
-        <filter-name>openSessionInViewFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+        <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
+        <filter-class>
+            org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+        </filter-class>
     </filter>
+
+
     <filter-mapping>
-        <filter-name>openSessionInViewFilter</filter-name>
+        <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>    
-    
-    <!--SPRING SECURITY -->
-     <listener> 
-         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class> 
-     </listener> 
-    
-     <filter> 
-         <filter-name>springSecurityFilterChain</filter-name> 
-         <filter-class> 
-             org.springframework.web.filter.DelegatingFilterProxy 
-         </filter-class> 
-     </filter>     
-     <filter-mapping> 
-         <filter-name>springSecurityFilterChain</filter-name> 
-         <url-pattern>/*</url-pattern> 
-     </filter-mapping> 
+    </filter-mapping>
+
+    <!-- Creates the Spring Container shared by all Servlets and Filters -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+     
+     <!--OAI-Handler-->
+     <servlet>
+        <servlet-name>OAIHandler</servlet-name>
+        <servlet-class>ORG.oclc.oai.server.OAIHandler</servlet-class>
+        <!-- Load this servlet at server startup time -->
+        <load-on-startup>11</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OAIHandler</servlet-name>
+        <url-pattern>/oai</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OAIHandler</servlet-name>
+        <url-pattern>/servlet/OAIHandler</url-pattern>
+    </servlet-mapping>
     
     <!-- GERENCIAMENTO DE ERROS -->
     <error-page>

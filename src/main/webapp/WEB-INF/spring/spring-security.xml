@@ -82,7 +82,8 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         
         <intercept-url pattern=".*" method="GET"
                        access="isAuthenticated()" />
-
+        <!-- deny all access not explicitly given -->
+        <intercept-url pattern="/.*" access="denyAll" />
 
     </http>
 
