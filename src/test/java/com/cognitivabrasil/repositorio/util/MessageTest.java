@@ -8,6 +8,7 @@ package com.cognitivabrasil.repositorio.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import org.junit.Test;
 
 /**
@@ -24,6 +25,14 @@ public class MessageTest {
         assertThat(msg.getType(), equalTo(Message.ERROR));
         assertThat(msg.getMessage(), equalTo(MSG));
         assertThat(msg.getHref(), equalTo(HREF));        
+    }
+    
+    @Test
+    public void testContrutor2(){
+        Message msg = new Message(Message.ERROR, MSG);
+        assertThat(msg.getType(), equalTo(Message.ERROR));
+        assertThat(msg.getMessage(), equalTo(MSG));
+        assertThat(msg.getHref(), nullValue());        
     }
     
     @Test

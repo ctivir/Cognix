@@ -35,7 +35,6 @@ import spring.ApplicationContextProvider;
  */
 public class HibernateOAICatalog extends AbstractHibernateOAICatalog {
 
-    static Logger log = Logger.getLogger(HibernateOAICatalog.class.getName());
     SessionFactory sessionFactory;
 
     public HibernateOAICatalog(Properties properties) {
