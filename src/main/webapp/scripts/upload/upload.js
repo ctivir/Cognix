@@ -56,11 +56,19 @@ $(function() {
         $('#language').val(lang);
 
         //Educational        
-        $('#interactivityType select').val(suggestions.interactivityType);
-        $('#interactivityLevel input').val(suggestions.interactivityLevel);
+            
+            //slider value
+        $('#interactivityLevel select').val(suggestions.interactivityLevel);
+        $('#interactivityLevelSlider').slider("value", $('#interactivityLevel select')[0].selectedIndex);
+        
+            //lang value
         $('#eduLanguage').val(lang);
         
+            //regular select value
         $('#perception select').val(suggestions.perception);        
+        $('#interactivityType select').val(suggestions.interactivityType);
+        
+            //radio option
         $('#synchronism input[value=' + suggestions.synchronism + ']').prop('checked', true);
         $('#coPresence input[value=' + suggestions.copresense + ']').prop('checked', true);
         $('#reciprocity input[value=' + suggestions.reciprocity + ']').prop('checked', true);

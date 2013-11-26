@@ -644,12 +644,12 @@ public final class DocumentsController {
             suggestions.setAggregationLevel("1");
 
             //Educational
-            suggestions.setInteractivityType("expositive");
-            
+            suggestions.setInteractivityType("expositive");            
             suggestions.setPerception("visual");
             suggestions.setSynchronism("false");
             suggestions.setCopresense("false");
             suggestions.setReciprocity("1-1");
+            suggestions.setInteractivityLevel("very_low");
 
             //Accessibility
             suggestions.setVisual("true");

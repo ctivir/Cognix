@@ -18,7 +18,7 @@ public class ObaaDto {
     
     //Educational
     private String interactivityType;
-    private String interactivtyLevel;
+    private String interactivityLevel;
     private String perception;
     private String copresense;
     private String reciprocity;
@@ -98,12 +98,12 @@ public class ObaaDto {
         this.interactivityType = interactivityType;
     }
 
-    public String getInteractivtyLevel() {
-        return interactivtyLevel;
+    public String getInteractivityLevel() {
+        return interactivityLevel;
     }
 
-    public void setInteractivtyLevel(String interactivtyLevel) {
-        this.interactivtyLevel = interactivtyLevel;
+    public void setInteractivityLevel(String interactivityLevel) {
+        this.interactivityLevel = interactivityLevel;
     }
 
     public String getPerception() {
