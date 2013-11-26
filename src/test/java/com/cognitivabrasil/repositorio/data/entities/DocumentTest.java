@@ -5,13 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 import org.junit.Ignore;
 import org.junit.Test;
-
 
 public class DocumentTest {
 
@@ -40,12 +37,34 @@ public class DocumentTest {
 
         d.getMetadata();
     }
-    
+
     @Test
-    public void testTimestampFormatted(){
+    public void testTimestampFormatted() {
         Document d = new Document();
         d.setCreated(new DateTime(1984, 8, 21, 0, 0, 0));
-        
+
         assertThat(d.getTimestampFormatted(), equalTo("21/08/1984 00:00:00"));
+    }
+
+    @Test
+    public void testGetTitle() {
+        Document d = new Document();
+
+        assertThat(d.getTitle(), notNullValue());
+        assertThat(d.getTitle(), equalTo("Sem título"));
+
+        d = new Document();
+        d.setObaaXml("<obaa></obaa>");
+        assertThat(d.getTitle(), notNullValue());
+        assertThat(d.getTitle(), equalTo("Sem título"));
+
+        d = new Document();
+
+        d.setObaaXml("<obaa:obaa xsi:schemaLocation=\"http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd\" xmlns:obaa=\"http://ltsc.ieee.org/xsd/LOM\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+                + "<obaa:general><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>");
+        assertThat(d.getMetadata().getGeneral(), notNullValue());
+
+        assertThat(d.getTitle(), notNullValue());
+        assertThat(d.getTitle(), equalTo("Sem título"));
     }
 }

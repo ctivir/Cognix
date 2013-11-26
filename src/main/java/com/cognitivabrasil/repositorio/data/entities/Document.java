@@ -189,7 +189,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
 
     @Transient
     public String getTitle() {
-        if (getObaaXml() == null || getObaaXml().isEmpty()) {
+        if (getMetadata().getGeneral() == null || getMetadata().getGeneral().getTitles().isEmpty()) {
             return "Sem título";
         }
         try {
