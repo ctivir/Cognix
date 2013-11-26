@@ -49,14 +49,12 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
     
     @Test
     public void testGetAllNotDeleted(){
-        List<Document> docs = docRep.findByDeletedIsFalseOrderByCreatedDesc();
+        List<Document> docs = docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
         assertThat(docs, notNullValue());
-        assertThat(docs.size(), equalTo(4));
+        assertThat(docs.size(), equalTo(2));
         
-        assertThat(docs.get(0).getId(), equalTo(3));
-        assertThat(docs.get(1).getId(), equalTo(4));
-        assertThat(docs.get(2).getId(), equalTo(5));
-        assertThat(docs.get(3).getId(), equalTo(1));
+        assertThat(docs.get(0).getId(), equalTo(5));
+        assertThat(docs.get(1).getId(), equalTo(1));
     }
     
     @Test

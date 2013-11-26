@@ -7,6 +7,7 @@ package com.cognitivabrasil.repositorio.data.services;
 import cognitivabrasil.obaa.General.General;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
+import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.services.DocumentsService;
 import com.cognitivabrasil.repositorio.services.FilesService;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
- * Integration tests of the UsuarioService
+ * Integration tests of the DocumentService
  * 
  * @author Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
  * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
@@ -42,6 +43,8 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
 
     @Autowired
     private DocumentsService docService;
+    @Autowired
+    private DocumentRepository docRep;
     @Autowired
     private FilesService fService;
     @PersistenceContext
@@ -159,4 +162,13 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         Document d = docService.get(1);
         assertThat(d.getOwner().getName(), equalTo("Marcos Nunes"));
     }
+    
+    @Test
+    public void testDeleteEmpty() {
+        int before;
+        before = docRep.findAll().size(); //tem que ser com rep pq o service retorna apenas os que não foram deletados
+        docService.deleteEmpty();
+        assertThat(docRep.findAll().size(), equalTo(before - 1));
+    }
+    
 }

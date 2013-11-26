@@ -66,4 +66,10 @@ public interface DocumentsService {
     void deleteAll();
 
     void deleteFromDatabase(Document d);
+    
+    /**
+     * Deletes all documents created three hours ago or more.
+     */
+    void deleteEmpty();
+    
 }

@@ -18,7 +18,7 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     @Override
     public List<Document> findAll();
     
-    public List<Document> findByDeletedIsFalseOrderByCreatedDesc();
+    public List<Document> findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
     
     public Document findByObaaEntry(String entry);
     

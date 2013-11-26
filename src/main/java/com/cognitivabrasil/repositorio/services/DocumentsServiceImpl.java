@@ -44,7 +44,7 @@ public class DocumentsServiceImpl implements DocumentsService {
 
     @Override
     public List<Document> getAll() {
-        return docRep.findByDeletedIsFalseOrderByCreatedDesc();
+        return docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
     }
 
     @Override
@@ -92,6 +92,15 @@ public class DocumentsServiceImpl implements DocumentsService {
     @Override
     public void save(Document d) throws IllegalStateException {
         docRep.save(d);
+    }
+    
+    @Override
+    public void deleteEmpty() {
+        DateTime d = DateTime.now();
+        List<Document> docs = docRep.findByCreatedLessThanAndObaaXmlIsNullAndDeletedIsFalse(d.minusHours(3));
+        for(Document doc : docs){
+            deleteFromDatabase(doc);            
+        }
     }
 
 }
