@@ -18,7 +18,7 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
+    
     <!-- Processes application requests -->
     <servlet>
         <servlet-name>appServlet</servlet-name>
@@ -33,6 +33,26 @@
     <servlet-mapping>
         <servlet-name>appServlet</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+    <!--OAI-Handler-->
+    <context-param>
+        <param-name>properties</param-name>
+        <param-value>dummy.properties</param-value>
+    </context-param>
+     <servlet>
+        <servlet-name>OAIHandler</servlet-name>
+        <servlet-class>ORG.oclc.oai.server.OAIHandler</servlet-class>
+        <!-- Load this servlet at server startup time -->
+        <load-on-startup>11</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OAIHandler</servlet-name>
+        <url-pattern>/oai</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OAIHandler</servlet-name>
+        <url-pattern>/servlet/OAIHandler</url-pattern>
     </servlet-mapping>
         
     <!--SPRING SECURITY -->
@@ -82,21 +102,6 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
      
-     <!--OAI-Handler-->
-     <servlet>
-        <servlet-name>OAIHandler</servlet-name>
-        <servlet-class>ORG.oclc.oai.server.OAIHandler</servlet-class>
-        <!-- Load this servlet at server startup time -->
-        <load-on-startup>11</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>OAIHandler</servlet-name>
-        <url-pattern>/oai</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>OAIHandler</servlet-name>
-        <url-pattern>/servlet/OAIHandler</url-pattern>
-    </servlet-mapping>
     
     <!-- GERENCIAMENTO DE ERROS -->
     <error-page>

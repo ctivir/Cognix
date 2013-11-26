@@ -232,7 +232,7 @@ public final class DocumentsController {
         versionRelation.setKind("hasVersion");
         versionRelation.getResource().addIdentifier(originalObaa.getGeneral().
                 getIdentifiers().get(0));
-        List relations2List = new ArrayList<>();
+        List<Relation> relations2List = new ArrayList<>();
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
 
@@ -262,7 +262,7 @@ public final class DocumentsController {
 
         obaa.setGeneral(new General());
 
-        List<Identifier> identifiers = new ArrayList();
+        List<Identifier> identifiers = new ArrayList<>();
         Identifier i = new Identifier();
         i.setEntry(uri);
         i.setCatalog("URI");
@@ -334,7 +334,7 @@ public final class DocumentsController {
         requirement.addOrComposite(orComposite2);
         technical.addRequirement(requirement);
 
-        List location = new ArrayList();
+        List<Location> location = new ArrayList<>();
         technical.setLocation(location);
 
         technical.setOtherPlatformRequirements("É necessário um programa como o acrobat reader que permite a leitura de arquivos no formato PDF.");

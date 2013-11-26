@@ -1,9 +1,10 @@
 package com.cognitivabrasil.repositorio.data.entities;
 
+import ORG.oclc.oai.models.HibernateOaiDocument;
 import cognitivabrasil.obaa.OBAA;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -22,7 +23,6 @@ import javax.persistence.Transient;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Table(name = "documents")
-public class Document implements java.io.Serializable {
+public class Document implements HibernateOaiDocument, java.io.Serializable {
 
     private final Logger log = Logger.getLogger(Document.class);
     private Integer id;
@@ -64,6 +64,12 @@ public class Document implements java.io.Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     public DateTime getCreated() {
         return this.created;
+    }
+    
+    @Transient
+    @Override
+    public Date getTimestamp(){
+        return this.created.toDate();
     }
 
     public void setCreated(DateTime date) {

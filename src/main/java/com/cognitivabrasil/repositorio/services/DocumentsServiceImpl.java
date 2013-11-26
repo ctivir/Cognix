@@ -8,13 +8,8 @@ import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +27,6 @@ public class DocumentsServiceImpl implements DocumentsService {
     
     @Autowired
     FilesService filesService;
-    
-    @PersistenceContext
-    private EntityManager em;
 
     private final Logger log = Logger.getLogger(DocumentsServiceImpl.class);
 
