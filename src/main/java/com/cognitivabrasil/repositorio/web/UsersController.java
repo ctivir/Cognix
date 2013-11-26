@@ -125,12 +125,9 @@ public class UsersController {
 
     @RequestMapping(value = "/{id}/editPass", method = RequestMethod.POST)
     public String editPass(@PathVariable("id") int id, UserDto uDto,
-    @RequestParam(required=false) String currentPass,
-            @RequestParam(required=false) String password,
-            @RequestParam(required=false) String confirmPass,
     BindingResult bindingResult,
             ExtendedModelMap model, HttpServletResponse response) throws IOException{
-        System.out.println("\n\n Edit password POST confirmPass"+ confirmPass+"\n\n");
+       
         User u = userService.get(id);
         
         User uCurrent = getCurrentUser();

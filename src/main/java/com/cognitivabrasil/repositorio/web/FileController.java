@@ -19,12 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import cognitivabrasil.obaa.Technical.Format;
 import com.cognitivabrasil.repositorio.data.entities.Document;
@@ -40,6 +37,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -49,7 +47,7 @@ import org.apache.commons.fileupload.util.Streams;
 @Controller
 public class FileController {
 
-    org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileController.class);
+    private final Logger log = Logger.getLogger(FileController.class);
     @Autowired
     FilesService fileService;
     @Autowired
@@ -119,48 +117,6 @@ public class FileController {
         return new Message(Message.SUCCESS, "Arquivo excluido com sucesso", "upload");
     }
 
-//    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String upload(HttpServletResponse response,
-//            @RequestBody MultipartFile file, @RequestParam String name,
-//            @RequestParam int chunks, @RequestParam int chunk, @RequestParam int docId, @RequestParam String filename)
-//            throws IOException {        
-//        if (files == null) {
-//            files = new Files();
-//            files.setSizeInBytes(0L);
-//        }
-//
-//        String responseString = RESP_SUCCESS;
-//
-//        File uploadFile = new File(FILEPATH, name);
-//
-//        BufferedOutputStream bufferedOutput;
-//        try {
-//            bufferedOutput = new BufferedOutputStream(new FileOutputStream(uploadFile, true));
-//            byte[] data = file.getBytes();
-//            bufferedOutput.write(data);
-//            bufferedOutput.close();
-//        } catch (IOException e) {
-//            log.error("Erro ao salvar o arquivo.", e);
-//            files = null;
-//            responseString = RESP_ERROR;
-//            throw e;
-//        } finally {
-//            files.setName(filename);
-//            files.setRandomName(name);
-//            files.setContentType(file.getContentType());
-//            files.setPartialSize(file.getSize());
-//        }
-//
-//        if ((chunk == chunks - 1) || chunks == 0) {
-//            files.setLocation(FILEPATH + "/" + name);
-//            files.setDocument(documentsService.get(docId));
-//            fileService.save(files);
-//            files = null;
-//        }
-//        
-//        return responseString;
-//    }
     
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody
