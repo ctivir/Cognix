@@ -6,6 +6,7 @@ package com.cognitivabrasil.repositorio.data.repositories;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import java.util.List;
+import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -20,4 +21,6 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     public List<Document> findByDeletedIsFalseOrderByCreatedDesc();
     
     public Document findByObaaEntry(String entry);
+    
+    public List<Document> findByCreatedLessThanAndObaaXmlIsNullAndDeletedIsFalse(DateTime d);
 }
