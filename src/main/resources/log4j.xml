@@ -17,24 +17,37 @@
             <param name="ConversionPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss} |%c{2}:%L| - %m%n" />
         </layout>
     </appender>
+    
+    <!--Application Loggers--> 
+    <logger name="com.cognitivabrasil.repositorio">
+        <level value="debug" />
+    </logger>
 
+    <!--3rdparty Loggers--> 
+    <logger name="org.springframework.core">
+        <level value="warn" />
+    </logger>
+	
+    <logger name="org.springframework.beans">
+        <level value="warn" />
+    </logger>
+	
+    <logger name="org.springframework.context">
+        <level value="warn" />
+    </logger>
+
+    <logger name="org.springframework.web">
+        <level value="warn" />
+    </logger>
+    
+    <category name="org.hibernate" additivity="false">
+        <priority value="warn" />
+    </category>
+    
     <root>
-        <priority value="debug" />
+        <priority value="warn" />
         <appender-ref ref="console" /> 
         <appender-ref ref="file" />
     </root>
-
-    <category name="org.hibernate" additivity="false">
-        <priority value="warn" />
-        <appender-ref ref="console" /> 
-        <appender-ref ref="file" />
-    </category>
-	
-    <category name="org.springframework" additivity="false">
-        <priority value="warn" />
-        <appender-ref ref="console" />  
-        <appender-ref ref="file" />
-
-    </category>
 
 </log4j:configuration>
