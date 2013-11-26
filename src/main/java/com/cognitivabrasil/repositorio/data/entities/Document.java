@@ -102,6 +102,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     /**
      * @return the excluido
      */
+    @Override
     public boolean isDeleted() {
         return deleted;
     }

@@ -1,5 +1,6 @@
 package com.cognitivabrasil.repositorio.data.entities;
 
+import cognitivabrasil.obaa.General.General;
 import cognitivabrasil.obaa.OBAA;
 import java.io.File;
 import java.io.IOException;
@@ -66,5 +67,22 @@ public class DocumentTest {
 
         assertThat(d.getTitle(), notNullValue());
         assertThat(d.getTitle(), equalTo("Sem título"));
+    }
+    
+    @Test
+    /**
+     * verifica se as operações feitas em getMetadata não alteram o OBAA, se já existir.
+     */
+    public void testGetMetadata(){
+        Document d = new Document();
+        assertThat(d.getMetadata(), notNullValue());
+        
+        d = new Document();
+        OBAA obaa = new OBAA();
+        obaa.setGeneral(new General());
+        obaa.getGeneral().addTitle("Marcos");
+        d.setMetadata(obaa);
+        
+        assertThat(d.getTitle(), equalTo("Marcos"));        
     }
 }

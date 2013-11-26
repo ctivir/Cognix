@@ -21,6 +21,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import spring.ApplicationContextProvider;
 
@@ -307,11 +308,10 @@ public class User implements UserDetails {
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities =
-                new HashSet<GrantedAuthority>();
+                new HashSet<>();
         for (String s : getPermissions()) {
-            authorities.add(new GrantedAuthorityImpl(s));
+            authorities.add(new SimpleGrantedAuthority(s));
         }
         return authorities;
-
     }
 }

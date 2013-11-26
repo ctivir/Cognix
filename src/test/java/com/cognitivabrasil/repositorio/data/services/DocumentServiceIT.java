@@ -84,6 +84,20 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(docService.getAll(), hasSize(before - 1));
         assertThat(fService.getAll(), hasSize(filesBefore - numFiles));
     }
+    
+    @Test
+    public void testDeletedDocument(){
+        Document d = docService.get(1);
+        docService.delete(d);
+
+        em.flush();
+        em.clear();
+        
+        d = docService.get(1);
+        assertThat(d.isDeleted(), equalTo(true));
+        assertThat(d.getFiles(), hasSize(0));
+        assertThat(d.getObaaXml(), nullValue());
+    }
 
     @Test
     public void testOrderFiles() {
