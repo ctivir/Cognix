@@ -6,8 +6,8 @@ package com.cognitivabrasil.repositorio.models;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
-import com.cognitivabrasil.repositorio.services.DocumentsServiceImpl;
-import com.cognitivabrasil.repositorio.services.FilesServiceImpl;
+import com.cognitivabrasil.repositorio.services.DocumentServiceImpl;
+import com.cognitivabrasil.repositorio.services.FileServiceImpl;
 import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
@@ -33,8 +33,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 @Ignore
 public class FilesServiceImplIT extends AbstractServiceTest {
 
-    @Autowired DocumentsServiceImpl docService;
-    @Autowired FilesServiceImpl fileService;
+    @Autowired DocumentServiceImpl docService;
+    @Autowired FileServiceImpl fileService;
     
     /**
      * Tests that delete() works ok.

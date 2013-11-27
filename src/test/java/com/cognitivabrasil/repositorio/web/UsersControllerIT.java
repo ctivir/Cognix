@@ -63,7 +63,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         assertEquals(result, "users/list");
         int total = (int) model.get("total");
 
-        assertThat(total, equalTo(2));
+        assertThat(total, equalTo(3));
     }
 
     @Test

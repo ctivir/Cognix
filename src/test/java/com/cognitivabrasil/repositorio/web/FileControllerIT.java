@@ -5,7 +5,7 @@
 package com.cognitivabrasil.repositorio.web;
 
 import com.cognitivabrasil.repositorio.data.entities.Files;
-import com.cognitivabrasil.repositorio.services.FilesService;
+import com.cognitivabrasil.repositorio.services.FileService;
 import com.cognitivabrasil.repositorio.util.Message;
 import java.io.File;
 import java.io.FileWriter;
@@ -41,7 +41,7 @@ public class FileControllerIT extends AbstractTransactionalJUnit4SpringContextTe
     @Autowired
     private FileController fController;
     @Autowired
-    private FilesService fService;
+    private FileService fService;
     private final String FILETEST = "./src/test/resources/files/file.test";
 
 

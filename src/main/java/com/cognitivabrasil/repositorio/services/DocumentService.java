@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Paulo Schreiner <paulo@jorjao81.com>
  */
-public interface DocumentsService {
+public interface DocumentService {
 
     /**
      * Gets the document with the specified OBAAEntry.

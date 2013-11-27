@@ -5,7 +5,7 @@
 package com.cognitivabrasil.repositorio.web;
 
 import com.cognitivabrasil.repositorio.data.entities.Files;
-import com.cognitivabrasil.repositorio.services.FilesService;
+import com.cognitivabrasil.repositorio.services.FileService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import org.springframework.ui.ExtendedModelMap;
 public class FileControllerTest {
 
     private final List<Files> files = new ArrayList<>();
-    private FilesService fileService;
+    private FileService fileService;
     private ExtendedModelMap uiModel;
     
     /**
@@ -51,7 +51,7 @@ public class FileControllerTest {
         f2.setName("foto.jpg");
         files.add(f2);
 
-        fileService = mock(FilesService.class);
+        fileService = mock(FileService.class);
 
         uiModel = new ExtendedModelMap();
     }

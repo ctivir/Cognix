@@ -8,8 +8,8 @@ import cognitivabrasil.obaa.General.General;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
-import com.cognitivabrasil.repositorio.services.DocumentsService;
-import com.cognitivabrasil.repositorio.services.FilesService;
+import com.cognitivabrasil.repositorio.services.DocumentService;
+import com.cognitivabrasil.repositorio.services.FileService;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -42,11 +42,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private DocumentsService docService;
+    private DocumentService docService;
     @Autowired
     private DocumentRepository docRep;
     @Autowired
-    private FilesService fService;
+    private FileService fService;
     @PersistenceContext
     private EntityManager em;
 

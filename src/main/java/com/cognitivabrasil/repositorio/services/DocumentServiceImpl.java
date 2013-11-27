@@ -15,20 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * The Class DocumentsServiceImpl.
+ * The Class DocumentServiceImpl.
  *
  * @author Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
  */
-@Service("documentsService")
-public class DocumentsServiceImpl implements DocumentsService {
+@Service
+public class DocumentServiceImpl implements DocumentService {
 
     @Autowired
     private DocumentRepository docRep;
     
     @Autowired
-    FilesService filesService;
+    FileService filesService;
 
-    private final Logger log = Logger.getLogger(DocumentsServiceImpl.class);
+    private final Logger log = Logger.getLogger(DocumentServiceImpl.class);
 
   
     @Override

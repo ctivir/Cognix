@@ -20,7 +20,7 @@ import cognitivabrasil.obaa.Technical.*;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.User;
-import com.cognitivabrasil.repositorio.services.DocumentsService;
+import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.util.Message;
 import cognitivabrasil.util.VCarder;
 import java.io.File;
@@ -59,7 +59,7 @@ public final class DocumentsController {
     public final String LOCAL = "/var/cognitiva/repositorio/";
     private static final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
-    DocumentsService docService;
+    DocumentService docService;
     @Autowired
     @Qualifier("serverConfig")
     Properties config;
@@ -252,7 +252,7 @@ public final class DocumentsController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newShow(Model model) {
         Document d = new Document();
-
+        d.setCreated(new DateTime());
         //o documento precisa ser salvo para gerar um id da base
         docService.save(d);
 

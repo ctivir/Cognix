@@ -3,7 +3,7 @@ package com.cognitivabrasil.repositorio.web;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Relation.Relation;
 import com.cognitivabrasil.repositorio.web.DocumentsController;
-import com.cognitivabrasil.repositorio.services.DocumentsService;
+import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Ignore
 public class DocumentsControllerTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-    DocumentsService docService;
+    DocumentService docService;
     Properties config;
     private ExtendedModelMap uiModel;    
     static final String FILE1 = "src/test/resources/obaa1.xml";
@@ -50,7 +50,7 @@ public class DocumentsControllerTest extends AbstractTransactionalJUnit4SpringCo
     public void initMeta() {
         
         uiModel = new ExtendedModelMap();
-        docService = mock(DocumentsService.class);
+        docService = mock(DocumentService.class);
         config = mock(Properties.class);
     }
     

@@ -6,8 +6,8 @@ package com.cognitivabrasil.repositorio.data.services;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
-import com.cognitivabrasil.repositorio.services.DocumentsService;
-import com.cognitivabrasil.repositorio.services.FilesService;
+import com.cognitivabrasil.repositorio.services.DocumentService;
+import com.cognitivabrasil.repositorio.services.FileService;
 import java.io.IOException;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -35,9 +35,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 public class FilesServiceIT extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    FilesService fileService;
+    FileService fileService;
     @Autowired
-    DocumentsService docService;
+    DocumentService docService;
     @PersistenceContext
     private EntityManager em;
 

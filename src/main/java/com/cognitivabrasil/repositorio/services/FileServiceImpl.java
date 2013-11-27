@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
  * @author Marcos Freitas Nunes <marcosn@gmail.com>
  */
 @Service
-public class FilesServiceImpl implements FilesService {
+public class FileServiceImpl implements FileService {
 
-    private final Logger log = Logger.getLogger(FilesServiceImpl.class);
+    private final Logger log = Logger.getLogger(FileServiceImpl.class);
     @Autowired
     private FileRepository fileRep;
 

@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cognitivabrasil.obaa.Technical.Format;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
-import com.cognitivabrasil.repositorio.services.DocumentsService;
-import com.cognitivabrasil.repositorio.services.FilesService;
+import com.cognitivabrasil.repositorio.services.DocumentService;
+import com.cognitivabrasil.repositorio.services.FileService;
 import com.cognitivabrasil.repositorio.util.Message;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -49,9 +49,9 @@ public class FileController {
 
     private final Logger log = Logger.getLogger(FileController.class);
     @Autowired
-    FilesService fileService;
+    FileService fileService;
     @Autowired
-    private DocumentsService documentsService;
+    private DocumentService documentsService;
     private Files file = null;
     private int chunk;
     private int chunks;

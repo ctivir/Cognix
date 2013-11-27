@@ -4,7 +4,7 @@ import com.cognitivabrasil.repositorio.data.entities.Files;
 import java.io.IOException;
 import java.util.List;
 
-public interface FilesService {
+public interface FileService {
 	public Files get(int id);
         public void deleteFile(Files f) throws IOException;
         public void save(Files f);
