@@ -2,37 +2,12 @@ $(function() {
        
     $('input:text').addClass("ui-corner-all");
     
-    $( "#logout" ).button({
-        icons: {
-            primary: "ui-icon-power"
-        }
-    });
-    
-    $( ".editar" ).button({
-        icons: {
-            primary: "ui-icon-pencil"
-        }
-    });
-    
-    $( ".delete" ).button({
-        icons: {
-            primary: "ui-icon-trash"
-        }
-    });
-    
-    $( ".iconAdd" )
-    .button({
-        icons: {
-            primary: "ui-icon-plusthick"
-        }
-    });
-    
     $(".btSemTexto").button({
         text: false
     });
     
     /*Dialogo de confirmacao*/
-    $( ".dialog-confirm" ).dialog({
+    /*$( ".dialog-confirm" ).dialog({
         resizable: true,
         width:440,
         autoOpen: false,
@@ -93,7 +68,7 @@ $(function() {
                 location.reload();
             }
         }
-    });
+    });*/
         
     $('.confirmLink').click(function(e) {
         e.preventDefault();

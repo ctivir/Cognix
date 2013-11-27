@@ -31,9 +31,9 @@
 
             <security:authorize access="hasRole('${permCreateDoc}')">
                 <c:url var="newDocumentUrl" value="/documents/new"/>
-                <a title="Adicionar novo documento" class="iconAdd"
-                   href="${newDocumentUrl}">
-                    Novo documento
+                <a title="Adicionar novo documento" class="iconAdd btn btn-default"
+                   href="${newDocumentUrl}"><span class="glyphicon glyphicon-file"></span>
+                    <span class='gliphycon-text'>Novo documento</span>
                 </a>
             </security:authorize>
             
@@ -55,11 +55,11 @@
                                     <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
                                     <c:url var="edit" value="/documents/${doc.id}/edit"/>
 
-                                    <a class="delete confirmLink" 
+                                    <a class="delete confirmLink btn btn-default" 
                                        title="excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!" 
                                        href="${deleteDoc}" id="dialog_link">
-                                        apagar</a>
-                                    <a class="editar" href="${edit}" id="edit_link">editar</a>
+                                        <span class="glyphicon glyphicon-trash"></span><span class='gliphycon-text'>Apagar</span></a>
+                                       <a class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-edit"></span><span class='gliphycon-text'>Editar</span></a>
 
                                     <span>
                                         <button class="relation_link">criar relação</button>

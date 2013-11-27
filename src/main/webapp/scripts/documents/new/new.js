@@ -13,8 +13,8 @@ var numerate = function() {
                 if ($(this).attr("type") === "button" || $(this).attr("type") === "file" || $(this).attr("type") === "hidden") {
                     return;
                 }
-                var $this = $(this);
-
+                var $this = $(this);                                                             
+                
                 $this.addClass("ui-corner-all");
 
                 var newName = "";
@@ -34,11 +34,20 @@ var numerate = function() {
                                             "#" + $(this).attr("id")).length;
                                 }
                                 newName = "." + $(this).attr("id") + "["
-                                        + prevNum + "]" + newName;
+                                        + prevNum + "]" + newName;                                                                    
                             }
 
                         });
-
+                //alert(newName);
+                var aux = newName.split(".");
+                if($.isArray(aux)){
+                    var aux2 = aux[2].split("[");                    
+                    if($.isArray(aux2)){
+                        if(aux[1] == 'arquivos' && aux2[0] == 'location'){
+                            newName = newName.replace('arquivos', 'technical');
+                        }
+                    }
+                }
                 newName = "obaa" + newName;
                 $(this).attr("name", newName);
             });
@@ -59,6 +68,7 @@ $(function() {
             }
         
     });
+    
     $('.addInParent').addClass('glyphicon glyphicon-plus-sign btn btn-default');
     $('.add').addClass('glyphicon glyphicon-plus-sign btn btn-default');    
     
@@ -196,7 +206,7 @@ $(function() {
     $("input:submit, input:file, input:reset, button, .button").button();
 
     /*Dialogo de confirmacao*/
-    var $dialog = $("#dialog-confirm-rm-file").dialog({
+   /* var $dialog = $("#dialog-confirm-rm-file").dialog({
         resizable: true,
         width: 440,
         autoOpen: false,
@@ -251,7 +261,7 @@ $(function() {
                 }
             }
         ]
-    });
+    });*/
 
 
     $('.delete_link').click(function(e) {

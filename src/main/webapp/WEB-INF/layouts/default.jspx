@@ -21,7 +21,7 @@
         <c:url value="/scripts/jquery-1.9.1.min.js" var="jquery_url" />
         <script src="${jquery_url}" type="text/javascript"><jsp:text/></script>                
 
-        <c:url value="/scripts/jquery-ui-1.10.0.custom.min.js" var="jquery_ui_url" />
+        <c:url value="/scripts/jquery-ui-1.10.3.custom.min.js" var="jquery_ui_url" />
         <script src="${jquery_ui_url}" type="text/javascript"><jsp:text/></script>
 
         <c:url value="/scripts/default.js" var="jsDefault" />

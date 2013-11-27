@@ -21,6 +21,7 @@
     <c:url var="jsMaskedinput" value="/scripts/documents/new/jquery.maskedinput-1.3.1.min.js" />
     <c:url var="jsMutateEvents" value="/scripts/mutate/mutate.events.js" />
     <c:url var="jsMutate" value="/scripts/mutate/mutate.min.js" />
+    <c:url var="jsUI" value="/scripts/jquery-ui-1.10.3.custom.min.js" />
 
 
     <jsp:useBean id="booleanElement" class="cognitivabrasil.obaa.BooleanElement" >
@@ -42,6 +43,7 @@
     <script type="text/javascript" src="${jsMaskedinput}"><jsp:text/></script>
     <script type="text/javascript" src="${jsMutateEvents}"><jsp:text/></script>
     <script type="text/javascript" src="${jsMutate}"><jsp:text/></script>
+    <script type="text/javascript" src="${jsUI}"><jsp:text/></script>
 
 
 
@@ -66,17 +68,17 @@
                 <ul id="browser" class="filetree">
 
                     <fieldset class="sectionwrap marcador single" id="arquivos">
-                        <legend>Arquivos</legend>      
-                        <input id="validation_locate_file" name="validation_locate_file" value="" type="hidden" />
+                        <legend>Arquivos</legend>                              
                         <c:choose>
                             <c:when test="${empty obaa.technical.location}">
+                                <input id="validation_locate_file" name="validation_locate_file" value="" type="hidden" />
                                 <li class="addLocation marcador multi" id="location">
                                     <span class="file">Localização </span>
                                     <input id="location" name="technical.location[]" type="text" />                           
                                 </li>
                             </c:when>
                             <c:otherwise>
-
+                                <input id="validation_locate_file" name="validation_locate_file" value="location" type="hidden" />
                                 <c:forEach var="location" items="${obaa.technical.location}">
                                     <li class="addLocation marcador multi" id="location">
                                         <span class="file">Localização </span>
@@ -86,7 +88,7 @@
                             </c:otherwise>
                         </c:choose>                                    
                         
-                        <li><a class ="add" id="location" value="+ Localização">+ Localização</a></li>
+                        <li><a class ="add" id="addLocation" value="+ Localização">+ Localização</a></li>
                                     
                         <cgbr:upload />
                         

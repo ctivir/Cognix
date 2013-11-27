@@ -83,3 +83,7 @@ input.error,textarea.error{border-color: red;}
 label.error,input.error{margin-top: 5px;}
 #message{margin: 5px 0 20px 15px}
 #message.success{color:#22C162; font-weight: bold;}
+.gliphycon-text{
+    padding:0 0 0 7px;
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif !important;
+}
