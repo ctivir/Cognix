@@ -79,55 +79,6 @@ public final class DocumentsController {
         return "documents/";
     }
 
-    @RequestMapping(value = "/recall", method = RequestMethod.GET)
-    public String recall(Model model) {
-        // TODO: getAll cannot be used if the collection is very big, have to
-        // use server-side pagination
-
-        List<Document> l = docService.getAll();
-
-        for (Document d : l) {
-
-            if (!d.isDeleted()) {
-                OBAA metadata = d.getMetadata();
-
-                String location = metadata.getGeneral().getIdentifiers().get(0).getEntry();
-                List<String> formatList = metadata.getTechnical().getFormat();
-
-                boolean contains = false;
-                for (String format : formatList) {
-                    if (format.equals("application/zip")) {
-                        contains = true;
-                    }
-                }
-
-                if (contains) {
-                    System.err.println("Objeto Zip: ");
-                    if (!metadata.getGeneral().getTitles().isEmpty()) {
-                        System.err.println(metadata.getGeneral().getTitles().get(0));
-                    }
-
-                    System.err.println(location);
-                    location = "http://feb.ufrgs.br/resources" + location.substring(location.lastIndexOf("/"));
-                    System.out.println("NOVO LOCATION: " + location);
-
-                    List<Location> locList = new ArrayList<>();
-                    Location lo = new Location();
-                    lo.setText(location);
-                    locList.add(lo);
-                    metadata.getTechnical().setLocation(locList);
-
-                }
-
-                d.setMetadata(metadata);
-
-                docService.save(d);
-            }
-
-        }
-        return "documents/";
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     public String deleteAll(Model model) {
         // TODO: getAll cannot be used if the collection is very big, have to
@@ -148,8 +99,12 @@ public final class DocumentsController {
     public String show(@PathVariable Integer id, Model model, HttpServletResponse response)
             throws IOException {
         Document d = docService.get(id);
-        if (d.isDeleted()) {
+        if(d == null){
+            response.sendError(404, "O documento solicitado não existe.");
+            return "ajax";
+        }else if (d.isDeleted()) {
             response.sendError(410, "O documento solicitado foi deletado.");
+            return "ajax";
         }
         d.getMetadata().setLocale("pt-BR");
         model.addAttribute("doc", d);
@@ -158,20 +113,19 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     @ResponseBody
-    public Message delete(@PathVariable("id") int id, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public Message delete(@PathVariable("id") int id, HttpServletRequest request) throws IOException {
         Message msg;
 
-        try {
-            Document d = docService.get(id);
+        Document d = docService.get(id);
+            if(d==null){
+                return new Message(Message.ERROR, "O documento solicitado não foi encontrado.");
+            }
             if (!isManagerForThisDocument(d, request)) {
                 return new Message(Message.ERROR, "Acesso negado! Você não ter permissão para deletar este documento.");
             }
             docService.delete(d);
             msg = new Message(Message.SUCCESS, "Documento excluido com sucesso");
-        } catch (DataAccessException e) {
-            log.error("Não foi possivel excluir o documento.", e);
-            msg = new Message(Message.ERROR, "Erro ao excluir documento");
-        }
+        
         return msg;
     }
 
@@ -257,7 +211,8 @@ public final class DocumentsController {
         docService.save(d);
 
         String uri = createUri(d);
-
+        d.setObaaEntry(uri);
+        docService.save(d);
         OBAA obaa = new OBAA();
 
         obaa.setGeneral(new General());
@@ -270,10 +225,8 @@ public final class DocumentsController {
         identifiers.add(i);
         obaa.getGeneral().setIdentifiers(identifiers);
 
-        d.setObaaEntry(i.getEntry());
-
         d.setMetadata(obaa);
-        docService.save(d);
+//        docService.save(d);
 
         model.addAttribute("doc", d);
         model.addAttribute("obaa", d.getMetadata());
@@ -284,7 +237,9 @@ public final class DocumentsController {
     @RequestMapping(value = "/new", params = "classPlan", method = RequestMethod.GET)
     public String newClassPlan(Model model) {
         Document d = new Document();
-
+        d.setCreated(new DateTime());
+        docService.save(d);
+        
         OBAA lo = new OBAA();
 
         General general = new General();
@@ -487,7 +442,6 @@ public final class DocumentsController {
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
         d.setMetadata(obaa);
-        d.setCreated(new DateTime());
         docService.save(d);
         return "redirect:/documents/";
     }
@@ -504,58 +458,7 @@ public final class DocumentsController {
     }
 
     private boolean isManagerForThisDocument(Document d, HttpServletRequest request) {
-        return (UsersController.getCurrentUser().equals(d.getOwner()) || request.isUserInRole(User.MANAGE_DOC));
-    }
-
-    /**
-     * Criado apenas para salvar em um diretório todos os objetos da base com o
-     * seu respectivo metadado.
-     *
-     * @return
-     * @throws IOException
-     * @throws Exception
-     */
-    @RequestMapping(value = "/dvd", method = RequestMethod.GET)
-    @ResponseBody
-    public String dvd()
-            throws IOException, Exception {
-        String location = LOCAL + "dvd/";
-
-        List<Document> docs = docService.getAll();
-
-        for (Document doc : docs) {
-            System.out.println("\n doc " + doc.getId());
-            String data = doc.getMetadata().getLifeCycle().getContribute().get(0).getDate();
-
-            doc.getMetadata().getMetametadata().getContribute().get(0).setDate(data);
-            String destinationPath = location + "doc-" + doc.getId();
-            File documentPath = new File(destinationPath);
-            if (documentPath.isDirectory()) {// se o caminho informado nao for um
-                throw new Exception("Já existe a pasta: " + location + "document-" + doc.getId());
-
-            }
-
-            documentPath.mkdirs();// cria o diretorio
-//            Set<Files> files = doc.getFiles();
-//            int numberFiles = 0;
-////            for (Files f : files) {
-////                if(f.getLocation().isEmpty()){
-////                    throw new IOException("A localização do documento está em branco.");
-////                }
-////                File sourceFile = new File(f.getLocation());
-////                File destinationFile = new File(destinationPath + "/" + f.getName());
-////
-////                copy(sourceFile, destinationFile);
-////                numberFiles++;
-////            }
-//            if(numberFiles==0){
-//                throw new Exception("O Documento "+doc.getId()+" não possui nenhum arquivo!");
-//            }
-            Serializer serializer = new Persister();
-            File xmlFile = new File(destinationPath + "/obaa.xml");
-            serializer.write(doc.getMetadata(), xmlFile);
-        }
-        return "ok";
+        return (request.isUserInRole(User.MANAGE_DOC) || UsersController.getCurrentUser().equals(d.getOwner()));
     }
 
     @RequestMapping(value = "/new/generateMetadata", method = RequestMethod.POST)
@@ -563,27 +466,6 @@ public final class DocumentsController {
     public ObaaDto generateMetadata(int id) {
         Document doc = docService.get(id);
         return metadataFromFile(doc);
-    }
-
-    /**
-     * Copia arquivos de um local para o outro
-     *
-     * @param origem - Arquivo de origem
-     * @param destino - Arquivo de destino
-     * @throws IOException
-     */
-    private static void copy(File origem, File destino) throws IOException {
-        OutputStream out;
-        try (InputStream in = new FileInputStream(origem)) {
-            out = new FileOutputStream(destino);
-            byte[] buffer = new byte[1024];
-            int lenght;
-            while ((lenght = in.read(buffer)) > 0) {
-                out.write(buffer, 0, lenght);
-            }
-        }
-        out.close();
-
     }
 
     /**

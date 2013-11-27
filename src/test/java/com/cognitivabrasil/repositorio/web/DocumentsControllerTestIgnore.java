@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Ignore
-public class DocumentsControllerTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class DocumentsControllerTestIgnore extends AbstractTransactionalJUnit4SpringContextTests {
 
     DocumentService docService;
     Properties config;
