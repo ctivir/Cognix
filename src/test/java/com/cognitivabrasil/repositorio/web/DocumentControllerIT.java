@@ -8,6 +8,7 @@ package com.cognitivabrasil.repositorio.web;
 import cognitivabrasil.obaa.Accessibility.Accessibility;
 import cognitivabrasil.obaa.Educational.Educational;
 import cognitivabrasil.obaa.General.Identifier;
+import cognitivabrasil.obaa.General.Structure;
 import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Technical.Technical;
@@ -237,32 +238,46 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
 
     }
     
-//    @Test
-//    public void testNewClassPlan() {
-//        DateTime before = new DateTime();
-//        String result = controller.newClassPlan(uiModel);
-//
-//        assertThat(result, equalTo("documents/new"));
-//
-//        Document d = (Document) uiModel.get("doc");
-//        assertThat(d, notNullValue());
-//        assertThat(d.getCreated(), notNullValue());
-//        assertThat(d.getCreated().isAfter(before.minusMillis(10)), equalTo(true));
-//        assertThat(d.getCreated().isBefore(new DateTime()), equalTo(true));
-//
-//        int id = d.getId();
-//        assertThat(id, notNullValue());
-//
-//        OBAA obaa = (OBAA) uiModel.get("obaa");
-//        assertThat(obaa, notNullValue());
-//
-//        List<Identifier> idList = obaa.getGeneral().getIdentifiers();
-//        assertThat(idList, hasSize(1));
-//        Identifier uri = idList.get(0);
-//        assertThat(uri.getCatalog(), equalTo("URI"));
-//        assertThat(uri.getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/" + id));
-//
-//    }
+    @Test
+    public void testNewClassPlan() {
+        DateTime before = new DateTime();
+        String result = controller.newClassPlan(uiModel);
+
+        assertThat(result, equalTo("documents/new"));
+
+        Document d = (Document) uiModel.get("doc");
+        assertThat(d, notNullValue());
+        assertThat(d.getCreated(), notNullValue());
+        assertThat(d.getCreated().isAfter(before.minusMillis(10)), equalTo(true));
+        assertThat(d.getCreated().isBefore(new DateTime()), equalTo(true));
+
+        int id = d.getId();
+        assertThat(id, notNullValue());
+
+        OBAA obaa = (OBAA) uiModel.get("obaa");
+        assertThat(obaa, notNullValue());
+
+        List<Identifier> idList = obaa.getGeneral().getIdentifiers();
+        assertThat(idList, hasSize(1));
+        Identifier uri = idList.get(0);
+        assertThat(uri.getCatalog(), equalTo("URI"));
+        assertThat(uri.getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/" + id));
+        
+        //testes para classPlan realmente
+        assertThat(obaa.getGeneral().getStructure().toString(), equalTo("collection"));
+        assertThat(obaa.getGeneral().getAggregationLevel().toString(), equalTo("3"));
+        assertThat(obaa.getGeneral().getKeywords(), hasSize(2));
+        assertThat(obaa.getGeneral().getKeywords(), hasItem("Plano de Aula"));
+        
+        assertThat(obaa.getLifeCycle().getVersion(), equalTo("1"));
+        assertThat(obaa.getLifeCycle().getStatus(), equalTo("finalized"));
+        assertThat(obaa.getLifeCycle().getContribute().get(0).getRole().toString(), equalTo("publisher"));
+        assertThat(obaa.getLifeCycle().getContribute().get(0).getFirstEntity(), equalTo("BEGIN:VCARD\nVERSION:3.0\nN:Ministério da Educação;do Brasil;;;\nFN:Ministério da Educação do Brasil\nEND:VCARD"));
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        assertThat(obaa.getLifeCycle().getContribute().get(0).getDate(), equalTo(dateFormat.format(date)));
+        
+    }
 
     
     @Test
@@ -430,7 +445,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(meta.getContribute().get(0).getFirstEntity(),equalTo("BEGIN:VCARD\nVERSION:3.0\nN:marcos;;;;\nFN:marcos\nEND:VCARD"));
         assertThat(meta.getContribute().get(0).getRole(),equalTo("creator"));
         Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         assertThat(meta.getContribute().get(0).getDate(), equalTo(dateFormat.format(date)));
         assertThat(meta.getIdentifier().get(0).getCatalog(), equalTo("URI"));
         assertThat(meta.getIdentifier().get(0).getEntry(), equalTo("http://www.w3.org/2001/XMLSchema-instance"));

@@ -236,16 +236,17 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/new", params = "classPlan", method = RequestMethod.GET)
     public String newClassPlan(Model model) {
-        Document d = new Document();
-        d.setCreated(new DateTime());
-        docService.save(d);
         
-        OBAA lo = new OBAA();
-
-        General general = new General();
+        String result = newShow(model); //inicializa com o new basico
+        
+        Document d = (Document) model.asMap().get("doc");
+        
+//        metadados para planos de aula
+        OBAA lo = d.getMetadata();
+        General general = lo.getGeneral();
         general.addLanguage("pt-BR");
         Structure s = new Structure();
-        s.setText("coleção");
+        s.setText("collection");
         general.setStructure(s);
         general.setAggregationLevel(3);
         general.addKeyword("Plano de Aula");
@@ -268,7 +269,7 @@ public final class DocumentsController {
         // today date
         Date date = new Date();
         DateFormat dateFormat;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         contribute.setDate(dateFormat.format(date));
         lifeCycle.addContribute(contribute);
 
@@ -339,9 +340,8 @@ public final class DocumentsController {
 
         d.setMetadata(lo);
 
-        model.addAttribute("doc", d);
-        model.addAttribute("obaa", d.getMetadata());
-        return "documents/new";
+        
+        return result;
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
@@ -425,7 +425,7 @@ public final class DocumentsController {
         // today date
         Date date = new Date();
         DateFormat dateFormat;
-        dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         c.setDate(dateFormat.format(date));
         meta.addContribute(c);
 
