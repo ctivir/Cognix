@@ -35,9 +35,15 @@
                    href="${newDocumentUrl}"><span class="glyphicon glyphicon-file"></span>
                     <span class='gliphycon-text'>Novo documento</span>
                 </a>
-            </security:authorize>
-            
+            </security:authorize><br/>
+            <div class="btn-group col-md-offset-4">
+                <a href="${docUrl}/filter/ciencias" class="btn btn-default btn-sm">Ciências</a>
+                <a href="${docUrl}/filter/matematica" class="btn btn-default btn-sm">Matemática</a>
+                <a href="${docUrl}/filter/portugues" class="btn btn-default btn-sm">Português</a>
+            </div>
+            <br/><br/>
            <div class="container">
+                
                 <c:if test="${empty documents}">Nenhum documento cadastrado</c:if>
                 <c:forEach var="doc" items="${documents}" varStatus="status">
                     <c:if test="${doc.title != 'IndexOutOfBounds'}"> 

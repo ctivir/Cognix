@@ -79,6 +79,17 @@ public final class DocumentsController {
         model.addAttribute("permCreateDoc", User.CREATE_DOC);
         return "documents/";
     }
+    
+    @RequestMapping(value = "/filter/{type}", method = RequestMethod.GET)
+    public String filterDiscipline(@PathVariable String type, Model model) {
+        // TODO: getAll cannot be used if the collection is very big, have to
+        // use server-side pagination
+        model.addAttribute("documents", docService.getAll());
+        model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("permDocAdmin", User.MANAGE_DOC);
+        model.addAttribute("permCreateDoc", User.CREATE_DOC);
+        return "documents/";
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     public String deleteAll(Model model) {

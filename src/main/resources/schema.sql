@@ -6,6 +6,7 @@ CREATE TABLE documents (
     deleted boolean DEFAULT false NOT NULL,
     owner integer,
     obaaxml text,
+    subject integer,
     PRIMARY KEY (id)
 );
 
@@ -29,5 +30,11 @@ CREATE TABLE users (
     name text NOT NULL,
     permissions text,
     role text,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE subject (
+    id serial NOT NULL,
+    name text NOT NULL,    
     PRIMARY KEY (id)
 );

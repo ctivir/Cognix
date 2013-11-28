@@ -5,6 +5,7 @@
 package com.cognitivabrasil.repositorio.data.repositories;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
+import com.cognitivabrasil.repositorio.data.entities.Subject;
 import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,8 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     @Override
     public List<Document> findAll();
+    
+    public List<Document> findBySubject(Subject s);
     
     public List<Document> findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
     

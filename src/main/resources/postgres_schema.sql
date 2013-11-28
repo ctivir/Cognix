@@ -9,6 +9,8 @@ ALTER TABLE ONLY files
     ADD CONSTRAINT fk_documents FOREIGN KEY (document) REFERENCES documents(id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE documents 
     ADD CONSTRAINT owner_pkey FOREIGN KEY (owner) REFERENCES users (id) ON UPDATE NO ACTION ON DELETE SET NULL;
+ALTER TABLE ONLY documents
+    ADD CONSTRAINT fk_subject FOREIGN KEY (subject) REFERENCES subject(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 -- Insert users
 INSERT INTO users (login, password, name, permissions, role)

@@ -11,10 +11,14 @@ INSERT INTO documents (id, obaa_entry,created) VALUES (3, 'entry3', '2999-07-10 
 
 INSERT INTO documents (id, obaa_entry,created) VALUES (4, 'entry4', '2013-07-10 21:41:10');
 
-INSERT INTO documents (id, obaa_entry,created, owner, obaaxml) VALUES (5, 'entry5', '2013-05-08 03:10:00', 3, '<obaa:obaa xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd" xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-   <obaa:general><obaa:title>Ataque a o TCP - Mitnick</obaa:title><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>');
+INSERT INTO documents (id, obaa_entry,created, owner, obaaxml, subject) VALUES (5, 'entry5', '2013-05-08 03:10:00', 3, '<obaa:obaa xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd" xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <obaa:general><obaa:title>Ataque a o TCP - Mitnick</obaa:title><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>',1);
 
 INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (2,'teste2.txt','text/plain',42,'diretorio-nao-existe',1);
 INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (1,'teste.txt','text/plain',42,'diretorio-nao-existe',1);
 INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (3,'teste3.txt','text/plain',42,'/temp/1fde1am3.pdf',2);
 INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (4,'file.test','text/plain',5,'./src/test/resources/files/file.test',5);
+
+INSERT INTO subject (id, name) VALUES (1,'ciencias');
+INSERT INTO subject (id, name) VALUES (2,'portugues');
+INSERT INTO subject (id, name) VALUES (3,'matematica');

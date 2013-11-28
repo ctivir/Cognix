@@ -45,6 +45,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     private List<Files> files;
     private OBAA metadata;
     private User owner;
+    private Subject subject;
 
     public Document() {
         obaaEntry = "";
@@ -65,10 +66,10 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     public DateTime getCreated() {
         return this.created;
     }
-    
+
     @Transient
     @Override
-    public Date getTimestamp(){
+    public Date getTimestamp() {
         return this.created.toDate();
     }
 
@@ -90,7 +91,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
         }
     }
 
-    @Column(name="obaa_entry")
+    @Column(name = "obaa_entry")
     public String getObaaEntry() {
         return this.obaaEntry;
     }
@@ -240,4 +241,13 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
         this.owner = owner;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "subject ")
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 }

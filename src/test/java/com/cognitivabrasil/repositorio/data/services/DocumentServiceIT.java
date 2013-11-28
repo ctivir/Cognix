@@ -7,6 +7,7 @@ package com.cognitivabrasil.repositorio.data.services;
 import cognitivabrasil.obaa.General.General;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
+import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
@@ -169,6 +170,12 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         before = docRep.findAll().size(); //tem que ser com rep pq o service retorna apenas os que não foram deletados
         docService.deleteEmpty();
         assertThat(docRep.findAll().size(), equalTo(before - 1));
+    }
+    
+    @Test
+    public void testSubject(){
+        Document d = docService.get(5);
+        assertThat(d.getSubject().getName(), equalTo("ciencias"));
     }
     
 }

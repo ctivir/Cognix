@@ -5,6 +5,7 @@
 package com.cognitivabrasil.repositorio.repositories;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
+import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -61,6 +62,15 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
     public void testGetByObaaEntry(){
         Document d = docRep.findByObaaEntry("entry2");
         assertThat(d.getId(), equalTo(2));
+    }
+    
+    @Test
+    public void testGetBySubject(){
+        Subject s = new Subject();
+        s.setId(1);
+        s.setName("ciencias");
+        List<Document> d = docRep.findBySubject(s);
+        assertThat(d.get(0).getId(), equalTo(5));
     }
     
     
