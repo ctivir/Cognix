@@ -5,6 +5,7 @@ import cognitivabrasil.obaa.Accessibility.Primary;
 import cognitivabrasil.obaa.Accessibility.ResourceDescription;
 import cognitivabrasil.obaa.Educational.Educational;
 import cognitivabrasil.obaa.Educational.Interaction;
+import cognitivabrasil.obaa.Educational.InteractivityLevel;
 import cognitivabrasil.obaa.General.General;
 import cognitivabrasil.obaa.General.Identifier;
 import cognitivabrasil.obaa.General.Keyword;
@@ -294,14 +295,14 @@ public final class DocumentsController {
         technical.setLocation(location);
 
         technical.setOtherPlatformRequirements("É necessário um programa como o acrobat reader que permite a leitura de arquivos no formato PDF.");
-        technical.addSupportedPlatforms("Web");
+        technical.addSupportedPlatforms("web");
 
         lo.setTechnical(technical);
 
         Educational educational = new Educational();
         educational.setInteractivityType("expositive");
         educational.addLearningResourceType("lecture");
-        educational.setInteractivityLevel("veryLow");
+        educational.setInteractivityLevel(InteractivityLevel.VERYLOW);
         educational.addDescription("Plano de aula envolvendo o uso do computador ou recursos alternativos.");
         educational.addLanguage("pt-BR");
         educational.setLearningContentType("procedimental");

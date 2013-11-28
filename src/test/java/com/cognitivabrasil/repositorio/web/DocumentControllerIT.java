@@ -7,6 +7,7 @@ package com.cognitivabrasil.repositorio.web;
 
 import cognitivabrasil.obaa.Accessibility.Accessibility;
 import cognitivabrasil.obaa.Educational.Educational;
+import cognitivabrasil.obaa.Educational.InteractivityLevel;
 import cognitivabrasil.obaa.General.Identifier;
 import cognitivabrasil.obaa.General.Structure;
 import cognitivabrasil.obaa.Metametadata.Metametadata;
@@ -276,7 +277,20 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         assertThat(obaa.getLifeCycle().getContribute().get(0).getDate(), equalTo(dateFormat.format(date)));
+        Technical technical = obaa.getTechnical();
+        assertThat(technical.getRequirement().get(0).getOrComposite().get(0).getType(), equalTo("operatingSystem"));
+        assertThat(technical.getRequirement().get(0).getOrComposite().get(0).getName(), equalTo("multiOs"));
+        assertThat(technical.getRequirement().get(0).getOrComposite().get(1).getType(), equalTo("browser"));
+        assertThat(technical.getRequirement().get(0).getOrComposite().get(1).getName(), equalTo("any"));
         
+        assertThat(technical.getOtherPlatformRequirements(), equalTo("É necessário um programa como o acrobat reader que permite a leitura de arquivos no formato PDF."));
+        assertThat(technical.getSupportedPlatforms().get(0), equalTo("web"));
+        
+        Educational educational = obaa.getEducational();
+        assertThat(educational.getInteractivityType(), equalTo("expositive"));
+        assertThat(educational.getLearningResourceTypesString(), hasItem("lecture"));
+        assertThat(educational.getInteractivityLevel().toString(), equalTo(InteractivityLevel.VERYLOW));
+        assertThat(educational.getInteractivityType(), equalTo("expositive"));
     }
 
     
