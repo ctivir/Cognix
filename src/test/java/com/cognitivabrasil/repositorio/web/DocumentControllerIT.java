@@ -6,12 +6,19 @@
 package com.cognitivabrasil.repositorio.web;
 
 import cognitivabrasil.obaa.Accessibility.Accessibility;
+import cognitivabrasil.obaa.Accessibility.Primary;
+import cognitivabrasil.obaa.Educational.Context;
 import cognitivabrasil.obaa.Educational.Educational;
+import cognitivabrasil.obaa.Educational.IntendedEndUserRole;
+import cognitivabrasil.obaa.Educational.Interaction;
 import cognitivabrasil.obaa.Educational.InteractivityLevel;
+import cognitivabrasil.obaa.Educational.LearningContentType;
+import cognitivabrasil.obaa.Educational.Perception;
+import cognitivabrasil.obaa.Educational.Reciprocity;
 import cognitivabrasil.obaa.General.Identifier;
-import cognitivabrasil.obaa.General.Structure;
 import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
+import cognitivabrasil.obaa.Technical.SupportedPlatform;
 import cognitivabrasil.obaa.Technical.Technical;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
@@ -19,15 +26,12 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.util.Message;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
@@ -55,8 +59,6 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 /**
  *
@@ -284,13 +286,33 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(technical.getRequirement().get(0).getOrComposite().get(1).getName(), equalTo("any"));
         
         assertThat(technical.getOtherPlatformRequirements(), equalTo("É necessário um programa como o acrobat reader que permite a leitura de arquivos no formato PDF."));
-        assertThat(technical.getSupportedPlatforms().get(0), equalTo("web"));
+        assertThat(technical.getSupportedPlatforms().get(0), equalTo(SupportedPlatform.WEB));
         
         Educational educational = obaa.getEducational();
         assertThat(educational.getInteractivityType(), equalTo("expositive"));
         assertThat(educational.getLearningResourceTypesString(), hasItem("lecture"));
         assertThat(educational.getInteractivityLevel().toString(), equalTo(InteractivityLevel.VERYLOW));
-        assertThat(educational.getInteractivityType(), equalTo("expositive"));
+        assertThat(educational.getDescriptions().get(0), equalTo("Plano de aula envolvendo o uso do computador ou recursos alternativos."));
+        assertThat(educational.getLanguages().get(0), equalTo("pt-BR"));
+        assertThat(educational.getLearningContentType(), equalTo(LearningContentType.PROCEDIMENTAL));
+        assertThat(educational.getContexts().get(0), equalTo(Context.SCHOOL));
+        assertThat(educational.getIntendedEndUserRoles().get(0), equalTo(IntendedEndUserRole.TEACHER));
+        
+        Interaction interaction = obaa.getEducational().getInteraction();
+        assertThat(interaction.getInteractionType().toString(), equalTo("Objeto-sujeito"));
+        assertThat(interaction.getCoPresence().getBoolean(), equalTo(false));
+        assertThat(interaction.getSynchronism().getBoolean(), equalTo(false));
+        assertThat(interaction.getPerception().toString(), equalTo(Perception.VISUAL));
+        assertThat(interaction.getReciprocity().toString(), equalTo(Reciprocity.ONE_N));
+        
+        assertThat(obaa.getRights().getCost().getBoolean(), equalTo(false));
+        
+        Primary primary = obaa.getAccessibility().getResourceDescription().getPrimary();
+        assertThat(primary.isVisual(), equalTo(true));
+        assertThat(primary.isAuditory(), equalTo(false));
+        assertThat(primary.isText(), equalTo(true));
+        assertThat(primary.isTactile(), equalTo(false));
+        
     }
 
     
@@ -415,22 +437,22 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(docResult.getMetadata().getRights().getDescription(), equalTo("Todos os direitos autorais reservados"));
         Educational educational = docResult.getMetadata().getEducational();
         assertThat(educational.getInteractivityType(), equalTo("mixed"));
-        assertThat(educational.getIntendedEndUserRoles().get(0), equalTo("manager"));
+        assertThat(educational.getIntendedEndUserRoles().get(0), equalTo(IntendedEndUserRole.MANAGER));
         assertThat(educational.getLearningResourceTypes().get(0).toString(), equalTo("problem_statement"));
-        assertThat(educational.getInteractivityLevel().toString(), equalTo("low"));
+        assertThat(educational.getInteractivityLevel().toString(), equalTo(InteractivityLevel.LOW));
         assertThat(educational.getSemanticDensity().toString(), equalTo("high"));
         assertThat(educational.getDifficulty().toString(), equalTo("medium"));
         assertThat(educational.getTypicalAgeRanges().get(0), equalTo("1 - 18 anos"));
         assertThat(educational.getTypicalLearningTime().toString(), equalTo("PT15M"));
         assertThat(educational.getDescription().get(0).toString(), equalTo("descricao educacional"));
         assertThat(educational.getLanguage().get(0).toString(), equalTo("es-UY"));
-        assertThat(educational.getContexts().get(0), equalTo("training"));
-        assertThat(educational.getLearningContentType(), equalTo("factual"));
+        assertThat(educational.getContexts().get(0), equalTo(Context.TRAINING));
+        assertThat(educational.getLearningContentType(), equalTo(LearningContentType.FACTUAL));
         assertThat(educational.getInteraction().getInteractionType().toString(), equalTo("Objeto-sujeito"));
-        assertThat(educational.getInteraction().getPerception().toString(), equalTo("mixed"));
+        assertThat(educational.getInteraction().getPerception().toString(), equalTo(Perception.MIXED));
         assertThat(educational.getInteraction().getSynchronism().toString(), equalTo("true"));
         assertThat(educational.getInteraction().getCoPresence().toString(), equalTo("true"));
-        assertThat(educational.getInteraction().getReciprocity().toString(), equalTo("1-n"));
+        assertThat(educational.getInteraction().getReciprocity().toString(), equalTo(Reciprocity.ONE_N));
         Accessibility accessibility = docResult.getMetadata().getAccessibility();
         assertThat(accessibility.getResourceDescription().getPrimary().getHasVisual(), equalTo("true"));
         assertThat(accessibility.getResourceDescription().getPrimary().getHasAuditory(), equalTo("true"));
@@ -448,7 +470,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(technical.getInstallationRemarks(), equalTo("nnf"));
         assertThat(technical.getOtherPlatformRequirements(), equalTo("internet"));
         assertThat(technical.getDuration(), equalTo("15 min"));
-        assertThat(technical.getSupportedPlatforms().get(0), equalTo("dtv"));
+        assertThat(technical.getSupportedPlatforms().get(0), equalTo(SupportedPlatform.DTV));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificRequirements().get(0).getSpecificOrComposites().get(0).getSpecificType(), equalTo("tipo"));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificRequirements().get(0).getSpecificOrComposites().get(0).getSpecificName(), equalTo("nome"));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificRequirements().get(0).getSpecificOrComposites().get(0).getSpecificMinimumVersion(), equalTo("1.0"));

@@ -3,9 +3,14 @@ package com.cognitivabrasil.repositorio.web;
 import cognitivabrasil.obaa.Accessibility.Accessibility;
 import cognitivabrasil.obaa.Accessibility.Primary;
 import cognitivabrasil.obaa.Accessibility.ResourceDescription;
+import cognitivabrasil.obaa.Educational.Context;
 import cognitivabrasil.obaa.Educational.Educational;
+import cognitivabrasil.obaa.Educational.IntendedEndUserRole;
 import cognitivabrasil.obaa.Educational.Interaction;
 import cognitivabrasil.obaa.Educational.InteractivityLevel;
+import cognitivabrasil.obaa.Educational.LearningContentType;
+import cognitivabrasil.obaa.Educational.Perception;
+import cognitivabrasil.obaa.Educational.Reciprocity;
 import cognitivabrasil.obaa.General.General;
 import cognitivabrasil.obaa.General.Identifier;
 import cognitivabrasil.obaa.General.Keyword;
@@ -306,7 +311,7 @@ public final class DocumentsController {
         technical.setLocation(location);
 
         technical.setOtherPlatformRequirements("É necessário um programa como o acrobat reader que permite a leitura de arquivos no formato PDF.");
-        technical.addSupportedPlatforms("web");
+        technical.addSupportedPlatforms(SupportedPlatform.WEB);
 
         lo.setTechnical(technical);
 
@@ -316,17 +321,17 @@ public final class DocumentsController {
         educational.setInteractivityLevel(InteractivityLevel.VERYLOW);
         educational.addDescription("Plano de aula envolvendo o uso do computador ou recursos alternativos.");
         educational.addLanguage("pt-BR");
-        educational.setLearningContentType("procedimental");
-        educational.addContext("school");
+        educational.setLearningContentType(LearningContentType.PROCEDIMENTAL);
+        educational.addContext(Context.SCHOOL);
 
-        educational.addIntendedEndUserRole("teacher");
+        educational.addIntendedEndUserRole(IntendedEndUserRole.TEACHER);
 
         Interaction interaction = new Interaction();
         interaction.setInteractionType("Objeto-sujeito");
         interaction.setCoPresence(false);
         interaction.setSynchronism(false);
-        interaction.setPerception("visual");
-        interaction.setReciprocity("1-n");
+        interaction.setPerception(Perception.VISUAL);
+        interaction.setReciprocity(Reciprocity.ONE_N);
 
         educational.setInteraction(interaction);
 
@@ -544,11 +549,11 @@ public final class DocumentsController {
             suggestions.setPerception("visual");
             suggestions.setSynchronism("false");
             suggestions.setCopresense("false");
-            suggestions.setReciprocity("1-1");
+            suggestions.setReciprocity(Reciprocity.ONE_ONE);
             suggestions.setInteractivityLevel("very_low");
-            suggestions.addSupportedPlatforms("web");
-            suggestions.addSupportedPlatforms("mobile");
-            suggestions.addSupportedPlatforms("dtv");
+            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
+            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
+            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
 
             //Accessibility
             suggestions.setVisual("true");
