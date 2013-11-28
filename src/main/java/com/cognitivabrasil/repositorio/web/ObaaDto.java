@@ -1,5 +1,8 @@
 package com.cognitivabrasil.repositorio.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author luiz
@@ -40,8 +43,15 @@ public class ObaaDto {
     private String requirementsMinimumVersion;
     private String installationRemarks;
     private String duration;
-    private String supportedPlatforms;
+    private String otherPlatformRequirements;
+    private List <String> supportedPlatforms;
 
+    public ObaaDto() {
+        supportedPlatforms = new ArrayList<>();
+    }
+
+    
+    
     public String getTitle() {
         return title;
     }
@@ -234,12 +244,12 @@ public class ObaaDto {
         this.duration = duration;
     }
 
-    public String getSupportedPlatforms() {
+    public List getSupportedPlatforms() {
         return supportedPlatforms;
     }
 
-    public void setSupportedPlatforms(String supportedPlatforms) {
-        this.supportedPlatforms = supportedPlatforms;
+    public void addSupportedPlatforms(String supportedPlatform) {
+        this.supportedPlatforms.add(supportedPlatform);
     }
         
     public String getSynchronism() {
@@ -250,4 +260,11 @@ public class ObaaDto {
         this.synchronism = synchronism;
     }    
     
+    public String getOtherPlatformRequirements() {
+        return otherPlatformRequirements;
+    }
+
+    public void setOtherPlatformRequirements(String otherPlatformRequirements) {
+        this.otherPlatformRequirements = otherPlatformRequirements;
+    }    
 }

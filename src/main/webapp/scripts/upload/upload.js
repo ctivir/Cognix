@@ -31,7 +31,7 @@ $(function() {
                             makeSuggestions(result);
                         },
                         error: function() {
-                            alert("error");
+                            alert("Sem sugestões para preenchimento.");
                         },
                         datatype: "json"
                     });
@@ -77,6 +77,16 @@ $(function() {
         $('#hasVisual input[value=' + suggestions.visual + ']').prop('checked', true);
         $('#hasAuditory input[value=' + suggestions.auditory + ']').prop('checked', true);
         $('#hasTactile input[value=' + suggestions.tactil + ']').prop('checked', true);
+        
+        //Technical        
+        $('#type input').val(suggestions.requirementsType);
+        $('#name input').val(suggestions.requirementsName);
+        
+            //Checkbox options            
+            for (var i=0; i < suggestions.supportedPlatforms.length;i++){                
+                $('#supportedPlatforms input[value=' + suggestions.supportedPlatforms[i] + ']').prop('checked', true);
+            }
+        
         
 
         

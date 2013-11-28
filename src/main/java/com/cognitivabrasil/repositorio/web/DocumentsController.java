@@ -496,9 +496,11 @@ public final class DocumentsController {
             empty = true;
         }
 
+        String mime = "";
+        
         for (Files file : files) {
 
-            String mime = file.getContentType();
+            mime = file.getContentType();
             System.out.println("MIME Type: " + mime);
 
             if (!mime.startsWith(IMAGE_STARTS)) {
@@ -532,12 +534,20 @@ public final class DocumentsController {
             suggestions.setCopresense("false");
             suggestions.setReciprocity("1-1");
             suggestions.setInteractivityLevel("very_low");
+            suggestions.addSupportedPlatforms("web");
+            suggestions.addSupportedPlatforms("mobile");
+            suggestions.addSupportedPlatforms("dtv");
 
             //Accessibility
             suggestions.setVisual("true");
             suggestions.setAuditory("false");
             suggestions.setTactil("false");
-
+                                               
+            if (mime.endsWith("jpeg")||mime.endsWith("jpg")||mime.endsWith("png")||mime.endsWith("gif")){
+                System.out.println("true");
+                suggestions.setRequirementsType("operatingSystem");
+                suggestions.setRequirementsName("any");
+            }
 
         }
 
