@@ -171,24 +171,30 @@ public final class DocumentsController {
     }
 
     @RequestMapping(value = "/new", params = "versionOf", method = RequestMethod.GET)
-    public String newVersionOf(Model model, @RequestParam(required = true) Integer versionOf,
-            final HttpServletRequest request) {
+    public String newVersionOf(Model model, @RequestParam(required = true) Integer versionOf) {
 
         //Criação de nova versão
         Document d = docService.get(versionOf);
-        Document dVersion = new Document();
-
+        Document dv = new Document();
+        //o documento precisa ser salvo para gerar um id da base
+        docService.save(dv);
         //copia o original
         OBAA originalObaa = d.getMetadata();
         OBAA versionObaa = originalObaa.clone();
 
         //altera o id
-        String versionUri = createUri(dVersion);
+        String versionUri = createUri(dv);
+        dv.setObaaEntry(versionUri);
+        docService.save(dv);
+        
         Identifier versionId = new Identifier("URI", versionUri);
         versionObaa.getGeneral().getIdentifiers().clear();
 
         //esvaziar o location para gerar um novo
         versionObaa.getTechnical().getLocation().clear();
+        
+        //seta o identifier na versao
+        versionObaa.getGeneral().addIdentifier(versionId);
 
         //Cria relação de versão no orginial
         Relation originalRelation = new Relation();
@@ -200,20 +206,16 @@ public final class DocumentsController {
 
         //Cria relação de versão no novo objeto
         Relation versionRelation = new Relation();
-        versionRelation.setKind("hasVersion");
+        versionRelation.setKind("isVersionOf");
         versionRelation.getResource().addIdentifier(originalObaa.getGeneral().
                 getIdentifiers().get(0));
         List<Relation> relations2List = new ArrayList<>();
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
 
-        //abre a tela de edição de metadados da versão
-        Document dv = new Document();
         dv.setMetadata(versionObaa);
-
-        //o documento precisa ser salvo para gerar um id da base
-        docService.save(dv);
-
+        docService.save(d);
+        
         model.addAttribute("doc", dv);
         model.addAttribute("obaa", dv.getMetadata());
 
@@ -243,7 +245,6 @@ public final class DocumentsController {
         obaa.getGeneral().setIdentifiers(identifiers);
 
         d.setMetadata(obaa);
-//        docService.save(d);
 
         model.addAttribute("doc", d);
         model.addAttribute("obaa", d.getMetadata());

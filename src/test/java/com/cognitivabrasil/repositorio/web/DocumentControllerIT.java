@@ -312,7 +312,6 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(primary.isAuditory(), equalTo(false));
         assertThat(primary.isText(), equalTo(true));
         assertThat(primary.isTactile(), equalTo(false));
-        
     }
 
     
@@ -486,5 +485,33 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(meta.getIdentifier().get(0).getCatalog(), equalTo("URI"));
         assertThat(meta.getIdentifier().get(0).getEntry(), equalTo("http://www.w3.org/2001/XMLSchema-instance"));
         assertThat(meta.getSchema(), hasSize(1));
+    }
+    
+    @Test
+    public void testNewVersionOf(){
+        String result = controller.newVersionOf(uiModel, 1);
+        assertThat(result, equalTo("documents/new"));
+
+        Document dv = (Document) uiModel.get("doc");
+        assertThat(dv, notNullValue());
+        
+        em.flush();
+        
+        Document dOrg = docService.get(1);
+        
+        System.out.println(dOrg.getMetadata().getGeneral().getTitles().get(0));
+        
+        assertThat(dOrg.getMetadata().getGeneral().getTitles().get(0), equalTo(dv.getMetadata().getGeneral().getTitles().get(0)));
+        assertThat(dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/"+dv.getId()));
+        
+        assertThat(dOrg.getMetadata().getRelations(), hasSize(1));
+        assertThat(dOrg.getMetadata().getRelations().get(0).getKind(), equalTo("hasVersion"));
+        assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier(), hasSize(1));
+        String entryVersionOf = dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
+        assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryVersionOf));
+        
+        assertThat(dv.getMetadata().getRelations().get(0).getKind(), equalTo("isVersionOf"));
+        String entryOrg = dOrg.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
+        assertThat(dv.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryOrg));
     }
 }

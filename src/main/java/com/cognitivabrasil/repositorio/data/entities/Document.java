@@ -50,6 +50,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     public Document() {
         obaaEntry = "";
         deleted = false;
+        created = new DateTime();
     }
 
     @Id

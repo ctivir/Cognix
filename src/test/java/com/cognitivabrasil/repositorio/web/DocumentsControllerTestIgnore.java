@@ -82,7 +82,7 @@ public class DocumentsControllerTestIgnore extends AbstractTransactionalJUnit4Sp
         when(config.getProperty("Repositorio.rootPath", "/repositorio")).thenReturn("/repositorio");        
         ReflectionTestUtils.setField(controller, "config", config);
         
-        String result = controller.newVersionOf(uiModel, versionOf, request);
+        String result = controller.newVersionOf(uiModel, versionOf);
         assertThat(result, equalTo("documents/new"));
         
         
