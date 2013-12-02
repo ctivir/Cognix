@@ -157,6 +157,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(msg.getMessage(), equalTo("O documento solicitado não foi encontrado."));
     }
 
+    @Test
     public void testDeleteErrorPermission() throws IOException {
         HttpServletRequest request = logUserAndPermission(false);
 
