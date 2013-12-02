@@ -2,7 +2,6 @@ package com.cognitivabrasil.repositorio.web;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -22,7 +21,7 @@ public final class MainController {
     }
 
     @RequestMapping("/")
-    public String inicio(Model model) {
+    public String inicio() {
         return "redirect:/documents";
     }
 
