@@ -29,12 +29,7 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.util.Message;
 import cognitivabrasil.util.VCarder;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -42,11 +37,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,7 +63,7 @@ public final class DocumentsController {
     Properties config;
 
     public DocumentsController() {
-        log.info("Loaded DocumentsController");
+        log.debug("Loaded DocumentsController");
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -94,17 +86,6 @@ public final class DocumentsController {
         model.addAttribute("permDocAdmin", User.MANAGE_DOC);
         model.addAttribute("permCreateDoc", User.CREATE_DOC);
         return "documents/";
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    public String deleteAll(Model model) {
-        // TODO: getAll cannot be used if the collection is very big, have to
-        // use server-side pagination
-
-        docService.deleteAll();
-
-        model.addAttribute("documents", docService.getAll());
-        return "documents/index";
     }
 
     /**
