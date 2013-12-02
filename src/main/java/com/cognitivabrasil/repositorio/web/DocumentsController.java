@@ -29,6 +29,7 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.util.Message;
 import cognitivabrasil.util.VCarder;
+import com.cognitivabrasil.repositorio.services.SubjectService;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,6 +59,7 @@ public final class DocumentsController {
     private static final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
     DocumentService docService;
+    SubjectService subService;
     @Autowired
     @Qualifier("serverConfig")
     Properties config;
@@ -77,10 +79,9 @@ public final class DocumentsController {
         return "documents/";
     }
     
-    @RequestMapping(value = "/filter/{type}", method = RequestMethod.GET)
-    public String filterDiscipline(@PathVariable String type, Model model) {
-        // TODO: getAll cannot be used if the collection is very big, have to
-        // use server-side pagination
+    @RequestMapping(value = "/filter/{subject}", method = RequestMethod.GET)
+    public String filterDiscipline(@PathVariable String subject, Model model) {
+        // TODO: getAll Documents by the specific subject name
         model.addAttribute("documents", docService.getAll());
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("permDocAdmin", User.MANAGE_DOC);

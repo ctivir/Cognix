@@ -4,6 +4,7 @@
  */
 package com.cognitivabrasil.repositorio.data.repositories;
 
+import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SubjectRepository extends JpaRepository<Subject, Integer> {
    
-    public List<Subject> findByName(String name);
+    @Override
+    public List<Subject> findAll();
+    
+    public Subject findByName(String name);
    
 }
