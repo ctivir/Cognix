@@ -174,49 +174,6 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     }
     
     @Test
-    public void testEditErrorPermission() throws IOException {
-        HttpServletRequest request = logUserAndPermission(false);
-        String result = controller.edit(uiModel, 1, response, request);
-        assertThat(result, equalTo("ajax"));
-        assertThat(response.getStatus(), equalTo(HttpServletResponse.SC_FORBIDDEN));
-    }
-    
-    @Test
-    public void testManagerEditing() throws IOException {
-        HttpServletRequest request = logUserAndPermission(true);
-
-        String result = controller.edit(uiModel, 1, response, request);
-        assertThat(result, equalTo("documents/new"));
-
-        Document d = (Document) uiModel.get("doc");
-        assertThat(d, notNullValue());
-        OBAA obaa = (OBAA) uiModel.get("obaa");
-        assertThat(obaa, notNullValue());
-
-        DateTime date = DateTime.parse("2013-05-08T03:00:00Z");
-        assertThat(d.getCreated().withZone(DateTimeZone.UTC).isEqual(date), equalTo(true));
-
-        assertThat(obaa.getGeneral().getTitles().get(0), equalTo("Ataque a o TCP - Mitnick"));
-        assertThat(obaa.getGeneral().getKeywords(), hasSize(1));
-        assertThat(obaa.getGeneral().getKeywords(), hasItem("TCP"));
-    }
-
-    @Test
-    public void testAuthorEditing() throws IOException {
-        User loggerUser = userService.get(3);
-
-        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(auth);
-
-        MockHttpServletRequest request = new MockHttpServletRequest();
-
-        String result = controller.edit(uiModel, 5, response, request);
-        assertThat(result, equalTo("documents/new"));
-
-    }
-
-    @Test
     public void testNewDocument() {
         DateTime before = new DateTime();
         String result = controller.newShow(uiModel);
@@ -515,4 +472,85 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         String entryOrg = dOrg.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dv.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryOrg));
     }
+    
+    @Test
+    public void testEditErrorPermission() throws IOException {
+        HttpServletRequest request = logUserAndPermission(false);
+        String result = controller.edit(uiModel, 1, response, request);
+        assertThat(result, equalTo("ajax"));
+        assertThat(response.getStatus(), equalTo(HttpServletResponse.SC_FORBIDDEN));
+    }
+    
+    @Test
+    public void testManagerEditing() throws IOException {
+        HttpServletRequest request = logUserAndPermission(true);
+
+        String result = controller.edit(uiModel, 1, response, request);
+        assertThat(result, equalTo("documents/new"));
+
+        Document d = (Document) uiModel.get("doc");
+        assertThat(d, notNullValue());
+        OBAA obaa = (OBAA) uiModel.get("obaa");
+        assertThat(obaa, notNullValue());
+
+        DateTime date = DateTime.parse("2013-05-08T03:00:00Z");
+        assertThat(d.getCreated().withZone(DateTimeZone.UTC).isEqual(date), equalTo(true));
+
+        assertThat(obaa.getGeneral().getTitles().get(0), equalTo("Ataque a o TCP - Mitnick"));
+        assertThat(obaa.getGeneral().getKeywords(), hasSize(1));
+        assertThat(obaa.getGeneral().getKeywords(), hasItem("TCP"));
+    }
+
+    @Test
+    public void testAuthorEditing() throws IOException {
+        User loggerUser = userService.get(3);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+
+        String result = controller.edit(uiModel, 5, response, request);
+        assertThat(result, equalTo("documents/new"));
+
+    }
+    
+    @Test
+    public void testEditDoErrorPermission() throws IOException {
+        HttpServletRequest request = logUserAndPermission(false);
+        String result = controller.editDo(uiModel, 1, request, response);
+        assertThat(result, equalTo("ajax"));
+        assertThat(response.getStatus(), equalTo(HttpServletResponse.SC_FORBIDDEN));
+    }
+    
+    @Test
+    public void testEditDo() throws IOException {
+        User loggerUser = userService.get(2);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
+        
+        MockHttpServletRequest request = new MockHttpServletRequest();
+
+        Document doc = docService.get(1);
+
+        request.addParameter("obaa.general.titles[0]", "title1");
+        request.addParameter("obaa.general.keywords[0]", "keyword1");
+        request.addParameter("obaa.general.keywords[1]", "keyword2");
+        request.addParameter("obaa.general.identifiers[0].catalog", doc.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog());
+        request.addParameter("obaa.general.identifiers[0].entry", doc.getMetadata().getGeneral().getIdentifiers().get(0).getEntry());
+        
+        String result = controller.editDo(uiModel, doc.getId(), request, response);
+        assertThat(result, equalTo("redirect:/documents/"));
+
+        Document docResult = docService.get(1);
+        
+        assertThat(docResult.getMetadata().getGeneral().getTitles(), hasSize(1));
+        assertThat(docResult.getMetadata().getGeneral().getKeywords(), hasSize(2));
+        assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog(), equalTo("URI"));
+        assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/1"));
+    }
+    
 }
