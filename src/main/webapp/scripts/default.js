@@ -72,10 +72,10 @@ $(function() {
         
     $('.confirmLink').click(function(e) {
         e.preventDefault();
-        $(".dialog-confirm")
+        /*$(".dialog-confirm")
         .data('url', $(this).attr('href')) // sends url to the dialog
         .dialog('open'); // opens the dialog
-        $("#msgApagar").text($(this).attr('title'));
+        $("#msgApagar").text($(this).attr('title')); */
     //        $(" #botaoDialogo ").children("span").text($(this).text()); //altera o texto do botão submit do dialog
     });
     

@@ -243,7 +243,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "subject ")
+    @JoinColumn(name = "subject")
     public Subject getSubject() {
         return subject;
     }

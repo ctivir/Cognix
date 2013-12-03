@@ -1,6 +1,7 @@
 ALTER TABLE documents OWNER TO cognitiva;
 ALTER TABLE files OWNER TO cognitiva;
 ALTER TABLE users OWNER TO cognitiva;
+ALTER TABLE subject OWNER TO cognitiva;
 
 ALTER TABLE users ADD UNIQUE (login);
 ALTER TABLE documents ADD UNIQUE (obaa_entry);

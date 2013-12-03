@@ -54,7 +54,7 @@ var numerate = function() {
 
 };
 
-$(function() {
+$(function() {         
     
     $('input#location').on('keyup',function(){
             if($(this).val() == ''){
@@ -203,8 +203,8 @@ $(function() {
     });
 
 
-    $("input:submit, input:file, input:reset, button, .button").button();
-
+    $("input:submit, input:file, input:reset, button, .button").button();  
+    
     /*Dialogo de confirmacao*/
    /* var $dialog = $("#dialog-confirm-rm-file").dialog({
         resizable: true,

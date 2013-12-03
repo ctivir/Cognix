@@ -6,6 +6,7 @@ package com.cognitivabrasil.repositorio.services;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
+import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import java.io.IOException;
 import java.util.List;
@@ -45,6 +46,11 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<Document> getAll() {
         return docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
+    }
+    
+    @Override
+    public List<Document> getBySubject(Subject s) {
+        return docRep.findBySubject(s);
     }
 
     @Override

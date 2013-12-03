@@ -5,6 +5,7 @@
 package com.cognitivabrasil.repositorio.services;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
+import com.cognitivabrasil.repositorio.data.entities.Subject;
 import java.util.List;
 
 // TODO: Auto-generated Javadoc
@@ -43,6 +44,15 @@ public interface DocumentService {
      * @return All the documents that are not deleted
      */
     List<Document> getAll();
+    
+     /**
+     * Gets all NON-DELETED documents, by the subject, present in the System.
+     *
+     * Use with extreme care, as it might return to many results.
+     *
+     * @return Documents by the subject passed and that are not deleted
+     */
+    List<Document> getBySubject(Subject s);
     
     /**
      * Gets the document by ID.

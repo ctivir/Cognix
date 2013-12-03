@@ -29,6 +29,7 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.util.Message;
 import cognitivabrasil.util.VCarder;
+import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.services.SubjectService;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -82,7 +83,8 @@ public final class DocumentsController {
     @RequestMapping(value = "/filter/{subject}", method = RequestMethod.GET)
     public String filterDiscipline(@PathVariable String subject, Model model) {
         // TODO: getAll Documents by the specific subject name
-        model.addAttribute("documents", docService.getAll());
+        Subject s = subService.getSubjectByName(subject);
+        model.addAttribute("documents", docService.getBySubject(s));
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("permDocAdmin", User.MANAGE_DOC);
         model.addAttribute("permCreateDoc", User.CREATE_DOC);
