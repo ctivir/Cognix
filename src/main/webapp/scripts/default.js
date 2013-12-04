@@ -1,5 +1,5 @@
 $(function() {
-       
+    
     $('input:text').addClass("ui-corner-all");
     
     $(".btSemTexto").button({

@@ -60,6 +60,7 @@ public final class DocumentsController {
     private static final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
     DocumentService docService;
+    @Autowired           
     SubjectService subService;
     @Autowired
     @Qualifier("serverConfig")

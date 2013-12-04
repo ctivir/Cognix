@@ -9,7 +9,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 
     <http auto-config="true" use-expressions="true" request-matcher="regex">
-        <form-login login-page="/documents"
+        <form-login login-page="/documents?required=true"
                     authentication-failure-url="/documents?error=true"
                     default-target-url="/" />
         <remember-me />
@@ -35,8 +35,8 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         
         <intercept-url  pattern="/documents" method="GET"
                         access="permitAll" />
-       
-        <intercept-url  pattern="/documents/filter/.*" method="GET"
+        
+        <intercept-url  pattern="/documents((\?error=true)|(\?required=true))?" method="GET"
                         access="permitAll" />
         
         <intercept-url  pattern="/" method="GET"

@@ -66,8 +66,8 @@
 
     <body>
         
-        <tiles:insertAttribute name="header" ignore="true" />        
-                  
+        <tiles:insertAttribute name="header" ignore="true" />                
+        
         <div id="dialog-form" title="Adicionar"><jsp:text/></div>
 
         <div class="dialog-confirm hidden" title="Confirmação">
@@ -84,11 +84,16 @@
                     <strong id="error-type">Erro: </strong> <span id="errorThrown"><jsp:text/></span>
                 </p>
             </div>
-        </div>
-
+        </div>                        
+                
         <div id="headerWrapper"></div>
-
-        <div id="wrapper" class="ui-widget ui-widget-content ui-corner-all">                
+        <c:if test="${param.error == true }">
+            <div class="alert alert-danger">Login ou senha inválidos</div>
+        </c:if>
+        <c:if test="${param.required == true }">
+            <div class="alert alert-danger">Você precisa estar logado para acessar esta página</div>
+        </c:if>
+        <div id="wrapper" class="ui-widget ui-widget-content ui-corner-all">                   
                 <tiles:insertAttribute name="body" />
         </div>
         <div id="footterWrapper">
