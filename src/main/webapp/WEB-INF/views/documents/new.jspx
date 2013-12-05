@@ -59,6 +59,8 @@
             <div id="message" class="${message.type}">${message.message}</div>
         </c:if>
 
+            
+            
         <div id="entities-list" class="ui-widget">
             <form id="newobject" method="POST" modelAttribute="doc"
               acceptCharset="utf-8">
@@ -98,8 +100,13 @@
                         <legend>Informações Gerais</legend>
 
 
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                            
+                            <b>Sugestões: </b>As caixas marcadas com o fundo azul são sugestões e podem ser alteradas.
+                        </div>
                         <c:choose>
-                            <c:when test="${empty obaa.general.identifiers}">
+                            <c:when test="${empty obaa.general.identifiers}">                                
                                 <li class="identifier marcador multi" id="identifiers">
                                     <span class="folder">Identificador</span>
                                     <ul>
@@ -165,7 +172,7 @@
                             <c:when test="${empty obaa.general.titles}">
                                 <li class="addTitle marcador multi" id="titles">
                                     <span class="file">*Título </span>
-                                    <input id="titulo" name="general.titles[]" type="text" />                           
+                                    <input id="titulo" name="general.titles[]" type="text"/>
                                 </li>
                             </c:when>
                             <c:otherwise>

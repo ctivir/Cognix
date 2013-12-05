@@ -1,5 +1,6 @@
 package com.cognitivabrasil.repositorio.web;
 
+import cognitivabrasil.obaa.Educational.TypicalAgeRange;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,17 +9,15 @@ import java.util.List;
  * @author luiz
  */
 public class ObaaDto {
-    
+
     //General
     private String title;
     private String language;
     private String aggregationLevel;
     private String structure;
-    
     //Lifecycle
     private String author;
     private String data;
-    
     //Educational
     private String interactivityType;
     private String interactivityLevel;
@@ -28,13 +27,11 @@ public class ObaaDto {
     private String tipicalLearningTime;
     private String eduLanguage;
     private String synchronism;
-    
     //Accessibility
     private String visual;
     private String auditory;
     private String textual;
     private String tactil;
-    
     //Technical
     private String size;
     private String format;
@@ -44,14 +41,47 @@ public class ObaaDto {
     private String installationRemarks;
     private String duration;
     private String otherPlatformRequirements;
-    private List <String> supportedPlatforms;
+    private List<String> supportedPlatforms;
 
     public ObaaDto() {
+        //General
+        title = "";
+        language = "";
+        aggregationLevel = "";
+        structure = "";
+        
+        //Lifecycle
+        author = "";
+        data = "";
+        
+        //Educational
+        interactivityType = "";
+        interactivityLevel = "";
+        perception = "";
+        copresense = "";
+        reciprocity = "";
+        tipicalLearningTime = "";
+        eduLanguage = "";
+        synchronism = "";
+        
+        //Accessibility
+        visual = "";
+        auditory = "";
+        textual = "";
+        tactil = "";
+        
+        //Technical
+        size = "";
+        format = "";
+        requirementsType = "";
+        requirementsName = "";
+        requirementsMinimumVersion = "";
+        installationRemarks = "";
+        duration = "";
+        otherPlatformRequirements = "";
         supportedPlatforms = new ArrayList<>();
     }
 
-    
-    
     public String getTitle() {
         return title;
     }
@@ -251,20 +281,20 @@ public class ObaaDto {
     public void addSupportedPlatforms(String supportedPlatform) {
         this.supportedPlatforms.add(supportedPlatform);
     }
-        
+
     public String getSynchronism() {
         return synchronism;
     }
 
     public void setSynchronism(String synchronism) {
         this.synchronism = synchronism;
-    }    
-    
+    }
+
     public String getOtherPlatformRequirements() {
         return otherPlatformRequirements;
     }
 
     public void setOtherPlatformRequirements(String otherPlatformRequirements) {
         this.otherPlatformRequirements = otherPlatformRequirements;
-    }    
+    }
 }

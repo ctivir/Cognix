@@ -119,15 +119,15 @@ public final class DocumentsController {
         Message msg;
 
         Document d = docService.get(id);
-            if(d==null){
-                return new Message(Message.ERROR, "O documento solicitado não foi encontrado.");
-            }
-            if (!isManagerForThisDocument(d, request)) {
-                return new Message(Message.ERROR, "Acesso negado! Você não ter permissão para deletar este documento.");
-            }
-            docService.delete(d);
-            msg = new Message(Message.SUCCESS, "Documento excluido com sucesso");
-        
+        if (d == null) {
+            return new Message(Message.ERROR, "O documento solicitado não foi encontrado.");
+        }
+        if (!isManagerForThisDocument(d, request)) {
+            return new Message(Message.ERROR, "Acesso negado! Você não ter permissão para deletar este documento.");
+        }
+        docService.delete(d);
+        msg = new Message(Message.SUCCESS, "Documento excluido com sucesso");
+
         return msg;
     }
 
@@ -239,7 +239,7 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/new", params = "classPlan", method = RequestMethod.GET)
     public String newClassPlan(Model model) {
-        
+
         String result = newShow(model); //inicializa com o new basico
         
         Document d = (Document) model.asMap().get("doc");
@@ -486,7 +486,7 @@ public final class DocumentsController {
 
         /*Images*/
         boolean allImg = true;
-        final String IMAGE_STARTS = "image";
+        final String IMAGE = "image";
 
         /*Applications*/
         boolean allPdf = true;
@@ -500,13 +500,13 @@ public final class DocumentsController {
         }
 
         String mime = "";
-        
+
         for (Files file : files) {
 
             mime = file.getContentType();
             System.out.println("MIME Type: " + mime);
 
-            if (!mime.startsWith(IMAGE_STARTS)) {
+            if (!mime.startsWith(IMAGE)) {
                 allImg = false;
             }
 
@@ -520,7 +520,11 @@ public final class DocumentsController {
             String fileName = file.getName();
 
             // to remove the file extension
-            suggestions.setTitle(fileName.substring(0, fileName.lastIndexOf(".")));
+            if (fileName.contains(".")) {
+                suggestions.setTitle(fileName.substring(0, fileName.lastIndexOf(".")));
+            } else {
+                suggestions.setTitle(fileName);
+            }
         }
 
         //all image
@@ -531,23 +535,26 @@ public final class DocumentsController {
             suggestions.setAggregationLevel("1");
 
             //Educational
-            suggestions.setInteractivityType("expositive");            
+            suggestions.setInteractivityType("expositive");
             suggestions.setPerception("visual");
             suggestions.setSynchronism("false");
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
             suggestions.setInteractivityLevel("very_low");
-            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
-            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
+            
 
             //Accessibility
             suggestions.setVisual("true");
             suggestions.setAuditory("false");
             suggestions.setTactil("false");
-                                               
-            if (mime.endsWith("jpeg")||mime.endsWith("jpg")||mime.endsWith("png")||mime.endsWith("gif")){
-                System.out.println("true");
+            
+            //Technical
+            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
+            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
+            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
+            
+            if (mime.endsWith("jpeg") || mime.endsWith("jpg") || mime.endsWith("png") || mime.endsWith("gif")) {
+
                 suggestions.setRequirementsType("operatingSystem");
                 suggestions.setRequirementsName("any");
             }
@@ -556,12 +563,68 @@ public final class DocumentsController {
 
         //all PDF
         if (allPdf && !empty) {
-            System.out.println("\n*\n*\n*ALL PDF*\n*\n*\n");
+            //General
+            suggestions.setStructure("atomic");
+            suggestions.setAggregationLevel("1");
+            
+            //Educational
+            suggestions.setInteractivityType("expositive");
+            suggestions.setPerception("visual");
+            suggestions.setSynchronism("false");
+            suggestions.setCopresense("false");
+            suggestions.setReciprocity(Reciprocity.ONE_ONE);
+            suggestions.setInteractivityLevel("very_low");
+            suggestions.addSupportedPlatforms("web");
+            suggestions.addSupportedPlatforms("mobile");
+            suggestions.addSupportedPlatforms("dtv");
+
+            //Accessibility
+            suggestions.setVisual("true");
+            suggestions.setAuditory("false");
+            suggestions.setTactil("false");
+            suggestions.setTextual("true");
+            
+            //Technical
+            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
+            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
+            
+            suggestions.setOtherPlatformRequirements("É necessário um programa como o Adobe Reader para ver esse arquivo.");
+            suggestions.setRequirementsType("operatingSystem");
+            suggestions.setRequirementsName("any");
+            
+            
         }
 
         //all DOC
         if (allDoc && !empty) {
-            System.out.println("\n*\n*\n*ALL DOC*\n*\n*\n");
+             //General
+            suggestions.setStructure("atomic");
+            suggestions.setAggregationLevel("1");
+            
+            //Educational
+            suggestions.setInteractivityType("expositive");
+            suggestions.setPerception("visual");
+            suggestions.setSynchronism("false");
+            suggestions.setCopresense("false");
+            suggestions.setReciprocity(Reciprocity.ONE_ONE);
+            suggestions.setInteractivityLevel("very_low");
+            suggestions.addSupportedPlatforms("web");
+            suggestions.addSupportedPlatforms("mobile");
+            suggestions.addSupportedPlatforms("dtv");
+
+            //Accessibility
+            suggestions.setVisual("true");
+            suggestions.setAuditory("false");
+            suggestions.setTactil("false");
+            suggestions.setTextual("true");
+            
+            //Technical
+            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
+            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
+            
+            suggestions.setOtherPlatformRequirements("É necessário um programa como o Microsoft Word para ver esse arquivo.");
+            suggestions.setRequirementsType("operatingSystem");
+            suggestions.setRequirementsName("any");
         }
 
 

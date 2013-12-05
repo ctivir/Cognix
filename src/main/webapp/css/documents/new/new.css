@@ -16,3 +16,4 @@ input[type="file"]{min-width:50%}
 #files td:first-child{text-align: left;}
 .infoBox{margin-bottom: 10px;}
 .sliderSelect {border: transparent;background: transparent;-webkit-appearance: none; appearance: none; text-indent: 0.01px;text-overflow: '';margin-bottom: 5px}
+.suggestions {background-color: lightblue;}
