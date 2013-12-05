@@ -4,6 +4,8 @@ import cognitivabrasil.obaa.General.General;
 import cognitivabrasil.obaa.OBAA;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import org.apache.commons.io.FileUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -40,11 +42,25 @@ public class DocumentTest {
     }
 
     @Test
+    public void testTimestamp() {
+        Document d = new Document();
+        d.setCreated(new DateTime(1984, 8, 21, 0, 0, 0));
+        assertThat(d.getTimestamp(), equalTo(new GregorianCalendar(1984, GregorianCalendar.AUGUST, 21).getTime()));
+    }
+    
+    @Test
     public void testTimestampFormatted() {
         Document d = new Document();
         d.setCreated(new DateTime(1984, 8, 21, 0, 0, 0));
 
         assertThat(d.getTimestampFormatted(), equalTo("21/08/1984 00:00:00"));
+    }
+    
+    @Test
+    public void testTimestampFormattedNull() {
+        Document d = new Document();
+        d.setCreated(null);
+        assertThat(d.getTimestampFormatted(), equalTo(""));
     }
 
     @Test
@@ -84,5 +100,13 @@ public class DocumentTest {
         d.setMetadata(obaa);
         
         assertThat(d.getTitle(), equalTo("Marcos"));        
+    }
+
+    @Test
+    public void testGetXmlEqualToGetObaaXML(){
+        Document d = new Document();
+        d.setObaaXml("<xml>marcos</xml>");
+        assertThat(d.getXml(), equalTo("<xml>marcos</xml>"));
+        assertThat(d.getObaaXml(), equalTo(d.getXml()));
     }
 }

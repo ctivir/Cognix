@@ -183,53 +183,43 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
         this.files = files;
     }
 
-    public void addFile(Files f) {
-        if (files == null) {
-            files = new ArrayList<>();
-        }
-        files.add(f);
-    }
-
     @Transient
     public String getTitle() {
         if (getMetadata().getGeneral() == null || getMetadata().getGeneral().getTitles().isEmpty()) {
             return "Sem título";
         }
-        try {
-            return getMetadata().getGeneral().getTitles().get(0);
-        } catch (NullPointerException e) {
-            log.error(e);
-            return "NullPointer";
-        } catch (IndexOutOfBoundsException e) {
-            log.error(e);
-            return "IndexOutOfBounds";
-        }
+        return getMetadata().getGeneral().getTitles().get(0);
     }
 
     /**
-     * Removes a file from the collection. (does NOT delete it from database)
-     *
-     * @param item
+     * Return the OBAA xml. To satisfy HibernateOaiDocument.
+     * @return OBAA xml
      */
-    public void removeFile(Files item) {
-        this.files.remove(item);
-    }
-
     @Transient
+    @Override
     public String getXml() {
         return getObaaXml();
     }
 
     @Transient
+    @Override
+    /**
+     * To satisfy HibernateOaiDocument.
+     * return ObaaEntry
+     */
     public String getOaiIdentifier() {
         return getObaaEntry();
     }
 
     @Transient
+    @Override
+    /**
+     * To satisfy HibernateOaiDocument. Sets not yet implemented.
+     * return Empty set.
+     */
     public Collection<String> getSets() {
         // TODO: currently we return an empty set, should implement this functionality
-        Collection<String> c = new HashSet<String>();
-        return c;
+        return new HashSet<>();
     }
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
