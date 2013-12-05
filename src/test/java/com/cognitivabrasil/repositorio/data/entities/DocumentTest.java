@@ -109,4 +109,20 @@ public class DocumentTest {
         assertThat(d.getXml(), equalTo("<xml>marcos</xml>"));
         assertThat(d.getObaaXml(), equalTo(d.getXml()));
     }
+    
+    @Test
+    public void testGetOAiIdentifier(){
+        Document d = new Document();
+        d.setObaaEntry("marcos");
+        assertThat(d.getOaiIdentifier(), equalTo("marcos"));
+    }
+    
+    @Test
+    /**
+     * Just to test the existence.
+     */
+    public void testGetSets(){
+        Document d = new Document();
+        assertThat(d.getSets(), notNullValue());
+    }
 }
