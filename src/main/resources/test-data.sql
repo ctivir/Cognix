@@ -16,7 +16,7 @@ INSERT INTO documents (id, obaa_entry,created, owner, obaaxml, subject) VALUES (
 
 INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (2,'teste2.txt','text/plain',42,'diretorio-nao-existe',1);
 INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (1,'teste.txt','text/plain',42,'diretorio-nao-existe',1);
-INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (3,'teste3.txt','text/plain',42,'/temp/1fde1am3.pdf',2);
+INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (3,'teste3.txt','text/plain',42,'/temp/1fde1am3.pdf',3);
 INSERT INTO files (id, name,content_type, file_size, location, document) VALUES (4,'file.test','text/plain',5,'./src/test/resources/files/file.test',5);
 
 INSERT INTO subject (id, name) VALUES (1,'ciencias');

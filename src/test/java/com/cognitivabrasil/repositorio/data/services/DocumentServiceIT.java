@@ -11,6 +11,10 @@ import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -32,7 +36,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
  * Integration tests of the DocumentService
- * 
+ *
  * @author Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
  * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  */
@@ -88,15 +92,15 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(docService.getAll(), hasSize(before - 1));
         assertThat(fService.getAll(), hasSize(filesBefore - numFiles));
     }
-    
+
     @Test
-    public void testDeletedDocument(){
+    public void testDeletedDocument() {
         Document d = docService.get(1);
         docService.delete(d);
 
         em.flush();
         em.clear();
-        
+
         d = docService.get(1);
         assertThat(d.isDeleted(), equalTo(true));
         assertThat(d.getFiles(), hasSize(0));
@@ -119,14 +123,14 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(docService.getAll(), hasSize(0));
         assertThat(fService.getAll(), hasSize(0));
     }
-    
+
     @Test
     public void testGetByObaaEntry() {
         Document d = docService.get("entry2");
         assertThat(d, notNullValue());
         assertThat(d.getId(), equalTo(2));
     }
-    
+
     @Test
     public void testSave() {
         Document d = new Document();
@@ -157,13 +161,13 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertEquals(f2.getLocation(), "someplace");
 
     }
-    
+
     @Test
-    public void testOwner(){
+    public void testOwner() {
         Document d = docService.get(1);
         assertThat(d.getOwner().getName(), equalTo("Marcos Nunes"));
     }
-    
+
     @Test
     public void testDeleteEmpty() {
         int before;
@@ -171,22 +175,36 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         docService.deleteEmpty();
         assertThat(docRep.findAll().size(), equalTo(before - 1));
     }
-    
+
     @Test
-    public void testSubject(){
+    public void testSubject() {
         Document d = docService.get(5);
         assertThat(d.getSubject().getName(), equalTo("ciencias"));
     }
-    
+
     @Test
-    public void testGetBySubject(){
+    public void testGetBySubject() {
         Subject subject = new Subject();
         subject.setName("ciencias");
         subject.setId(1);
         List<Document> docs = docService.getBySubject(subject);
-        
+
         assertThat(docs, hasSize(1));
         assertThat(docs.get(0).getId(), equalTo(5));
     }
-    
+
+    @Test
+    public void testDeleteWithFile() throws IOException {
+        String location = "./src/test/resources/file.test";
+        File testFile = new File(location);
+
+        try (PrintWriter gravador = new PrintWriter(new FileWriter(testFile))) {
+            gravador.print("Arquivo criado pelo teste. Pode ser apagado sem problemas.");
+        }
+        Document d = docService.get(3);
+        d.getFiles().get(0).setLocation(location);
+        docService.save(d);
+
+        docService.delete(d);
+    }
 }
