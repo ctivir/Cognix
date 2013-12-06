@@ -5,11 +5,11 @@ INSERT INTO users (id,name,login,role,permissions,password) VALUES (3, 'Noob', '
 INSERT INTO documents (id, obaa_entry,created, owner, obaaxml) VALUES (1, 'entry1', '2013-05-08 03:00:00', 2, '<obaa:obaa xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd" xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <obaa:general><obaa:title>Ataque a o TCP - Mitnick</obaa:title><obaa:identifier><obaa:catalog>URI</obaa:catalog><obaa:entry>http://cognitivabrasil.com.br/repositorio/documents/1</obaa:entry></obaa:identifier><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>');
 
-INSERT INTO documents (id, obaa_entry,created,deleted) VALUES (2, 'entry2', '2013-05-08',true);
+INSERT INTO documents (id, obaa_entry,created,deleted, subject) VALUES (2, 'entry2', '2013-05-08',true,1);
 
 INSERT INTO documents (id, obaa_entry,created) VALUES (3, 'entry3', '2999-07-10 21:41:00');
 
-INSERT INTO documents (id, obaa_entry,created) VALUES (4, 'entry4', '2013-07-10 21:41:10');
+INSERT INTO documents (id, obaa_entry,created, subject) VALUES (4, 'entry4', '2013-07-10 21:41:10', 1);
 
 INSERT INTO documents (id, obaa_entry,created, owner, obaaxml, subject) VALUES (5, 'entry5', '2013-05-08 03:10:00', 3, '<obaa:obaa xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd" xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <obaa:general><obaa:title>Ataque a o TCP - Mitnick</obaa:title><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>',1);

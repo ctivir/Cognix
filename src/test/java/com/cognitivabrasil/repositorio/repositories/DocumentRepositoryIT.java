@@ -69,7 +69,7 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
         Subject s = new Subject();
         s.setId(1);
         s.setName("ciencias");
-        List<Document> d = docRep.findBySubject(s);
+        List<Document> d = docRep.findBySubjectAndDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(s);
         assertThat(d.get(0).getId(), equalTo(5));
     }
     

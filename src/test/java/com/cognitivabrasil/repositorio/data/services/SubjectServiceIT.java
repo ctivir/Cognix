@@ -4,21 +4,13 @@
  */
 package com.cognitivabrasil.repositorio.data.services;
 
-import cognitivabrasil.obaa.General.General;
-import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.SubjectRepository;
 import com.cognitivabrasil.repositorio.services.SubjectService;
-import com.cognitivabrasil.repositorio.services.FileService;
-import java.util.ArrayList;
 
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import org.joda.time.LocalDate;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +49,5 @@ public class SubjectServiceIT extends AbstractTransactionalJUnit4SpringContextTe
         List<Subject> s = subService.getAll();
         assertThat(s, hasSize(3));
     }
-    
+        
 }

@@ -50,7 +50,7 @@ public class DocumentServiceImpl implements DocumentService {
     
     @Override
     public List<Document> getBySubject(Subject s) {
-        return docRep.findBySubject(s);
+        return docRep.findBySubjectAndDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(s);
     }
 
     @Override

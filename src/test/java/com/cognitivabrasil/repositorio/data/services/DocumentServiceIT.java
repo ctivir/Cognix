@@ -178,4 +178,15 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(d.getSubject().getName(), equalTo("ciencias"));
     }
     
+    @Test
+    public void testGetBySubject(){
+        Subject subject = new Subject();
+        subject.setName("ciencias");
+        subject.setId(1);
+        List<Document> docs = docService.getBySubject(subject);
+        
+        assertThat(docs, hasSize(1));
+        assertThat(docs.get(0).getId(), equalTo(5));
+    }
+    
 }

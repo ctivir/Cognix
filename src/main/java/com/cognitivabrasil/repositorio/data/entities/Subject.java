@@ -44,16 +44,5 @@ public class Subject {
 
     public void setName(String name) {
         this.name = name;
-    }
-    
-    @OneToMany(mappedBy = "subject")
-    @OrderBy("created ASC")
-    public List<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(List<Document> documents) {
-        this.documents = documents;
-    }
-        
+    }        
 }
