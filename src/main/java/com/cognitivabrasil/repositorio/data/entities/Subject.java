@@ -25,9 +25,8 @@ import javax.persistence.Temporal;
 public class Subject {
     
     private int id;
-    private String name;
-    private List<Document> documents;
-    
+    private String name; 
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
