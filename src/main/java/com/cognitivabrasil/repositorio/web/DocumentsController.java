@@ -383,6 +383,7 @@ public final class DocumentsController {
 
         Long size;
 
+        //TODO: isso tem que sair daqui e não precisa mais do else
         if (originalTechical.getSize() == null) {
             size = 0L;
             for (Files f : d.getFiles()) {

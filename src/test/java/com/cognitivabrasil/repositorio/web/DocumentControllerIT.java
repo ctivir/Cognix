@@ -287,8 +287,6 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         Document doc = new Document();
-        doc.setCreated(new DateTime());
-
         
         Files file = new Files();
         file.setName("001.jpg");
@@ -443,6 +441,37 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(meta.getIdentifier().get(0).getCatalog(), equalTo("URI"));
         assertThat(meta.getIdentifier().get(0).getEntry(), equalTo("http://www.w3.org/2001/XMLSchema-instance"));
         assertThat(meta.getSchema(), hasSize(1));
+    }
+    
+    @Test
+    public void testNewDoSizeExisting() throws IOException {
+        User loggerUser = new User();
+        loggerUser.setName("marcos");
+        loggerUser.setUsername("marcos");
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
+        
+        MockHttpServletRequest request = new MockHttpServletRequest();
+
+        Document doc = new Document();
+        doc.setFiles(new ArrayList<Files>());
+        docService.save(doc);
+        
+        request.addParameter("obaa.general.identifiers[0].catalog", "URI");
+        request.addParameter("obaa.general.identifiers[0].entry", "5");
+        request.addParameter("obaa.general.titles[0]", "title1");
+        
+        String result = controller.newDo(request, doc.getId());
+        assertThat(result, equalTo("redirect:/documents/"));
+
+        int id = doc.getId();
+
+
+        Document docResult = docService.get(id);
+        assertThat(docResult.getMetadata().getGeneral().getTitles(), hasSize(1));
+        assertThat(docResult.getMetadata().getGeneral().getTitles().get(0), equalTo("title1"));
     }
     
     @Test
