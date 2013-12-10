@@ -38,6 +38,7 @@ import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.services.SubjectService;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -157,7 +158,9 @@ public final class DocumentsController {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return "ajax";
         }
-        return setOBAAFiles(d, request);
+        setOBAAFiles(d, request);
+        
+        return ("redirect:/documents/");
     }
 
     @RequestMapping(value = "/new", params = "versionOf", method = RequestMethod.GET)
@@ -213,7 +216,10 @@ public final class DocumentsController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String newShow(Model model) {
+    public String newShow(Model model) {                
+        
+        List<Subject> allSubjects = subService.getAll();
+        
         Document d = new Document();
         d.setCreated(new DateTime());
         //o documento precisa ser salvo para gerar um id da base
@@ -355,11 +361,20 @@ public final class DocumentsController {
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
         Document doc = docService.get(id);
-        doc.setOwner(UsersController.getCurrentUser());
-        return setOBAAFiles(doc, request);
+        
+        List<String> keysObaa = doc.getMetadata().getGeneral().getKeywords();
+        List<Subject> allSubjects = subService.getAll();
+        if(keysObaa.contains("ciências")){
+           String result = retiraAcentos("ciências");
+        }
+        
+        doc.setOwner(UsersController.getCurrentUser());         
+        setOBAAFiles(doc, request);                             
+        
+        return ("redirect:/documents/");
     }
 
-    private String setOBAAFiles(Document d, final HttpServletRequest request) {
+    private void setOBAAFiles(Document d, final HttpServletRequest request) {
         log.debug("Trying to save");
 
         Map<String, String[]> parMap = request.getParameterMap();
@@ -451,8 +466,7 @@ public final class DocumentsController {
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
         d.setMetadata(obaa);
-        docService.save(d);
-        return "redirect:/documents/";
+        docService.save(d);        
     }
 
     private String createUri(Document d) {
@@ -631,5 +645,20 @@ public final class DocumentsController {
         }
 
         return suggestions;
+    }
+    
+    /**
+     * 
+     * Return s without accent mark
+     * 
+     * @param s
+     * @return 
+     */
+    private String retiraAcentos(String s){
+       
+        String output = Normalizer.normalize(s, Normalizer.Form.NFD);             
+        output = output.replaceAll("[^\\p{ASCII}]", "");  
+        return output;
+        
     }
 }
