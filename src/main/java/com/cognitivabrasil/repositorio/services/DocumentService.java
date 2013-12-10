@@ -15,7 +15,7 @@ import java.util.List;
  * This will be injected by Spring, and can be used to do operations on FEB
  * documents.
  *
- * @author Paulo Schreiner <paulo@jorjao81.com>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  */
 public interface DocumentService {
 

@@ -8,7 +8,9 @@ import cognitivabrasil.obaa.Educational.Educational;
 import cognitivabrasil.obaa.Educational.IntendedEndUserRole;
 import cognitivabrasil.obaa.Educational.Interaction;
 import cognitivabrasil.obaa.Educational.InteractivityLevel;
+import cognitivabrasil.obaa.Educational.InteractivityType;
 import cognitivabrasil.obaa.Educational.LearningContentType;
+import cognitivabrasil.obaa.Educational.LearningResourceType;
 import cognitivabrasil.obaa.Educational.Perception;
 import cognitivabrasil.obaa.Educational.Reciprocity;
 import cognitivabrasil.obaa.General.General;
@@ -16,10 +18,13 @@ import cognitivabrasil.obaa.General.Identifier;
 import cognitivabrasil.obaa.General.Keyword;
 import cognitivabrasil.obaa.General.Structure;
 import cognitivabrasil.obaa.LifeCycle.LifeCycle;
+import cognitivabrasil.obaa.LifeCycle.Role;
+import cognitivabrasil.obaa.LifeCycle.Status;
 import cognitivabrasil.obaa.Metametadata.Contribute;
 import cognitivabrasil.obaa.Metametadata.MetadataSchema;
 import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
+import cognitivabrasil.obaa.Relation.Kind;
 import cognitivabrasil.obaa.Relation.Relation;
 import cognitivabrasil.obaa.Rights.Rights;
 import cognitivabrasil.obaa.Technical.*;
@@ -49,8 +54,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller para documentos
  *
- * @author Paulo Schreiner <paulo@jorjao81.com>
- * @author Marcos Nunes <marcos@cognitiva.com.br>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
+ * @author Marcos Nunes <marcos@cognitivabrasil.com.br>
  */
 @Controller("documents")
 @RequestMapping("/documents")
@@ -183,15 +188,15 @@ public final class DocumentsController {
 
         //Cria relação de versão no orginial
         Relation originalRelation = new Relation();
-        originalRelation.setKind("hasVersion");
+        originalRelation.setKind(Kind.HASVERSION);
         originalRelation.getResource().addIdentifier(versionId);
-        List relationsList = new ArrayList<>();
+        List<Relation> relationsList = new ArrayList<>();
         relationsList.add(originalRelation);
         originalObaa.setRelations(relationsList);
 
         //Cria relação de versão no novo objeto
         Relation versionRelation = new Relation();
-        versionRelation.setKind("isVersionOf");
+        versionRelation.setKind(Kind.ISVERSIONOF);
         versionRelation.getResource().addIdentifier(originalObaa.getGeneral().
                 getIdentifiers().get(0));
         List<Relation> relations2List = new ArrayList<>();
@@ -249,7 +254,7 @@ public final class DocumentsController {
         General general = lo.getGeneral();
         general.addLanguage("pt-BR");
         Structure s = new Structure();
-        s.setText("collection");
+        s.setText(Structure.COLLECTION);
         general.setStructure(s);
         general.setAggregationLevel(3);
         general.addKeyword("Plano de Aula");
@@ -258,7 +263,7 @@ public final class DocumentsController {
 
         LifeCycle lifeCycle = new LifeCycle();
         lifeCycle.setVersion("1");
-        lifeCycle.setStatus("finalized");
+        lifeCycle.setStatus(Status.FINALIZED);
 
         cognitivabrasil.obaa.LifeCycle.Contribute contribute;
         contribute = new cognitivabrasil.obaa.LifeCycle.Contribute();
@@ -267,7 +272,7 @@ public final class DocumentsController {
         autor.setName("do Brasil", "Ministério da Educação", "Ministério da Educação do Brasil");
 
         contribute.addEntity(autor.getVCard());
-        contribute.setRole("publisher");
+        contribute.setRole(Role.PUBLISHER);
 
         // today date
         Date date = new Date();
@@ -282,12 +287,12 @@ public final class DocumentsController {
 
         Requirement requirement = new Requirement();
         OrComposite orComposite = new OrComposite();
-        orComposite.setType("operatingSystem");
-        orComposite.setName("multiOs");
+        orComposite.setType(Type.OPERATINGSYSTEM);
+        orComposite.setName(Name.MULTIOS);
 
         OrComposite orComposite2 = new OrComposite();
-        orComposite2.setType("browser");
-        orComposite2.setName("any");
+        orComposite2.setType(Type.BROWSER);
+        orComposite2.setName(Name.ANY);
 
         requirement.addOrComposite(orComposite);
         requirement.addOrComposite(orComposite2);
@@ -302,9 +307,9 @@ public final class DocumentsController {
         lo.setTechnical(technical);
 
         Educational educational = new Educational();
-        educational.setInteractivityType("expositive");
-        educational.addLearningResourceType("lecture");
-        educational.setInteractivityLevel(InteractivityLevel.VERYLOW);
+        educational.setInteractivityType(InteractivityType.EXPOSITIVE);
+        educational.addLearningResourceType(LearningResourceType.LECTURE);
+        educational.setInteractivityLevel(InteractivityLevel.VERY_LOW);
         educational.addDescription("Plano de aula envolvendo o uso do computador ou recursos alternativos.");
         educational.addLanguage("pt-BR");
         educational.setLearningContentType(LearningContentType.PROCEDIMENTAL);
@@ -424,7 +429,7 @@ public final class DocumentsController {
         VCarder grafica = new VCarder();
         grafica.setName("", userName, userName);
         c.addEntity(grafica.getVCard());
-        c.setRole("creator");
+        c.setRole(Role.AUTHOR);
 
         // today date
         Date date = new Date();
@@ -505,19 +510,16 @@ public final class DocumentsController {
         for (Files file : files) {
 
             mime = file.getContentType();
-            System.out.println("MIME Type: " + mime);
+            log.debug("MIME Type: " + mime);
 
             if (!mime.startsWith(IMAGE)) {
                 allImg = false;
-            }
-
-            if (!mime.equals(PDF_MIMETYPE)) {
+            } else if (!mime.equals(PDF_MIMETYPE)) {
                 allPdf = false;
-            }
-
-            if (!mime.equals(DOC_MIMETYPE)) {
+            } else if (!mime.equals(DOC_MIMETYPE)) {
                 allDoc = false;
             }
+            
             String fileName = file.getName();
 
             // to remove the file extension
@@ -532,16 +534,16 @@ public final class DocumentsController {
         if (allImg && !empty) {
 
             //General
-            suggestions.setStructure("atomic");
+            suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
 
             //Educational
-            suggestions.setInteractivityType("expositive");
-            suggestions.setPerception("visual");
+            suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
+            suggestions.setPerception(Perception.VISUAL);
             suggestions.setSynchronism("false");
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
-            suggestions.setInteractivityLevel("very_low");
+            suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
             
 
             //Accessibility
@@ -556,28 +558,25 @@ public final class DocumentsController {
             
             if (mime.endsWith("jpeg") || mime.endsWith("jpg") || mime.endsWith("png") || mime.endsWith("gif")) {
 
-                suggestions.setRequirementsType("operatingSystem");
-                suggestions.setRequirementsName("any");
+                suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
+                suggestions.setRequirementsName(Name.ANY);
             }
 
-        }
-
-        //all PDF
-        if (allPdf && !empty) {
+        }else if (allPdf && !empty) { //all PDF
             //General
-            suggestions.setStructure("atomic");
+            suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
             
             //Educational
-            suggestions.setInteractivityType("expositive");
-            suggestions.setPerception("visual");
+            suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
+            suggestions.setPerception(Perception.VISUAL);
             suggestions.setSynchronism("false");
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
-            suggestions.setInteractivityLevel("very_low");
-            suggestions.addSupportedPlatforms("web");
-            suggestions.addSupportedPlatforms("mobile");
-            suggestions.addSupportedPlatforms("dtv");
+            suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
+            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
+            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
+            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
 
             //Accessibility
             suggestions.setVisual("true");
@@ -590,28 +589,25 @@ public final class DocumentsController {
             suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
             
             suggestions.setOtherPlatformRequirements("É necessário um programa como o Adobe Reader para ver esse arquivo.");
-            suggestions.setRequirementsType("operatingSystem");
-            suggestions.setRequirementsName("any");
+            suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
+            suggestions.setRequirementsName(Name.ANY);
             
             
-        }
-
-        //all DOC
-        if (allDoc && !empty) {
+        }else if (allDoc && !empty) { //all DOC
              //General
-            suggestions.setStructure("atomic");
+            suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
             
             //Educational
-            suggestions.setInteractivityType("expositive");
-            suggestions.setPerception("visual");
+            suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
+            suggestions.setPerception(Perception.VISUAL);
             suggestions.setSynchronism("false");
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
-            suggestions.setInteractivityLevel("very_low");
-            suggestions.addSupportedPlatforms("web");
-            suggestions.addSupportedPlatforms("mobile");
-            suggestions.addSupportedPlatforms("dtv");
+            suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
+            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
+            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
+            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
 
             //Accessibility
             suggestions.setVisual("true");
@@ -624,8 +620,8 @@ public final class DocumentsController {
             suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
             
             suggestions.setOtherPlatformRequirements("É necessário um programa como o Microsoft Word para ver esse arquivo.");
-            suggestions.setRequirementsType("operatingSystem");
-            suggestions.setRequirementsName("any");
+            suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
+            suggestions.setRequirementsName(Name.ANY);
         }
 
 

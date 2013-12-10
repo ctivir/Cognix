@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Controller geral do Repositorio
  *
  * @author Cognitiva Brasil
- * @author Paulo Schreiner <paulo@jorjao81.com>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  * @author Marcos Freitas Nunes <marcosn@gmail.com>
  */
 @Controller("main")

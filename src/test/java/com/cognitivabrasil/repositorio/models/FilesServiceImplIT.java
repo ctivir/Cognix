@@ -23,7 +23,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 /**
  * Integration tests of the UsuarioServiceImpl
  *
- * @author Paulo Schreiner <paulo@jorjao81.com>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)

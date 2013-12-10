@@ -27,7 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
- * @author Paulo Schreiner <paulo@jorjao81.com>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  * @author Marcos Nunes <marcosn@gmail.com>
  *
  */

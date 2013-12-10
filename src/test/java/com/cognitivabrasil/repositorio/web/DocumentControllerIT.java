@@ -249,7 +249,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         Educational educational = obaa.getEducational();
         assertThat(educational.getInteractivityType(), equalTo("expositive"));
         assertThat(educational.getLearningResourceTypesString(), hasItem("lecture"));
-        assertThat(educational.getInteractivityLevel().toString(), equalTo(InteractivityLevel.VERYLOW));
+        assertThat(educational.getInteractivityLevel().toString(), equalTo(InteractivityLevel.VERY_LOW));
         assertThat(educational.getDescriptions().get(0), equalTo("Plano de aula envolvendo o uso do computador ou recursos alternativos."));
         assertThat(educational.getLanguages().get(0), equalTo("pt-BR"));
         assertThat(educational.getLearningContentType(), equalTo(LearningContentType.PROCEDIMENTAL));
@@ -434,7 +434,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificOtherPlatformRequirements(), equalTo("otherPlatformRequirements"));
         Metametadata meta = docResult.getMetadata().getMetametadata();
         assertThat(meta.getContribute().get(0).getFirstEntity(),equalTo("BEGIN:VCARD\nVERSION:3.0\nN:marcos;;;;\nFN:marcos\nEND:VCARD"));
-        assertThat(meta.getContribute().get(0).getRole(),equalTo("creator"));
+        assertThat(meta.getContribute().get(0).getRole(),equalTo("author"));
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         assertThat(meta.getContribute().get(0).getDate(), equalTo(dateFormat.format(date)));

@@ -29,7 +29,7 @@ import org.junit.Ignore;
  * Ir provides the DBUnit helper functions common to all DAO tests.
  *
  *
- * @author Paulo Schreiner <paulo@jorjao81.com>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  */
 @Ignore
 public abstract class AbstractServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
