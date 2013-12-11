@@ -358,8 +358,16 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
-        Document doc = docService.get(id);
+        Document doc = docService.get(id);                
         
+        List<String> keysObaa = doc.getMetadata().getGeneral().getKeywords();
+        List<Subject> allSubjects = subService.getAll();
+        String NameSubject = "";
+        for(String key : keysObaa){
+            if(allSubjects.contains(retiraAcentos(key).toLowerCase())){
+                NameSubject = retiraAcentos(key).toLowerCase();
+            }
+        }
         
         doc.setOwner(UsersController.getCurrentUser());         
         setOBAAFiles(doc, request);                             
