@@ -619,7 +619,12 @@
 
                     <fieldset class="sectionwrap marcador single" id="technical">
                         <legend>Técnico</legend>                                               
-
+                        <jsp:useBean id="orCompositeType" class="cognitivabrasil.obaa.Technical.Type" >
+                            <jsp:setProperty name="orCompositeType" property="locale" value="pt-BR" />
+                        </jsp:useBean>
+                        <jsp:useBean id="orCompositeName" class="cognitivabrasil.obaa.Technical.Name" >
+                            <jsp:setProperty name="orCompositeName" property="locale" value="pt-BR" />
+                        </jsp:useBean>
                         <c:choose>
                             <c:when test="${empty obaa.technical.requirement}">
                                 <li class="requirement marcador multi" id="requirement">
@@ -630,11 +635,11 @@
                                             <ul>
                                                 <li class="marcador single" id="type">
                                                     <span class="file">Tipo</span>
-                                                    <input id="type" name="technical.requirements.orComposite.type" type="text"/>
+                                                    <cgbr:htmlSelectSimple values="${orCompositeType.mapOfTerms}" />
                                                 </li>
                                                 <li class="name marcador single" id="name">
                                                     <span class="file">Nome</span>
-                                                    <input id="name" name="technical.requirements.orComposite.name" type="text" />
+                                                    <cgbr:htmlSelectSimple values="${orCompositeName.mapOfTerms}" />
                                                 </li>
                                                 <li class="marcador single" id="minimumVersion">
                                                     <span class="file">Versão mínima</span>
@@ -665,13 +670,13 @@
                                                         <c:if test="${!empty orComposite.type}">
                                                             <li class="marcador single" id="type">
                                                                 <span class="file">Tipo</span>
-                                                                <input id="type" name="technical.requirement[].orComposite[].type" type="text" value="${orComposite.type}" />
+                                                                <cgbr:htmlSelect selected="${orComposite.type}" values="${orCompositeType.mapOfTerms}" />
                                                             </li>
                                                         </c:if>
                                                         <c:if test="${!empty orComposite.name}">
                                                             <li class="name marcador single" id="name">
                                                                 <span class="file">Nome</span>
-                                                                <input id="name" name="technical.requirement[].orComposite[].name" type="text" value="${orComposite.name}" />
+                                                                <cgbr:htmlSelect selected="${orComposite.name}" values="${orCompositeName.mapOfTerms}" />
                                                             </li>
                                                         </c:if>
                                                         <c:if test="${!empty orComposite.minimumVersion}">
