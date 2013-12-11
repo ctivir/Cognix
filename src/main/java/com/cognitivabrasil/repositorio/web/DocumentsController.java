@@ -216,9 +216,7 @@ public final class DocumentsController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String newShow(Model model) {                
-        
-        List<Subject> allSubjects = subService.getAll();
+    public String newShow(Model model) {                      
         
         Document d = new Document();
         d.setCreated(new DateTime());
@@ -362,11 +360,6 @@ public final class DocumentsController {
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
         Document doc = docService.get(id);
         
-        List<String> keysObaa = doc.getMetadata().getGeneral().getKeywords();
-        List<Subject> allSubjects = subService.getAll();
-        if(keysObaa.contains("ciências")){
-           String result = retiraAcentos("ciências");
-        }
         
         doc.setOwner(UsersController.getCurrentUser());         
         setOBAAFiles(doc, request);                             
