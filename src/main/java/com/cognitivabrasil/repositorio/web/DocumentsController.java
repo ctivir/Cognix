@@ -359,7 +359,8 @@ public final class DocumentsController {
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
         Document doc = docService.get(id);
-
+        Subject sub;
+        
         if (doc != null && doc.getMetadata() != null && doc.getMetadata().getGeneral() != null) {
             List<String> keysObaa = doc.getMetadata().getGeneral().getKeywords();
             List<Subject> allSubjects = subService.getAll();
@@ -369,7 +370,12 @@ public final class DocumentsController {
                     NameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-        }
+            System.out.println("\n\n"+NameSubject+"\n\n");
+            if(!NameSubject.equals("")){
+                sub = subService.getSubjectByName(NameSubject);
+                doc.setSubject(sub);
+            }
+        }            
         doc.setOwner(UsersController.getCurrentUser());
         setOBAAFiles(doc, request);
 
