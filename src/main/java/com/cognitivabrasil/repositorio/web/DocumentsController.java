@@ -7,6 +7,7 @@ import cognitivabrasil.obaa.Educational.Context;
 import cognitivabrasil.obaa.Educational.Educational;
 import cognitivabrasil.obaa.Educational.IntendedEndUserRole;
 import cognitivabrasil.obaa.Educational.Interaction;
+import cognitivabrasil.obaa.Educational.InteractionType;
 import cognitivabrasil.obaa.Educational.InteractivityLevel;
 import cognitivabrasil.obaa.Educational.InteractivityType;
 import cognitivabrasil.obaa.Educational.LearningContentType;
@@ -66,7 +67,7 @@ public final class DocumentsController {
     private static final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
     DocumentService docService;
-    @Autowired           
+    @Autowired
     SubjectService subService;
     @Autowired
     @Qualifier("serverConfig")
@@ -86,7 +87,7 @@ public final class DocumentsController {
         model.addAttribute("permCreateDoc", User.CREATE_DOC);
         return "documents/";
     }
-    
+
     @RequestMapping(value = "/filter/{subject}", method = RequestMethod.GET)
     public String filterDiscipline(@PathVariable String subject, Model model) {
         // TODO: getAll Documents by the specific subject name
@@ -107,10 +108,10 @@ public final class DocumentsController {
     public String show(@PathVariable Integer id, Model model, HttpServletResponse response)
             throws IOException {
         Document d = docService.get(id);
-        if(d == null){
+        if (d == null) {
             response.sendError(404, "O documento solicitado não existe.");
             return "ajax";
-        }else if (d.isDeleted()) {
+        } else if (d.isDeleted()) {
             response.sendError(410, "O documento solicitado foi deletado.");
             return "ajax";
         }
@@ -159,7 +160,7 @@ public final class DocumentsController {
             return "ajax";
         }
         setOBAAFiles(d, request);
-        
+
         return ("redirect:/documents/");
     }
 
@@ -179,13 +180,13 @@ public final class DocumentsController {
         String versionUri = createUri(dv);
         dv.setObaaEntry(versionUri);
         docService.save(dv);
-        
+
         Identifier versionId = new Identifier("URI", versionUri);
         versionObaa.getGeneral().getIdentifiers().clear();
 
         //esvaziar o location para gerar um novo
         versionObaa.getTechnical().getLocation().clear();
-        
+
         //seta o identifier na versao
         versionObaa.getGeneral().addIdentifier(versionId);
 
@@ -208,7 +209,7 @@ public final class DocumentsController {
 
         dv.setMetadata(versionObaa);
         docService.save(d);
-        
+
         model.addAttribute("doc", dv);
         model.addAttribute("obaa", dv.getMetadata());
 
@@ -216,8 +217,8 @@ public final class DocumentsController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String newShow(Model model) {                      
-        
+    public String newShow(Model model) {
+
         Document d = new Document();
         d.setCreated(new DateTime());
         //o documento precisa ser salvo para gerar um id da base
@@ -250,9 +251,9 @@ public final class DocumentsController {
     public String newClassPlan(Model model) {
 
         String result = newShow(model); //inicializa com o new basico
-        
+
         Document d = (Document) model.asMap().get("doc");
-        
+
 //        metadados para planos de aula
         OBAA lo = d.getMetadata();
         General general = lo.getGeneral();
@@ -322,7 +323,7 @@ public final class DocumentsController {
         educational.addIntendedEndUserRole(IntendedEndUserRole.TEACHER);
 
         Interaction interaction = new Interaction();
-        interaction.setInteractionType("Objeto-sujeito");
+        interaction.setInteractionType(InteractionType.OBJECT_INDIVIDUAL);
         interaction.setCoPresence(false);
         interaction.setSynchronism(false);
         interaction.setPerception(Perception.VISUAL);
@@ -352,26 +353,26 @@ public final class DocumentsController {
 
         d.setMetadata(lo);
 
-        
         return result;
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
-        Document doc = docService.get(id);                
-        
-        List<String> keysObaa = doc.getMetadata().getGeneral().getKeywords();
-        List<Subject> allSubjects = subService.getAll();
-        String NameSubject = "";
-        for(String key : keysObaa){
-            if(allSubjects.contains(retiraAcentos(key).toLowerCase())){
-                NameSubject = retiraAcentos(key).toLowerCase();
+        Document doc = docService.get(id);
+
+        if (doc != null && doc.getMetadata() != null && doc.getMetadata().getGeneral() != null) {
+            List<String> keysObaa = doc.getMetadata().getGeneral().getKeywords();
+            List<Subject> allSubjects = subService.getAll();
+            String NameSubject = "";
+            for (String key : keysObaa) {
+                if (allSubjects.contains(retiraAcentos(key).toLowerCase())) {
+                    NameSubject = retiraAcentos(key).toLowerCase();
+                }
             }
         }
-        
-        doc.setOwner(UsersController.getCurrentUser());         
-        setOBAAFiles(doc, request);                             
-        
+        doc.setOwner(UsersController.getCurrentUser());
+        setOBAAFiles(doc, request);
+
         return ("redirect:/documents/");
     }
 
@@ -394,9 +395,7 @@ public final class DocumentsController {
             obaa.getGeneral().setKeywords(splittedKeywords);
         }
 
-
         log.debug("Title: " + obaa.getGeneral().getTitles());
-
 
         Technical t = obaa.getTechnical();
 
@@ -430,7 +429,6 @@ public final class DocumentsController {
             //não faz nada essa operação abaixo, getLocation devolve uma cópia
             obaa.getTechnical().getLocation().set(0, obaa.getGeneral().getIdentifiers().get(0).getEntry());
         }
-
 
         Metametadata meta = new Metametadata();
 
@@ -467,7 +465,7 @@ public final class DocumentsController {
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
         d.setMetadata(obaa);
-        docService.save(d);        
+        docService.save(d);
     }
 
     private String createUri(Document d) {
@@ -534,7 +532,7 @@ public final class DocumentsController {
             } else if (!mime.equals(DOC_MIMETYPE)) {
                 allDoc = false;
             }
-            
+
             String fileName = file.getName();
 
             // to remove the file extension
@@ -559,29 +557,28 @@ public final class DocumentsController {
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
             suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
-            
 
             //Accessibility
             suggestions.setVisual("true");
             suggestions.setAuditory("false");
             suggestions.setTactil("false");
-            
+
             //Technical
             suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
             suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
             suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
-            
+
             if (mime.endsWith("jpeg") || mime.endsWith("jpg") || mime.endsWith("png") || mime.endsWith("gif")) {
 
                 suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
                 suggestions.setRequirementsName(Name.ANY);
             }
 
-        }else if (allPdf && !empty) { //all PDF
+        } else if (allPdf && !empty) { //all PDF
             //General
             suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
-            
+
             //Educational
             suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
             suggestions.setPerception(Perception.VISUAL);
@@ -598,21 +595,20 @@ public final class DocumentsController {
             suggestions.setAuditory("false");
             suggestions.setTactil("false");
             suggestions.setTextual("true");
-            
+
             //Technical
             suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
             suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-            
+
             suggestions.setOtherPlatformRequirements("É necessário um programa como o Adobe Reader para ver esse arquivo.");
             suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
             suggestions.setRequirementsName(Name.ANY);
-            
-            
-        }else if (allDoc && !empty) { //all DOC
-             //General
+
+        } else if (allDoc && !empty) { //all DOC
+            //General
             suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
-            
+
             //Educational
             suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
             suggestions.setPerception(Perception.VISUAL);
@@ -629,16 +625,15 @@ public final class DocumentsController {
             suggestions.setAuditory("false");
             suggestions.setTactil("false");
             suggestions.setTextual("true");
-            
+
             //Technical
             suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
             suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-            
+
             suggestions.setOtherPlatformRequirements("É necessário um programa como o Microsoft Word para ver esse arquivo.");
             suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
             suggestions.setRequirementsName(Name.ANY);
         }
-
 
         //Title Suggestion
         if (files.size() != 1) {
@@ -647,19 +642,19 @@ public final class DocumentsController {
 
         return suggestions;
     }
-    
+
     /**
-     * 
+     *
      * Return s without accent mark
-     * 
+     *
      * @param s
-     * @return 
+     * @return
      */
-    private String retiraAcentos(String s){
-       
-        String output = Normalizer.normalize(s, Normalizer.Form.NFD);             
-        output = output.replaceAll("[^\\p{ASCII}]", "");  
+    private String retiraAcentos(String s) {
+
+        String output = Normalizer.normalize(s, Normalizer.Form.NFD);
+        output = output.replaceAll("[^\\p{ASCII}]", "");
         return output;
-        
+
     }
 }

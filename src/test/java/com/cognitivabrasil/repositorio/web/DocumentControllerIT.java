@@ -11,6 +11,7 @@ import cognitivabrasil.obaa.Educational.Context;
 import cognitivabrasil.obaa.Educational.Educational;
 import cognitivabrasil.obaa.Educational.IntendedEndUserRole;
 import cognitivabrasil.obaa.Educational.Interaction;
+import cognitivabrasil.obaa.Educational.InteractionType;
 import cognitivabrasil.obaa.Educational.InteractivityLevel;
 import cognitivabrasil.obaa.Educational.LearningContentType;
 import cognitivabrasil.obaa.Educational.Perception;
@@ -257,7 +258,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(educational.getIntendedEndUserRoles().get(0), equalTo(IntendedEndUserRole.TEACHER));
         
         Interaction interaction = obaa.getEducational().getInteraction();
-        assertThat(interaction.getInteractionType().toString(), equalTo("Objeto-sujeito"));
+        assertThat(interaction.getInteractionType().toString(), equalTo(InteractionType.OBJECT_INDIVIDUAL));
         assertThat(interaction.getCoPresence().getBoolean(), equalTo(false));
         assertThat(interaction.getSynchronism().getBoolean(), equalTo(false));
         assertThat(interaction.getPerception().toString(), equalTo(Perception.VISUAL));
@@ -331,7 +332,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         request.addParameter("obaa.educational.language[0]", "es-UY");
         request.addParameter("obaa.educational.contexts[3]", "training");
         request.addParameter("obaa.educational.learningContentType", "factual");
-        request.addParameter("obaa.educational.interaction.interactionType", "Objeto-sujeito");
+        request.addParameter("obaa.educational.interaction.interactionType", InteractionType.OBJECT_INDIVIDUAL);
         request.addParameter("obaa.educational.interaction.perception", "mixed");
         request.addParameter("obaa.educational.interaction.synchronism", "true");
         request.addParameter("obaa.educational.interaction.coPresence", "true");
@@ -403,7 +404,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(educational.getLanguage().get(0).toString(), equalTo("es-UY"));
         assertThat(educational.getContexts().get(0), equalTo(Context.TRAINING));
         assertThat(educational.getLearningContentType(), equalTo(LearningContentType.FACTUAL));
-        assertThat(educational.getInteraction().getInteractionType().toString(), equalTo("Objeto-sujeito"));
+        assertThat(educational.getInteraction().getInteractionType().toString(), equalTo(InteractionType.OBJECT_INDIVIDUAL));
         assertThat(educational.getInteraction().getPerception().toString(), equalTo(Perception.MIXED));
         assertThat(educational.getInteraction().getSynchronism().toString(), equalTo("true"));
         assertThat(educational.getInteraction().getCoPresence().toString(), equalTo("true"));

@@ -59,11 +59,11 @@
             <div id="message" class="${message.type}">${message.message}</div>
         </c:if>
 
-            
-            
+
+
         <div id="entities-list" class="ui-widget">
             <form id="newobject" method="POST" modelAttribute="doc"
-              acceptCharset="utf-8">
+                  acceptCharset="utf-8">
 
                 <input type="hidden" name="id" id="id" value="${doc.id}" />
 
@@ -89,11 +89,11 @@
                                 </c:forEach>
                             </c:otherwise>
                         </c:choose>                                    
-                        
+
                         <li><a class ="add" id="addLocation" value="+ Localização">+ Localização</a></li>
-                                    
+
                         <cgbr:upload />
-                        
+
                     </fieldset>
 
                     <fieldset class="sectionwrap marcador single" id="general">
@@ -102,7 +102,7 @@
 
                         <div class="alert alert-info alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                            
+
                             <b>Sugestões: </b>As caixas marcadas com o fundo azul são sugestões e podem ser alteradas.
                         </div>
                         <c:choose>
@@ -429,39 +429,39 @@
 
                         <li class="interactivityLevel marcador single" id="interactivityLevel">
                             <span class="file">Nível de Interatividade</span>
-                            
+
                             <jsp:useBean id="interactivityLevel" class="cognitivabrasil.obaa.Educational.InteractivityLevel" >
                                 <jsp:setProperty name="interactivityLevel" property="locale" value="pt-BR" />
                             </jsp:useBean>
-                            
+
                             <cgbr:htmlSelect selected="${obaa.educational.interactivityLevel}" values="${interactivityLevel.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
-                                                      
+
                             <div class="slider" id="interactivityLevelSlider"></div>
                         </li>
 
                         <li class="semanticDensity marcador single" id="semanticDensity">
                             <span class="file">Densidade Semântica</span>
-                            
+
                             <jsp:useBean id="semanticDensity" class="cognitivabrasil.obaa.Educational.SemanticDensity" >
                                 <jsp:setProperty name="semanticDensity" property="locale" value="pt-BR" />
                             </jsp:useBean>
-                            
+
                             <cgbr:htmlSelect selected="${obaa.educational.semanticDensity}" values="${semanticDensity.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
-                            
+
                             <div class="slider" id="semanticDensitySlider"></div>
 
                         </li>
 
                         <li class="difficulty marcador single" id="difficulty">
                             <span class="file">Nível de Dificuldade</span>
-                               
+
                             <jsp:useBean id="difficulty" class="cognitivabrasil.obaa.Educational.Difficulty" >
                                 <jsp:setProperty name="difficulty" property="locale" value="pt-BR" />
                             </jsp:useBean>
-                                                        
+
                             <cgbr:htmlSelect selected="${obaa.educational.difficulty}" values="${difficulty.mapOfTermsLevelOrdered}" classe="sliderSelect"  /> 
                             <div class="slider" id="difficultySlider"><jsp:text/></div>                            
-                            
+
                         </li>
 
                         <c:choose>
@@ -552,7 +552,10 @@
                             <ul>
                                 <li class="marcador single" id="interactionType">
                                     <span class="file">Tipo de interação</span>
-                                    <input id="interactionType" name="interactionType" type="text" value="${obaa.educational.interaction.interactionType}" />
+                                    <jsp:useBean id="interactionType" class="cognitivabrasil.obaa.Educational.InteractionType" >
+                                        <jsp:setProperty name="interactionType" property="locale" value="pt-BR" />
+                                    </jsp:useBean>
+                                    <cgbr:htmlRadio id="" rdName="obaa.educational.interaction.interactionType"  selected="${obaa.educational.interaction.interactionType}" values="${interactionType.mapOfTerms}" />
                                 </li>
 
                                 <li class="marcador single" id="perception">
