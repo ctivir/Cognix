@@ -192,7 +192,7 @@ public final class DocumentsController {
 
         //Cria relação de versão no orginial
         Relation originalRelation = new Relation();
-        originalRelation.setKind(Kind.HASVERSION);
+        originalRelation.setKind(Kind.HAS_VERSION);
         originalRelation.getResource().addIdentifier(versionId);
         List<Relation> relationsList = new ArrayList<>();
         relationsList.add(originalRelation);
@@ -200,7 +200,7 @@ public final class DocumentsController {
 
         //Cria relação de versão no novo objeto
         Relation versionRelation = new Relation();
-        versionRelation.setKind(Kind.ISVERSIONOF);
+        versionRelation.setKind(Kind.IS_VERSION_OF);
         versionRelation.getResource().addIdentifier(originalObaa.getGeneral().
                 getIdentifiers().get(0));
         List<Relation> relations2List = new ArrayList<>();
