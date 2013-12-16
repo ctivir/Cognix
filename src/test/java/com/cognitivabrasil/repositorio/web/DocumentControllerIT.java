@@ -493,12 +493,12 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/"+dv.getId()));
         
         assertThat(dOrg.getMetadata().getRelations(), hasSize(1));
-        assertThat(dOrg.getMetadata().getRelations().get(0).getKind(), equalTo("hasVersion"));
+        assertThat(dOrg.getMetadata().getRelations().get(0).getKind(), equalTo("has_version"));
         assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier(), hasSize(1));
         String entryVersionOf = dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryVersionOf));
         
-        assertThat(dv.getMetadata().getRelations().get(0).getKind(), equalTo("isVersionOf"));
+        assertThat(dv.getMetadata().getRelations().get(0).getKind(), equalTo("is_version_of"));
         String entryOrg = dOrg.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dv.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryOrg));
     }
