@@ -293,7 +293,7 @@ public final class DocumentsController {
         Requirement requirement = new Requirement();
         OrComposite orComposite = new OrComposite();
         orComposite.setType(Type.OPERATINGSYSTEM);
-        orComposite.setName(Name.MULTIOS);
+        orComposite.setName(Name.MULTI_OS);
 
         OrComposite orComposite2 = new OrComposite();
         orComposite2.setType(Type.BROWSER);
@@ -358,11 +358,21 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
-        Document doc = docService.get(id);
-        Subject sub;
+        Document doc = docService.get(id);        
+                            
+        doc.setOwner(UsersController.getCurrentUser());
+        setOBAAFiles(doc, request);
+
+        return ("redirect:/documents/");
+    }
+
+    private void setOBAAFiles(Document d, final HttpServletRequest request) {
+        log.debug("Trying to save");
         
-        if (doc != null && doc.getMetadata() != null && doc.getMetadata().getGeneral() != null) {
-            List<String> keysObaa = doc.getMetadata().getGeneral().getKeywords();
+        Subject s;
+        
+        if (d != null && d.getMetadata() != null && d.getMetadata().getGeneral() != null) {
+            List<String> keysObaa = d.getMetadata().getGeneral().getKeywords();
             List<Subject> allSubjects = subService.getAll();
             String NameSubject = "";
             for (String key : keysObaa) {
@@ -372,19 +382,11 @@ public final class DocumentsController {
             }
             System.out.println("\n\n"+NameSubject+"\n\n");
             if(!NameSubject.equals("")){
-                sub = subService.getSubjectByName(NameSubject);
-                doc.setSubject(sub);
+                s = subService.getSubjectByName(NameSubject);
+                d.setSubject(s);
             }
-        }            
-        doc.setOwner(UsersController.getCurrentUser());
-        setOBAAFiles(doc, request);
-
-        return ("redirect:/documents/");
-    }
-
-    private void setOBAAFiles(Document d, final HttpServletRequest request) {
-        log.debug("Trying to save");
-
+        }
+        
         Map<String, String[]> parMap = request.getParameterMap();
 
         OBAA obaa = OBAA.fromHashMap(parMap);
