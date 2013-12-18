@@ -292,7 +292,7 @@ public final class DocumentsController {
 
         Requirement requirement = new Requirement();
         OrComposite orComposite = new OrComposite();
-        orComposite.setType(Type.OPERATINGSYSTEM);
+        orComposite.setType(Type.OPERATING_SYSTEM);
         orComposite.setName(Name.MULTI_OS);
 
         OrComposite orComposite2 = new OrComposite();
@@ -578,7 +578,7 @@ public final class DocumentsController {
 
             if (mime.endsWith("jpeg") || mime.endsWith("jpg") || mime.endsWith("png") || mime.endsWith("gif")) {
 
-                suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
+                suggestions.setRequirementsType(Type.OPERATING_SYSTEM);
                 suggestions.setRequirementsName(Name.ANY);
             }
 
@@ -609,7 +609,7 @@ public final class DocumentsController {
             suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
 
             suggestions.setOtherPlatformRequirements("É necessário um programa como o Adobe Reader para ver esse arquivo.");
-            suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
+            suggestions.setRequirementsType(Type.OPERATING_SYSTEM);
             suggestions.setRequirementsName(Name.ANY);
 
         } else if (allDoc && !empty) { //all DOC
@@ -639,7 +639,7 @@ public final class DocumentsController {
             suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
 
             suggestions.setOtherPlatformRequirements("É necessário um programa como o Microsoft Word para ver esse arquivo.");
-            suggestions.setRequirementsType(Type.OPERATINGSYSTEM);
+            suggestions.setRequirementsType(Type.OPERATING_SYSTEM);
             suggestions.setRequirementsName(Name.ANY);
         }
 
