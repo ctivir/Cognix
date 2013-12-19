@@ -29,6 +29,7 @@ import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
 import com.cognitivabrasil.repositorio.util.Message;
+import com.cognitivabrasil.repositorio.util.Config;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -223,6 +224,33 @@ public class FileController {
         output.write(responseBytes);
         output.flush();
         return responseString;
+    }
+    
+    @RequestMapping(value = "/{id}/thumbnail", method = RequestMethod.GET)
+    public void getThumbnail(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
+        
+        if (id == null || id == 0) {            
+            response.sendError(410, "O arquivo solicitado não foi encontrado.");            
+        } else {            
+            String fileName = Config.FILE_PATH + id + "/thumbnail.png";
+
+            try {
+                // get your file as InputStream
+                InputStream is = new FileInputStream(new File(fileName));
+
+                response.setHeader("Content-Disposition", "attachment; filename= thumbnail" + id);
+                // copy it to response's OutputStream
+                IOUtils.copy(is, response.getOutputStream());
+
+                response.flushBuffer();
+
+            } catch (FileNotFoundException fe) {
+                response.sendError(410, "O arquivo solicitado não foi encontrado.");
+            } catch (IOException ex) {
+                log.error("Error writing file to output stream. Filename was '" + fileName + "'");
+                throw ex;
+            }
+        }
     }
 
 }

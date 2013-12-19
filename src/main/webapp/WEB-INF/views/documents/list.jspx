@@ -56,8 +56,7 @@
                                     ${doc.title}</a>
                             
                             <security:authorize access="hasRole('${permDocAdmin}') or ${currentUser == doc.owner.username}">
-                                <span class="buttonList">
-
+                                <span class="buttonList">                                   
                                     <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
                                     <c:url var="edit" value="/documents/${doc.id}/edit"/>
 
@@ -92,10 +91,8 @@
                         <ul class="documentData">
 
                             <li class="obaaEntry">
-                                <label>Obaa Entry: </label>
-                                <span class="value">${doc.obaaEntry}</span></li>
-                            <li><label>Data: </label> <span class="value">${doc.timestampFormatted}</span>
-                            </li>
+                                 <a href="${docUrl}/${doc.id}" class="col-lg-11"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
+                            </li>                            
 
                             <c:if test="${!empty doc.files}">
                                 <li>
