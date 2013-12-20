@@ -11,7 +11,7 @@
           <span class="icon-bar"></span>
         </button>       
         <c:url var="index" value="/" />          
-        <c:url var="logo" value="/images/logo_branco_transparente.png" />
+        <c:url var="logo" value="/images/logo.png" />
         <p class="navbar-brand col-xs-6 col-sm-6 col-md-6">
             <a href="${index}">
                 <img src="${logo}" alt="logo" class="img-responsive" />
