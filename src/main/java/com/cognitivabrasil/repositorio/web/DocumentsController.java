@@ -38,17 +38,13 @@ import cognitivabrasil.util.VCarder;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.services.SubjectService;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +52,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import static org.springframework.util.FileCopyUtils.copy;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -669,6 +666,46 @@ public final class DocumentsController {
         output = output.replaceAll("[^\\p{ASCII}]", "");
         return output;
 
+    }
+    
+      /**
+     * Criado apenas para salvar em um diretório todos os objetos da base com o seu respectivo metadado.
+     * @return
+     * @throws IOException
+     * @throws Exception 
+     */
+//    @RequestMapping(value = "/recallfiles", method = RequestMethod.GET)
+//    @ResponseBody
+    public String recallFiles()
+            throws IOException, Exception {
+        String location = LOCAL + "old/";
+
+        List<Document> docs = docService.getAll();
+
+        for (Document doc : docs) {
+            System.out.println("\n doc "+doc.getId());
+            
+            String destinationPath = LOCAL + doc.getId();
+            File destinationDocFiles = new File(destinationPath);
+            destinationDocFiles.mkdir();
+            
+            List<Files> files = doc.getFiles();
+            int numberFiles = 0;
+            for (Files f : files) {
+                if(f.getLocation().isEmpty()){
+                    throw new IOException("A localização do documento está em branco.");
+                }
+                File sourceFile = new File(location+f.getId());
+                File destinationFile = new File(destinationPath + "/" + f.getName());
+                
+                copy(sourceFile, destinationFile);
+                numberFiles++;
+            }
+            if(numberFiles==0){
+                throw new Exception("O Documento "+doc.getId()+" não possui nenhum arquivo!");
+            }
+        }
+        return "ok";
     }
     
 }

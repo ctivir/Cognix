@@ -47,7 +47,7 @@ public class Files {
 
     public String getLocation() {
         if (location.endsWith("/")) {
-            return location + id;
+            return location + document.getId()+"/"+name;
         }
         return location;
     }
