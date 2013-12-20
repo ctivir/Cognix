@@ -5,6 +5,6 @@
     <jsp:output omit-xml-declaration="yes" />
 
     <div id="footer">
-        Produzido por <a href="http://www.cognitivabrasil.com.br">Cognitiva Brasil</a>
+        Desenvolvido por <a href="http://www.cognitivabrasil.com.br">Cognitiva Brasil</a>
     </div>
 </div>
