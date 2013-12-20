@@ -232,7 +232,7 @@ public class FileController {
         if (id == null || id == 0) {            
             response.sendError(410, "O arquivo solicitado não foi encontrado.");            
         } else {            
-            String fileName = Config.FILE_PATH + id + "/thumbnail.png";
+            String fileName = Config.FILE_PATH + id + "/thumbnail";
 
             try {
                 // get your file as InputStream
