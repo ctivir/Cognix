@@ -47,9 +47,9 @@
                 <c:if test="${empty documents}">Nenhum documento cadastrado</c:if>
                 <c:forEach var="doc" items="${documents}" varStatus="status">
                     <c:if test="${doc.title != 'IndexOutOfBounds'}"> 
-                     <div class="col-lg-4" style="white-space: pre-wrap; word-wrap: break-word;">
-                            <div class="ui-state-default ui-corner-all">                            
-                                <a href="${docUrl}/${doc.id}" style="display:inline;">
+                     <div class="col-md-4 coluna-lista">
+                            <div class="ui-state-default ui-corner-all title-list">                            
+                                <a href="${docUrl}/${doc.id}" class="title-link">
                                     <c:if test="${empty doc.title}">
                                         Título não informado
                                     </c:if>
@@ -91,10 +91,10 @@
                         <ul class="documentData">
 
                             <li class="obaaEntry">
-                                 <a href="${docUrl}/${doc.id}" class="col-lg-11"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
+                                 <a href="${docUrl}/${doc.id}"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
                             </li>                            
 
-                            <c:if test="${!empty doc.files}">
+                            <!--<c:if test="${!empty doc.files}">
                                 <li>
                                     <label>Arquivo<c:if test="${doc.files.size() > 1}">s</c:if></label>
                                         <div class="files ">
@@ -111,7 +111,7 @@
                                         </c:forEach>
                                     </div>
                                 </li>
-                            </c:if>
+                            </c:if> -->
                         </ul>
                      </div>
                     </c:if>

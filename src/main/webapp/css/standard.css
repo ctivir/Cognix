@@ -90,6 +90,26 @@ label.error,input.error{margin-top: 5px;}
 .alert{
     margin-top:50px;
 }
-.img-capa-lista{
+.img-capa-lista{  
+   width:60%;
+   margin:0 auto;
    margin-top:7px;
+}
+
+.title-list{
+   padding:8px;   
+}
+
+a.title-link {
+    color:#39829f !important;
+    font-weight: bold;
+}
+
+a.link-interno{
+    text-decoration: underline;
+    color:#39829f;
+}
+
+.coluna-lista{
+    min-height:300px;
 }
