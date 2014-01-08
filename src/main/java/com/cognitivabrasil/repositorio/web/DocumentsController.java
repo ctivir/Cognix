@@ -537,9 +537,11 @@ public final class DocumentsController {
 
             if (!mime.startsWith(IMAGE)) {
                 allImg = false;
-            } else if (!mime.equals(PDF_MIMETYPE)) {
+            } 
+            if (!mime.equals(PDF_MIMETYPE)) {
                 allPdf = false;
-            } else if (!mime.equals(DOC_MIMETYPE)) {
+            } 
+            if (!mime.equals(DOC_MIMETYPE)) {
                 allDoc = false;
             }
 
@@ -555,7 +557,8 @@ public final class DocumentsController {
 
         //all image
         if (allImg && !empty) {
-
+            
+            log.debug("All Image");
             //General
             suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
@@ -585,6 +588,9 @@ public final class DocumentsController {
             }
 
         } else if (allPdf && !empty) { //all PDF
+            
+            log.debug("All PDF");
+            
             //General
             suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
@@ -612,6 +618,9 @@ public final class DocumentsController {
             suggestions.setRequirementsName(Name.ANY);
 
         } else if (allDoc && !empty) { //all DOC
+            
+            log.debug("All Doc");
+            
             //General
             suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");

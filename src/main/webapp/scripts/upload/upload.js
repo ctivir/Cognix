@@ -52,13 +52,9 @@ $(function() {
         var obj = $('#titulo');
         if (obj.val() === "") {
             obj.val(suggestions.title).addClass('suggestions');
-        }
-        obj = $('#language');
-        if (obj.val() === "") {
-            obj.val(suggestions.language).addClass('suggestions');
-        }
+        }        
         obj = $('#structure select');
-        if (obj.val() === "") {
+        if (obj.val() === "" && suggestions.structure !== "") {
             obj.val(suggestions.structure).addClass('suggestions');
         }
         if ($('#aggregationLevel input:last').prop('checked')) {
@@ -66,7 +62,7 @@ $(function() {
         }
 
         obj = $('#language');
-        if (obj.val() === "") {
+        if (obj.val() === "" && lang !== "") {
             obj.val(lang).addClass('suggestions');
         }
 
@@ -74,64 +70,64 @@ $(function() {
 
         //slider value
         obj = $('#interactivityLevel select');
-        if (obj.val() === "") {
+        if (obj.val() === "" && suggestions.interactivityLevel!=="") {
             obj.val(suggestions.interactivityLevel);
             $('#interactivityLevelSlider').slider("value", $('#interactivityLevel select')[0].selectedIndex);
         }
 
         //lang value
         obj = $('#eduLanguage');
-        if (obj.val() === "") {
+        if (obj.val() === "" && lang !== "") {
             obj.val(lang).addClass('suggestions');
         }
 
         //regular select value
         obj = $('#perception select');
-        if (obj.val() === "") {
+        if (obj.val() === "" && suggestions.perception !== "") {
             obj.val(suggestions.perception).addClass('suggestions');
         }
 
         obj = $('#interactivityType select');
-        if (obj.val() === "") {
+        if (obj.val() === "" && suggestions.interactivityType !=="") {
             obj.val(suggestions.interactivityType).addClass('suggestions');
         }
 
         //radio option
-        if ($('#synchronism input:last').prop('checked')) {
+        if ($('#synchronism input:last').prop('checked') && suggestions.synchronism!=="") {
             $('#synchronism input[value=' + suggestions.synchronism + ']').prop('checked', true);
             $('#synchronism').children().last().addClass('suggestions');
         }
 
-        if ($('#coPresence input:last').prop('checked')) {
+        if ($('#coPresence input:last').prop('checked') && suggestions.copresense!=="") {
             $('#coPresence input[value=' + suggestions.copresense + ']').prop('checked', true);
             $('#coPresence').children().last().addClass('suggestions');
         }
-        if ($('#reciprocity input:last').prop('checked')) {
+        if ($('#reciprocity input:last').prop('checked') && suggestions.reciprocity!=="") {
             $('#reciprocity input[value=' + suggestions.reciprocity + ']').prop('checked', true);
             $('#reciprocity').children().last().addClass('suggestions');
         }
 
         //Accessibility
-        if ($('#hasVisual input:last').prop('checked')) {
+        if ($('#hasVisual input:last').prop('checked') && suggestions.visual !== "") {
             $('#hasVisual input[value=' + suggestions.visual + ']').prop('checked', true);
             $('#hasVisual').children().last().addClass('suggestions');
         }
-        if ($('#hasAuditory input:last').prop('checked')) {
+        if ($('#hasAuditory input:last').prop('checked') && suggestions.auditory !== "") {
             $('#hasAuditory input[value=' + suggestions.auditory + ']').prop('checked', true);
             $('#hasAuditory').children().last().addClass('suggestions');
         }
-        if ($('#hasTactile input:last').prop('checked')) {
+        if ($('#hasTactile input:last').prop('checked') && suggestions.tactil !== "") {
             $('#hasTactile input[value=' + suggestions.tactil + ']').prop('checked', true);
             $('#hasTactile').children().last().addClass('suggestions');
         }
         //Technical   
         obj = $('#type input');
-        if (obj.val() === "") {
+        if (obj.val() === "" && suggestions.requirementsType !== "") {
             obj.val(suggestions.requirementsType).addClass('suggestions');
         }
 
         obj = $('#name input');
-        if (obj.val() === "") {
+        if (obj.val() === "" && suggestions.requirementsName !== "") {
             obj.val(suggestions.requirementsName).addClass('suggestions');
         }
         console.log(suggestions.supportedPlatforms);
@@ -141,7 +137,7 @@ $(function() {
         }
 
         obj = $('#otherPlatformRequirements input');
-        if (obj.val() === "") {
+        if (obj.val() === "" && suggestions.otherPlatformRequirements !== "") {
             obj.val(suggestions.otherPlatformRequirements).addClass('suggestions');
         }
         
