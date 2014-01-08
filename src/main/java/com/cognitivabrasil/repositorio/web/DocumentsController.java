@@ -596,10 +596,7 @@ public final class DocumentsController {
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
             suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
-            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
-            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
-
+            
             //Accessibility
             suggestions.setVisual("true");
             suggestions.setAuditory("false");
@@ -626,9 +623,6 @@ public final class DocumentsController {
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
             suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
-            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
-            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
 
             //Accessibility
             suggestions.setVisual("true");
