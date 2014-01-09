@@ -63,11 +63,12 @@
                                     <a class="delete confirmLink btn btn-default" data-toggle="modal" data-target="#excluir_documento"
                                        title="excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!" 
                                        href="#" id="dialog_link">
-                                        <span class="glyphicon glyphicon-trash"></span><span class='gliphycon-text'>Apagar</span></a>
-                                       <a class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-edit"></span><span class='gliphycon-text'>Editar</span></a>
-
-                                    <span>
-                                        <button class="relation_link">criar relação</button>
+                                        <span class="glyphicon glyphicon-trash"></span></a>
+                                    <a class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-edit"></span></a>
+                         
+                                    <a href="#" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-arrow-down"></span><span class='gliphycon-text'>Criar relação</span>
+                                    </a>
 
                                         <ul class="ui-corner-all hidden relation_dropdown"> 
 
@@ -80,8 +81,7 @@
                                                                                 <li><a>&Eacute; base para</a></li>
                                                                                 <li><a>Requer</a></li>
                                                                                 <li><a>&Eacute; requerido por</a></li>-->
-                                        </ul>                                
-                                    </span>
+                                        </ul>                                                              
                                 </span>
                             </security:authorize>
                             <div class="clear"><jsp:text/></div>

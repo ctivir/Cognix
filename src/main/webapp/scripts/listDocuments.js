@@ -13,14 +13,14 @@ $(function() {
                     if (type == 'warn') {
                         $("#error-type").text("Warn: ");
                     }
-                    $("#dialog-error").dialog('open');
+                    //alert("nao excluido");                    
                 } else {
                     $('#excluir_documento').modal('hide');
+                    //alert('excluido');
                 }
             } else {
                 $('#excluir_documento').modal('hide');
-                $("#errorThrown").text("Não foi possível executar a operação!");
-                $("#dialog-error").dialog('open');
+                $("#errorThrown").text("Não foi possível executar a operação!");                
             }
         }, "json")
                 .error(function(jqxhr) {
