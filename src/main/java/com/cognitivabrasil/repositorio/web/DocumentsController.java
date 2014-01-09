@@ -575,6 +575,7 @@ public final class DocumentsController {
             suggestions.setVisual("true");
             suggestions.setAuditory("false");
             suggestions.setTactil("false");
+            suggestions.setTextual("false");
 
             //Technical
             suggestions.addSupportedPlatforms(SupportedPlatform.WEB);

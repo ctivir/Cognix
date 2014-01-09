@@ -171,7 +171,7 @@ $(function() {
                     select.val("");                    
                 }
                 if (ui.value >= 1 && ui.value < 2) {
-                    select.val("very_low");                    
+                    select.val("very low");                    
                 }
                 if (ui.value >= 2 && ui.value < 3) {
                     select.val("low");
@@ -183,7 +183,7 @@ $(function() {
                     select.val("high");
                 }
                 if (ui.value >= 5) {
-                    select.val("very_high");
+                    select.val("very high");
                 }
                 
             }

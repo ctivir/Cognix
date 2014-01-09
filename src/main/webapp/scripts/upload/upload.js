@@ -73,6 +73,7 @@ $(function() {
         if (obj.val() === "" && suggestions.interactivityLevel!=="") {
             obj.val(suggestions.interactivityLevel);
             $('#interactivityLevelSlider').slider("value", $('#interactivityLevel select')[0].selectedIndex);
+            $('#interactivityLevel select').addClass('suggestions');
         }
 
         //lang value
@@ -111,10 +112,14 @@ $(function() {
         if ($('#hasVisual input:last').prop('checked') && suggestions.visual !== "") {
             $('#hasVisual input[value=' + suggestions.visual + ']').prop('checked', true);
             $('#hasVisual').children().last().addClass('suggestions');
-        }
+        }        
         if ($('#hasAuditory input:last').prop('checked') && suggestions.auditory !== "") {
             $('#hasAuditory input[value=' + suggestions.auditory + ']').prop('checked', true);
             $('#hasAuditory').children().last().addClass('suggestions');
+        }
+        if ($('#hasText input:last').prop('checked')) {
+            $('#hasText input[value=' + suggestions.visual + ']').prop('checked', true);
+            $('#hasText').children().last().addClass('suggestions');
         }
         if ($('#hasTactile input:last').prop('checked') && suggestions.tactil !== "") {
             $('#hasTactile input[value=' + suggestions.tactil + ']').prop('checked', true);
@@ -130,10 +135,10 @@ $(function() {
         if (obj.val() === "" && suggestions.requirementsName !== "") {
             obj.val(suggestions.requirementsName).addClass('suggestions');
         }
-        console.log(suggestions.supportedPlatforms);
         //Checkbox options            
         for (var i = 0; i < suggestions.supportedPlatforms.length; i++) {
-            $('#supportedPlatforms input[value=' + suggestions.supportedPlatforms[i] + ']').prop('checked', true).addClass('suggestions');
+            $('#supportedPlatforms input[value=' + suggestions.supportedPlatforms[i] + ']').prop('checked', true);
+            $('#supportedPlatforms').children().last().addClass('suggestions');
         }
 
         obj = $('#otherPlatformRequirements input');
