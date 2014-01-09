@@ -96,49 +96,50 @@ $(function() {
         //radio option
         if ($('#synchronism input:last').prop('checked') && suggestions.synchronism!=="") {
             $('#synchronism input[value=' + suggestions.synchronism + ']').prop('checked', true);
-            $('#synchronism').children().last().addClass('suggestions');
+            $('#synchronism').children().last().addClass('suggestions ui-corner-all');
         }
 
         if ($('#coPresence input:last').prop('checked') && suggestions.copresense!=="") {
             $('#coPresence input[value=' + suggestions.copresense + ']').prop('checked', true);
-            $('#coPresence').children().last().addClass('suggestions');
+            $('#coPresence').children().last().addClass('suggestions ui-corner-all');
         }
         if ($('#reciprocity input:last').prop('checked') && suggestions.reciprocity!=="") {
             $('#reciprocity input[value=' + suggestions.reciprocity + ']').prop('checked', true);
-            $('#reciprocity').children().last().addClass('suggestions');
+            $('#reciprocity').children().last().addClass('suggestions ui-corner-all');
         }
 
         //Accessibility
         if ($('#hasVisual input:last').prop('checked') && suggestions.visual !== "") {
             $('#hasVisual input[value=' + suggestions.visual + ']').prop('checked', true);
-            $('#hasVisual').children().last().addClass('suggestions');
+            $('#hasVisual').children().last().addClass('suggestions ui-corner-all');
         }        
         if ($('#hasAuditory input:last').prop('checked') && suggestions.auditory !== "") {
             $('#hasAuditory input[value=' + suggestions.auditory + ']').prop('checked', true);
-            $('#hasAuditory').children().last().addClass('suggestions');
+            $('#hasAuditory').children().last().addClass('suggestions ui-corner-all');
         }
         if ($('#hasText input:last').prop('checked')) {
             $('#hasText input[value=' + suggestions.visual + ']').prop('checked', true);
-            $('#hasText').children().last().addClass('suggestions');
+            $('#hasText').children().last().addClass('suggestions ui-corner-all');
         }
         if ($('#hasTactile input:last').prop('checked') && suggestions.tactil !== "") {
             $('#hasTactile input[value=' + suggestions.tactil + ']').prop('checked', true);
-            $('#hasTactile').children().last().addClass('suggestions');
+            $('#hasTactile').children().last().addClass('suggestions ui-corner-all');
         }
+        
         //Technical   
-        obj = $('#type input');
+        obj = $('#type select');
         if (obj.val() === "" && suggestions.requirementsType !== "") {
             obj.val(suggestions.requirementsType).addClass('suggestions');
         }
 
-        obj = $('#name input');
+        obj = $('#name select');
         if (obj.val() === "" && suggestions.requirementsName !== "") {
             obj.val(suggestions.requirementsName).addClass('suggestions');
         }
         //Checkbox options            
         for (var i = 0; i < suggestions.supportedPlatforms.length; i++) {
             $('#supportedPlatforms input[value=' + suggestions.supportedPlatforms[i] + ']').prop('checked', true);
-            $('#supportedPlatforms').children().last().addClass('suggestions');
+            $('#supportedPlatforms').children().last().addClass('suggestions ui-corner-all');
         }
 
         obj = $('#otherPlatformRequirements input');
@@ -150,6 +151,14 @@ $(function() {
         $('.suggestions').focus(function() {
             //TODO: se for um checkbox remover do div superior.
             $(this).removeClass('suggestions');
+        });
+        
+        $(':checkbox').focus(function() {
+            $(this).parents(".suggestions").removeClass("suggestions");
+        });
+        
+        $(':radio').focus(function() {
+            $(this).parents(".suggestions").removeClass("suggestions");
         });
     };
 });
