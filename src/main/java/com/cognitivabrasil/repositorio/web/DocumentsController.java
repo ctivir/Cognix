@@ -545,7 +545,7 @@ public final class DocumentsController {
                 allDoc = false;
             }
 
-            String fileName = file.getName();
+            String fileName = file.getName().replaceAll("_", " ");
 
             // to remove the file extension
             if (fileName.contains(".")) {
