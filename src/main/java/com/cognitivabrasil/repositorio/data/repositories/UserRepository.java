@@ -18,5 +18,7 @@ public interface UserRepository extends JpaRepository<User,Integer>{
     @Override
     public List<User> findAll();
     
+    public List<User> findByDeletedIsFalse();
+    
     User findByUsername(final String username);
 }

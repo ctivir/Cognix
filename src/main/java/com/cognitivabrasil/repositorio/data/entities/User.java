@@ -20,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import spring.ApplicationContextProvider;
@@ -42,6 +41,7 @@ public class User implements UserDetails {
     private String permissionsInternal;
     private String role;
     private static final Map<String, String> ROLES;
+    private Boolean deleted;
 
     static {
         SortedMap<String, String> myRoles = new TreeMap<String, String>();
@@ -58,6 +58,7 @@ public class User implements UserDetails {
         name = "";
         permissionsInternal = "";
         role = "";
+        deleted = false;
     }
     
     /**
@@ -183,14 +184,14 @@ public class User implements UserDetails {
     @Transient
     public boolean isCredentialsNonExpired() {
         // TODO Auto-generated method stub
-        return true;
+        return !isDeleted();
     }
 
     @Override
     @Transient
     public boolean isEnabled() {
         // TODO Auto-generated method stub
-        return true;
+        return !isDeleted();
     }
 
     /**
@@ -230,6 +231,14 @@ public class User implements UserDetails {
     public void setRole(String role) {
         this.role = role;
         setPermissionsInternal(getPermissions(role));
+    }
+    
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     /**

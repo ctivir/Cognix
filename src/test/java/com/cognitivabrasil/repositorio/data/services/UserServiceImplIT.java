@@ -5,6 +5,7 @@
 package com.cognitivabrasil.repositorio.data.services;
 
 import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.data.repositories.UserRepository;
 import com.cognitivabrasil.repositorio.services.UserService;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -35,6 +36,8 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
     
     @Autowired
     UserService userService;
+    @Autowired
+    UserRepository userRep;
     
     @Autowired UserDetailsService userDetailService;
     
@@ -48,6 +51,7 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(u.getRole(), equalTo("admin"));
         assertThat(u.getRoleNameText(), equalTo("Administrador de documentos"));
         assertThat(u.getPermissions(), hasSize(3));
+        assertThat(u.isDeleted(), equalTo(false));
     }
     
     @Test
@@ -83,11 +87,13 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
     
     @Test
     public void testDeleteUser(){
+        int sizeAllBefore = userRep.findAll().size();
         int sizeBefore = userService.getAll().size();
         User u = userService.get("marcos");
         userService.delete(u);
         
         assertThat(userService.getAll().size(), equalTo(sizeBefore-1));
+        assertThat(userRep.findAll().size(), equalTo(sizeAllBefore));
     }
     
     @Test
@@ -119,6 +125,15 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertNull(userService.authenticate(null, "teste"));
         
         assertNull(userService.authenticate("usuarioErrado", "teste"));
+    }
+    
+    @Test
+    public void testDeletedUser(){
+        User u = userService.get("user4");
+        assertThat(u, notNullValue());
+        assertThat(u.isDeleted(), equalTo(true));
+        assertThat(u.isEnabled(), equalTo(false));
+        assertThat(u.isCredentialsNonExpired(), equalTo(false));
     }
 }
 

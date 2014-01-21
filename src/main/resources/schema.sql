@@ -30,6 +30,7 @@ CREATE TABLE users (
     name text NOT NULL,
     permissions text,
     role text,
+    deleted boolean DEFAULT false NOT NULL,
     PRIMARY KEY (id)
 );
 

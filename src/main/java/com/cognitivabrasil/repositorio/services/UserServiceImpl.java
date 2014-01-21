@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<User> getAll() {
-        return userRep.findAll();
+        return userRep.findByDeletedIsFalse();
     }
     
     @Override
@@ -62,7 +62,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void delete(User u) {
-        userRep.delete(u);
+        if (u != null) {
+            u.setDeleted(true);
+        }
+        userRep.save(u);
     }
 
     

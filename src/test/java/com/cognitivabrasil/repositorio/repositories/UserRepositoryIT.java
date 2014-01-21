@@ -39,4 +39,14 @@ public class UserRepositoryIT extends AbstractTransactionalJUnit4SpringContextTe
         
         assertThat(u.getId(), equalTo(2));
     }
+    
+    @Test
+    public void testFindByUsername(){
+        int allUsers = uRep.findAll().size();
+        
+        int activeUsers = uRep.findByDeletedIsFalse().size();
+        
+        assertThat(activeUsers, equalTo(allUsers-1));
+        
+    }
 }
