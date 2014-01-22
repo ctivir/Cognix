@@ -4,7 +4,7 @@
      xmlns:cgbr="urn:jsptagdir:/WEB-INF/tags"
      xmlns:form="http://www.springframework.org/tags/form" 
      xmlns:security="http://www.springframework.org/security/tags"
-     version="2.0">   
+     version="2.0">    
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
     
@@ -15,8 +15,8 @@
     <script type="text/javascript" src="${jsList}"><jsp:text/></script>
     
     <cgbr:tabs tabNumber="1" />
-    <div id="tab-content">
-
+    <div id="tab-content">                
+        
         <c:if test="${not empty message}">
             <div id="message" class="${message.type}">${message.message}</div>
         </c:if>
@@ -62,7 +62,7 @@
 
                                     <a class="delete confirmLink btn btn-default" data-toggle="modal" data-target="#excluir_documento"
                                        title="excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!" 
-                                       href="#" id="dialog_link">
+                                       href="${deleteDoc}" id="dialog_link">
                                         <span class="glyphicon glyphicon-trash"></span></a>
                                     <a class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-edit"></span></a>
                          
@@ -132,7 +132,43 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <a href="${deleteDoc}" class="delete btn btn-primary" id="confirmExclude">Excluir</a>
+            <a href="" class="delete btn btn-primary" id="confirmExclude">Excluir</a>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    <!-- Modal -->
+    <div class="modal fade" id="excluido_com_sucesso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
+          </div>
+          <div class="modal-body">
+            Documento excluído com sucesso!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    <!-- Modal -->
+    <div class="modal fade" id="nao_excluido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
+          </div>
+          <div class="modal-body">
+            O documento não pode ser deletado. Por favor tente novamente mais tarde ou entre em contato com o nosso suporte.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->

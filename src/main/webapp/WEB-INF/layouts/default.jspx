@@ -75,8 +75,7 @@
                 <span class="ui-icon ui-icon-alert"><jsp:text/></span>
                 Deseja realmente <span id="msgApagar"><jsp:text/></span>
             </p>
-        </div>
-                
+        </div>                
         <div class="ui-widget hidden" id="dialog-error" title="Erro">
             <div class="ui-state-error ui-corner-all">
                 <p>
@@ -84,15 +83,14 @@
                     <strong id="error-type">Erro: </strong> <span id="errorThrown"><jsp:text/></span>
                 </p>
             </div>
-        </div>                        
-                
+        </div>                                        
         <div id="headerWrapper"></div>
         <c:if test="${param.error == true }">
             <div class="alert alert-danger">Login ou senha inválidos</div>
         </c:if>
         <c:if test="${param.required == true }">
             <div class="alert alert-danger">Você precisa estar logado para acessar esta página</div>
-        </c:if>
+        </c:if>         
         <div id="wrapper" class="ui-widget ui-widget-content ui-corner-all">                   
                 <tiles:insertAttribute name="body" />
         </div>

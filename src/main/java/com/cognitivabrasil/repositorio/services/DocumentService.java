@@ -6,6 +6,7 @@ package com.cognitivabrasil.repositorio.services;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
+import java.io.IOException;
 import java.util.List;
 
 // TODO: Auto-generated Javadoc
@@ -71,7 +72,7 @@ public interface DocumentService {
      *
      * @param d the document to be deleted.
      */
-    void delete(Document d);
+    void delete(Document d) throws IOException;
 
     void deleteAll();
 

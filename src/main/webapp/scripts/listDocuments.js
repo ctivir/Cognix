@@ -1,8 +1,11 @@
 $(function() {
-//    $("input:submit, input:file, input:reset, button, .button").button();
+    
+    $('.confirmLink').click(function(e) {
+       $('#confirmExclude').attr('href', $(this).attr('href'));
+       $(this).parent().parent().parent().attr('id','doc_deletar');
+    });
     
     $('#confirmExclude').click(function(e){
-       
        $.post($(this).attr('href'), "", function(resultado) {
             if (resultado["type"]) {
                 var type = unescape(resultado["type"]);
@@ -13,10 +16,11 @@ $(function() {
                     if (type == 'warn') {
                         $("#error-type").text("Warn: ");
                     }
-                    //alert("nao excluido");                    
+                    $('#nao_excluido').modal();
                 } else {
                     $('#excluir_documento').modal('hide');
-                    //alert('excluido');
+                    $('#doc_deletar').fadeOut(1000, function() { $('#doc_deletar').remove(); });
+                    $('#excluido_com_sucesso').modal();
                 }
             } else {
                 $('#excluir_documento').modal('hide');

@@ -8,8 +8,11 @@ import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
+import com.cognitivabrasil.repositorio.util.Config;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,20 +57,22 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public void delete(Document d) {
-        for (Files f : d.getFiles()) {
-            try {
-                filesService.deleteFile(f);
-            } catch (IOException e) {
-                log.error("Could not delete file", e);
-            }
-        }
-
-        d.getFiles().clear();
-        d.setObaaXml(null);
-        d.setCreated(new DateTime());
-        d.isDeleted(true);
-        docRep.save(d);
+    public void delete(Document d) throws IOException {
+        
+        try {
+            FileUtils.forceDelete(new File(Config.FILE_PATH + d.getId()));
+        } catch (IOException io) {
+            log.warn("Nao foi possivel deletar os arquivos do documento: " + d.getId() + "."
+                    + "Mas o documento sera removido da base! "+ io.getMessage());
+            throw io;
+        } finally {
+            d.getFiles().clear();
+            d.setObaaXml(null);
+            d.setCreated(new DateTime());
+            d.isDeleted(true);
+            docRep.save(d);
+        }        
+        
     }
 
     @Override

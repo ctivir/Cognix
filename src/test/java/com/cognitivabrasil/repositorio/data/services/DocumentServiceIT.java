@@ -77,7 +77,7 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
     }
 
     @Test
-    public void testDeleteDocument() {
+    public void testDeleteDocument() throws IOException {
         int before = docService.getAll().size();
         int filesBefore = fService.getAll().size();
 
@@ -94,7 +94,7 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
     }
 
     @Test
-    public void testDeletedDocument() {
+    public void testDeletedDocument() throws IOException {
         Document d = docService.get(1);
         docService.delete(d);
 

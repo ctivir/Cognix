@@ -126,6 +126,8 @@ public final class DocumentsController {
     @ResponseBody
     public Message delete(@PathVariable("id") int id, HttpServletRequest request) throws IOException {
         Message msg;
+        
+        log.info("Deletando o objeto: "+id);
 
         Document d = docService.get(id);
         if (d == null) {
