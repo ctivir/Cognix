@@ -44,7 +44,7 @@ public class User implements UserDetails {
     private Boolean deleted;
 
     static {
-        SortedMap<String, String> myRoles = new TreeMap<String, String>();
+        SortedMap<String, String> myRoles = new TreeMap<>();
         myRoles.put("admin", "Administrador de documentos");
         myRoles.put("author", "Criador de documentos");
         myRoles.put("view", "Somente visualizar");

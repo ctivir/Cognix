@@ -57,4 +57,11 @@ public interface UserService {
      * @return User object if password matches login, null otherwise
      */
     User authenticate(String login, String password);
+    
+    /**
+     * Verify if the user is owner of any document
+     * @param u User
+     * @return true if have document and otherwise false.
+     */
+    public boolean hasDocument(User u);
 }

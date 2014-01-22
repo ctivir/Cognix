@@ -5,10 +5,12 @@
 package com.cognitivabrasil.repositorio.services;
 
 import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.data.repositories.UserRepository;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     static Logger log = Logger.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRep;
+
+    @Autowired
+    private DocumentRepository docRep;
 
     @Override
     public User authenticate(String login, String password) {
@@ -44,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User get(String login) {
         return userRep.findByUsername(login);
     }
-    
+
     @Override
     public User get(int id) {
         return userRep.findOne(id);
@@ -54,7 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getAll() {
         return userRep.findByDeletedIsFalse();
     }
-    
+
     @Override
     public void save(User u) {
         userRep.save(u);
@@ -62,13 +67,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void delete(User u) {
-        if (u != null) {
-            u.setDeleted(true);
+        if (u == null) {
+            throw new DataAccessException("This user can not be null") {
+            };
         }
-        userRep.save(u);
+        //testa se possui algum documento
+        if (hasDocument(u)) {
+            u.setDeleted(true);
+            userRep.save(u);
+        } else {
+            userRep.delete(u);
+        }
+
     }
 
-    
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login)
@@ -82,5 +94,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     "No such user: " + login);
         }
         return d;
+    }
+
+    @Override
+    public boolean hasDocument(User u) {
+        return docRep.countByOwnerAndDeletedIsFalse(u) > 0;
     }
 }

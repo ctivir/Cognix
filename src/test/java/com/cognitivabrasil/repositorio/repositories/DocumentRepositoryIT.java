@@ -6,6 +6,7 @@ package com.cognitivabrasil.repositorio.repositories;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
+import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,7 +34,7 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
     
     @Autowired
     private DocumentRepository docRep;
-    
+
     @Test
     public void testGetAll(){
         assertThat(docRep.findAll(), hasSize(5));
@@ -73,5 +74,12 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(d.get(0).getId(), equalTo(5));
     }
     
-    
+    @Test
+    public void testGetByOwner(){
+        User u = new User();
+        u.setId(2);
+        long docs = docRep.countByOwnerAndDeletedIsFalse(u);
+        
+        assertThat(docs, equalTo(2l));
+    }    
 }

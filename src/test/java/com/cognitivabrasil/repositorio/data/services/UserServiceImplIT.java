@@ -4,9 +4,13 @@
  */
 package com.cognitivabrasil.repositorio.data.services;
 
+import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.data.repositories.UserRepository;
+import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.UserService;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
@@ -38,6 +42,11 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
     UserService userService;
     @Autowired
     UserRepository userRep;
+    
+    @Autowired
+    DocumentService docService;
+    @PersistenceContext
+    private EntityManager em;
     
     @Autowired UserDetailsService userDetailService;
     
@@ -96,6 +105,48 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(userRep.findAll().size(), equalTo(sizeAllBefore));
     }
     
+    /**
+     * Se o usuario nao for owner de nenhum documento, entao tem que deletar da base.
+     */
+    @Test
+    public void testDeleteUserWithoutDoc(){
+        int sizeAllBefore = userRep.findAll().size();
+        int sizeBefore = userService.getAll().size();
+        User u = userService.get(5);
+        userService.delete(u);
+        
+        assertThat(userService.getAll().size(), equalTo(sizeBefore-1));
+        assertThat(userRep.findAll().size(), equalTo(sizeAllBefore-1));
+    }
+    
+    /**
+     * Se o usuario só for owner de documento deletado, entao tem que ser deletado da base.
+     */
+    @Test
+    public void testDeleteUserDocDeleted(){
+        int idUser = 1;
+        
+        Document d = docService.get(2);
+        assertThat(d.isDeleted(), equalTo(true));
+        
+        int sizeAllBefore = userRep.findAll().size();
+        int sizeBefore = userService.getAll().size();
+        User u = userService.get(idUser);
+        userService.delete(u);
+        
+        assertThat(userService.getAll().size(), equalTo(sizeBefore-1));
+        assertThat(userRep.findAll().size(), equalTo(sizeAllBefore-1));
+        
+        //TODO: TESTAR NO POSTGRES PARA VER SE ELE COLOCA NULL NO OWNER, SE NAO COLOCAR ALTERAR O CODIGO PARA COLOCAR NULL E SALVAR
+        
+//        em.clear();
+//        em.flush();
+//        
+//        d = docService.get(2);
+//        assertThat(d, notNullValue());
+//        assertThat(d.getOwner(), nullValue());
+    }
+    
     @Test
     public void testEditUser(){
         User u = userService.get("marcos");
@@ -134,6 +185,19 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(u.isDeleted(), equalTo(true));
         assertThat(u.isEnabled(), equalTo(false));
         assertThat(u.isCredentialsNonExpired(), equalTo(false));
+    }
+    
+    @Test
+    public void testHasDocument(){
+        User u = new User();
+        u.setId(2);
+        boolean hasDocument = userService.hasDocument(u);
+        assertThat(hasDocument, equalTo(true));
+        
+         u = new User();
+        u.setId(1);
+        hasDocument = userService.hasDocument(u);
+        assertThat(hasDocument, equalTo(false));
     }
 }
 
