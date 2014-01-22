@@ -1,7 +1,8 @@
 INSERT INTO users (id,name,login,role,permissions,password) VALUES (1, 'Administrador','admin','admin','PERM_CREATE_DOC,PERM_MANAGE_DOC,PERM_VIEW,PERM_MANAGE_USERS','698dc19d489c4e4db73e28a713eab07b');
 INSERT INTO users (id,name,login,role,permissions,password) VALUES (2, 'Marcos Nunes', 'marcos','admin','PERM_CREATE_DOC,PERM_MANAGE_DOC,PERM_VIEW,PERM_MANAGE_USERS','698dc19d489c4e4db73e28a713eab07b');
 INSERT INTO users (id,name,login,role,permissions,password) VALUES (3, 'Noob', 'autor','author','PERM_CREATE_DOC','698dc19d489c4e4db73e28a713eab07b');
-INSERT INTO users (id,name,login,role,permissions,password, deleted) VALUES (4, 'user4', 'autor','author','PERM_CREATE_DOC','698dc19d489c4e4db73e28a713eab07b', true);
+INSERT INTO users (id,name,login,role,permissions,password, deleted) VALUES (4, 'user4', 'user4','author','PERM_CREATE_DOC','698dc19d489c4e4db73e28a713eab07b', true);
+INSERT INTO users (id,name,login,role,permissions,password) VALUES (5, 'user5', 'user5','author','PERM_CREATE_DOC','698dc19d489c4e4db73e28a713eab07b');
 
 INSERT INTO documents (id, obaa_entry,created, owner, obaaxml) VALUES (1, 'entry1', '2013-05-08 03:00:00', 2, '<obaa:obaa xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd" xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <obaa:general><obaa:title>Ataque a o TCP - Mitnick</obaa:title><obaa:identifier><obaa:catalog>URI</obaa:catalog><obaa:entry>http://cognitivabrasil.com.br/repositorio/documents/1</obaa:entry></obaa:identifier><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>');
