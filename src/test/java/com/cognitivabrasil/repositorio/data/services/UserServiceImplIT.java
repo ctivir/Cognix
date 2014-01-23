@@ -137,14 +137,12 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(userService.getAll().size(), equalTo(sizeBefore-1));
         assertThat(userRep.findAll().size(), equalTo(sizeAllBefore-1));
         
-        //TODO: TESTAR NO POSTGRES PARA VER SE ELE COLOCA NULL NO OWNER, SE NAO COLOCAR ALTERAR O CODIGO PARA COLOCAR NULL E SALVAR
+        em.clear();
+        em.flush();
         
-//        em.clear();
-//        em.flush();
-//        
-//        d = docService.get(2);
-//        assertThat(d, notNullValue());
-//        assertThat(d.getOwner(), nullValue());
+        d = docService.get(2);
+        assertThat(d, notNullValue());
+        assertThat(d.getOwner(), nullValue());
     }
     
     @Test
