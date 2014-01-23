@@ -17,7 +17,7 @@
 
     <body>
 
-        <c:url var="logo" value="/images/logo.jpg" />
+        <c:url var="logo" value="/images/logo.png" />
         <a href="${index}">
             <img id="logo" src="${logo}" alt="logo"/>
         </a>
