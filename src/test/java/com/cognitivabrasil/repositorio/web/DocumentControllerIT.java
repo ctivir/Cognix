@@ -142,14 +142,14 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     }
 
     @Test
-    public void testDelete() throws IOException {
+    public void testDelete(){
         HttpServletRequest request = logUserAndPermission(true);
 
         int docsBefore = docService.getAll().size();
 
         Message msg = controller.delete(1, request);
         assertThat(msg.getType(), equalTo(Message.SUCCESS));
-        assertThat(msg.getMessage(), equalTo("Documento excluido com sucesso"));
+        assertThat(msg.getMessage(), equalTo("Documento excluido com sucesso, mas os seus arquivos não foram encontrados"));
 
         em.flush();
         em.clear();

@@ -49,6 +49,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,21 +125,26 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     @ResponseBody
-    public Message delete(@PathVariable("id") int id, HttpServletRequest request) throws IOException {
+    public Message delete(@PathVariable("id") int id, HttpServletRequest request) {
         Message msg;
-        
-        log.info("Deletando o objeto: "+id);
 
-        Document d = docService.get(id);
-        if (d == null) {
-            return new Message(Message.ERROR, "O documento solicitado não foi encontrado.");
+        log.info("Deletando o objeto: " + id);
+        try {
+            Document d = docService.get(id);
+            if (d == null) {
+                return new Message(Message.ERROR, "O documento solicitado não foi encontrado.");
+            }
+            if (!isManagerForThisDocument(d, request)) {
+                return new Message(Message.ERROR, "Acesso negado! Você não ter permissão para deletar este documento.");
+            }
+            docService.delete(d);
+            msg = new Message(Message.SUCCESS, "Documento excluido com sucesso");
+        } catch (IOException io) {
+            msg = new Message(Message.SUCCESS, "Documento excluido com sucesso, mas os seus arquivos não foram encontrados", "");
+        } catch (DataAccessException e) {
+            log.error("Não foi possivel excluir o documento.", e);
+            msg = new Message(Message.ERROR, "Erro ao excluir documento", "");
         }
-        if (!isManagerForThisDocument(d, request)) {
-            return new Message(Message.ERROR, "Acesso negado! Você não ter permissão para deletar este documento.");
-        }
-        docService.delete(d);
-        msg = new Message(Message.SUCCESS, "Documento excluido com sucesso");
-
         return msg;
     }
 
@@ -362,8 +368,8 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String newDo(final HttpServletRequest request, @RequestParam int id) {
-        Document doc = docService.get(id);        
-                            
+        Document doc = docService.get(id);
+
         doc.setOwner(UsersController.getCurrentUser());
         setOBAAFiles(doc, request);
 
@@ -372,9 +378,9 @@ public final class DocumentsController {
 
     private void setOBAAFiles(Document d, final HttpServletRequest request) {
         log.debug("Trying to save");
-        
+
         Subject s;
-        
+
         if (d != null && d.getMetadata() != null && d.getMetadata().getGeneral() != null) {
             List<String> keysObaa = d.getMetadata().getGeneral().getKeywords();
             List<Subject> allSubjects = subService.getAll();
@@ -384,13 +390,13 @@ public final class DocumentsController {
                     NameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            System.out.println("\n\n"+NameSubject+"\n\n");
-            if(!NameSubject.equals("")){
+            System.out.println("\n\n" + NameSubject + "\n\n");
+            if (!NameSubject.equals("")) {
                 s = subService.getSubjectByName(NameSubject);
                 d.setSubject(s);
             }
         }
-        
+
         Map<String, String[]> parMap = request.getParameterMap();
 
         OBAA obaa = OBAA.fromHashMap(parMap);
@@ -539,10 +545,10 @@ public final class DocumentsController {
 
             if (!mime.startsWith(IMAGE)) {
                 allImg = false;
-            } 
+            }
             if (!mime.equals(PDF_MIMETYPE)) {
                 allPdf = false;
-            } 
+            }
             if (!mime.equals(DOC_MIMETYPE)) {
                 allDoc = false;
             }
@@ -559,7 +565,7 @@ public final class DocumentsController {
 
         //all image
         if (allImg && !empty) {
-            
+
             log.debug("All Image");
             //General
             suggestions.setStructure(Structure.ATOMIC);
@@ -591,9 +597,9 @@ public final class DocumentsController {
             }
 
         } else if (allPdf && !empty) { //all PDF
-            
+
             log.debug("All PDF");
-            
+
             //General
             suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
@@ -605,7 +611,7 @@ public final class DocumentsController {
             suggestions.setCopresense("false");
             suggestions.setReciprocity(Reciprocity.ONE_ONE);
             suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
-            
+
             //Accessibility
             suggestions.setVisual("true");
             suggestions.setAuditory("false");
@@ -621,9 +627,9 @@ public final class DocumentsController {
             suggestions.setRequirementsName(Name.ANY);
 
         } else if (allDoc && !empty) { //all DOC
-            
+
             log.debug("All Doc");
-            
+
             //General
             suggestions.setStructure(Structure.ATOMIC);
             suggestions.setAggregationLevel("1");
@@ -673,12 +679,14 @@ public final class DocumentsController {
         return output;
 
     }
-    
-      /**
-     * Criado apenas para salvar em um diretório todos os objetos da base com o seu respectivo metadado.
+
+    /**
+     * Criado apenas para salvar em um diretório todos os objetos da base com o
+     * seu respectivo metadado.
+     *
      * @return
      * @throws IOException
-     * @throws Exception 
+     * @throws Exception
      */
 //    @RequestMapping(value = "/recallfiles", method = RequestMethod.GET)
 //    @ResponseBody
@@ -689,29 +697,29 @@ public final class DocumentsController {
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
-            System.out.println("\n doc "+doc.getId());
-            
+            System.out.println("\n doc " + doc.getId());
+
             String destinationPath = LOCAL + doc.getId();
             File destinationDocFiles = new File(destinationPath);
             destinationDocFiles.mkdir();
-            
+
             List<Files> files = doc.getFiles();
             int numberFiles = 0;
             for (Files f : files) {
-                if(f.getLocation().isEmpty()){
+                if (f.getLocation().isEmpty()) {
                     throw new IOException("A localização do documento está em branco.");
                 }
-                File sourceFile = new File(location+f.getId());
+                File sourceFile = new File(location + f.getId());
                 File destinationFile = new File(destinationPath + "/" + f.getName());
-                
+
                 copy(sourceFile, destinationFile);
                 numberFiles++;
             }
-            if(numberFiles==0){
-                throw new Exception("O Documento "+doc.getId()+" não possui nenhum arquivo!");
+            if (numberFiles == 0) {
+                throw new Exception("O Documento " + doc.getId() + " não possui nenhum arquivo!");
             }
         }
         return "ok";
     }
-    
+
 }
