@@ -12,6 +12,7 @@ import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -83,9 +84,11 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
 
         Document d = docService.get(1);
         int numFiles = d.getFiles().size();
-
+        try{
         docService.delete(d);
-
+        }catch(FileNotFoundException f){
+            //erro esperado, pois nao existe no disco os arquivos.
+        }
         em.flush();
         em.clear();
 
@@ -96,7 +99,11 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
     @Test
     public void testDeletedDocument() throws IOException {
         Document d = docService.get(1);
+        try{
         docService.delete(d);
+        }catch(FileNotFoundException f){
+            //erro esperado, pois nao existe no disco os arquivos.
+        }
 
         em.flush();
         em.clear();
@@ -193,18 +200,4 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(docs.get(0).getId(), equalTo(5));
     }
 
-    @Test
-    public void testDeleteWithFile() throws IOException {
-        String location = "./src/test/resources/file.test";
-        File testFile = new File(location);
-
-        try (PrintWriter gravador = new PrintWriter(new FileWriter(testFile))) {
-            gravador.print("Arquivo criado pelo teste. Pode ser apagado sem problemas.");
-        }
-        Document d = docService.get(3);
-        d.getFiles().get(0).setLocation(location);
-        docService.save(d);
-
-        docService.delete(d);
-    }
 }
