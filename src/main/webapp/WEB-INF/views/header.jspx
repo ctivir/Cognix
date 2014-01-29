@@ -6,20 +6,14 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
     <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="icon-bar"></span>
-        </button>       
-        <c:url var="index" value="/" />          
-        <c:url var="logo" value="/images/logo.png" />
-        <p class="navbar-brand col-xs-6 col-sm-6 col-md-6">
-            <a href="${index}">
-                <img src="${logo}" alt="logo" class="img-responsive" />
-            </a>
-        </p>
+      <div class="navbar-header">              
+        <c:url var="index" value="/" />               
+        <a href="${index}" class="navbar-brand">
+            Cognix
+        </a>     
       </div>
 
-      <div class="navbar-collapse collapse">   
+      <div class="navbar-collapse collapse visible-lg hidden-xs hidden-sm hidden-md">   
         <security:authorize access="isAnonymous()"> 
             <c:url var="postLoginUrl" value="/j_spring_security_check" />
             <form class="navbar-form navbar-right" action="${postLoginUrl}" method="POST" name="login">

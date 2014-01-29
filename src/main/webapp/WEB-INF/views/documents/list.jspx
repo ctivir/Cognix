@@ -49,14 +49,17 @@
                     <c:if test="${doc.title != 'IndexOutOfBounds'}"> 
                      <div class="col-md-4 coluna-lista">
                             <div class="ui-state-default ui-corner-all title-list">                            
-                                <a href="${docUrl}/${doc.id}" class="title-link">
+                                <a href="${doc.metadata.technical.firstHttpLocation} " class="title-link">
                                     <c:if test="${empty doc.title}">
                                         Título não informado
                                     </c:if>
-                                    ${doc.title}</a>
-                            
+                                    ${doc.title}</a>                                                       
+                            <span class="buttonList">
+                                <a href="${docUrl}/${doc.id}" class="btn btn-default" alt="Metadados" title="Metadados">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                </a>
                             <security:authorize access="hasRole('${permDocAdmin}') or ${currentUser == doc.owner.username}">
-                                <span class="buttonList">                                   
+                                                                  
                                     <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
                                     <c:url var="edit" value="/documents/${doc.id}/edit"/>
 
@@ -81,9 +84,9 @@
                                                                                 <li><a>&Eacute; base para</a></li>
                                                                                 <li><a>Requer</a></li>
                                                                                 <li><a>&Eacute; requerido por</a></li>-->
-                                        </ul>                                                              
-                                </span>
+                                        </ul>                                                                                             
                             </security:authorize>
+                            </span>
                             <div class="clear"><jsp:text/></div>
                         </div>
 
@@ -91,7 +94,7 @@
                         <ul class="documentData">
 
                             <li class="obaaEntry">
-                                 <a href="${docUrl}/${doc.id}"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
+                                 <a href="${doc.metadata.technical.firstHttpLocation}"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
                             </li>                            
 
                             <!--<c:if test="${!empty doc.files}">
@@ -119,58 +122,4 @@
            </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="excluir_documento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-            <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-          </div>
-          <div class="modal-body">
-            Excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <a href="" class="delete btn btn-primary" id="confirmExclude">Excluir</a>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    
-    <!-- Modal -->
-    <div class="modal fade" id="excluido_com_sucesso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-            <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-          </div>
-          <div class="modal-body">
-            Documento excluído com sucesso!
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    
-    <!-- Modal -->
-    <div class="modal fade" id="nao_excluido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-            <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-          </div>
-          <div class="modal-body">
-            O documento não pode ser deletado. Por favor tente novamente mais tarde ou entre em contato com o nosso suporte.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 </div>

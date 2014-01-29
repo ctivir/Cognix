@@ -1,29 +1,18 @@
 $(function() {
        
-    /*list user*/
-    $( "#dialog:ui-dialog" ).dialog( "destroy" );
-    
-    $( ".addEntity" ).click(function(ev) {        
-        ev.preventDefault();
-        var link = $(this).attr('id');
-        openDialog(link);
-    });
+     $('.openModalUsuario').on('click',function(){
+         $('#modalContent').load($(this).attr('id'), function() {             
+             $('#formUsuario').modal();            
+        });
+     });
+     
+    /*
     
     $(".editar").click(function(ev) {
         ev.preventDefault();
         var link = $(this).attr('href');
         openDialog(link);
-    });    
-    
-    function openDialog(link){
-        $( "#dialog-form" ).
-        load(link, function() {
-            // abrir o diálogo somente após carregar form
-            $( "#dialog-form" ).dialog( "open" );
-            $(this).siblings(".ui-dialog-titlebar").children(".ui-dialog-title").text($(this).find("#dialog-form" ).attr("title"));
-        });
-    }
-
+    }); 
     
     $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -53,5 +42,5 @@ $(function() {
         close: function() {
             $( this ).empty();
         }
-    });
+    });*/
 });

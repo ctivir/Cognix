@@ -113,4 +113,16 @@ a.link-interno{
     min-height:350px;
 }
 
+.navbar-brand{
+    padding:25px 10px;
+    font-size:1.9em;
+    color:#FFF;
+    text-decoration: none;
+}
+
+.navbar-brand:hover{
+    color:#FFF;
+    text-decoration: none;
+}
+
 
