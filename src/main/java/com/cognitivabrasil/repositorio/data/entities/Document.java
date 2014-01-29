@@ -150,7 +150,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
         if (metadata == null) {
             if (getObaaXml() == null) {
                 metadata = new OBAA();
-//				throw new IllegalStateException("No XML metadata associated with the Object");
+                log.warn("XML esta em branco");
             } else {
                 metadata = OBAA.fromString(getObaaXml());
             }
@@ -165,7 +165,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
      */
     public void setMetadata(OBAA metadata) {
         this.metadata = metadata;
-//		updateIndexes();
+        
         try {
             setObaaXml(metadata.toXml());
         } catch (RuntimeException e) {

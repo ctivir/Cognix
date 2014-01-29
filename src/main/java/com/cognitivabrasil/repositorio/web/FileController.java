@@ -88,8 +88,7 @@ public class FileController {
                 response.sendError(410, "O arquivo solicitado não foi encontrado.");
             } catch (IOException ex) {
                 log.error("Error writing file to output stream. Filename was '" + fileName + "'");
-                throw ex;
-                //throw new RuntimeException("IOError writing file to output stream");
+                throw ex;                
             }
         }
     }

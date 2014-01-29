@@ -66,7 +66,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller("documents")
 @RequestMapping("/documents")
 public final class DocumentsController {
-    
+
     private static final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
     private DocumentService docService;
@@ -390,8 +390,8 @@ public final class DocumentsController {
                     NameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            log.debug("Assunto do OA: "+NameSubject);
-            if(!NameSubject.equals("")){
+            log.debug("Assunto do OA: " + NameSubject);
+            if (!NameSubject.equals("")) {
                 s = subService.getSubjectByName(NameSubject);
                 d.setSubject(s);
             }
@@ -480,10 +480,10 @@ public final class DocumentsController {
         meta.addSchema(metaSchema);
 
         d.getMetadata().setMetametadata(meta);
-        
+
         //Parsing do duration
-        
-        
+
+
 
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
@@ -568,98 +568,18 @@ public final class DocumentsController {
             }
         }
 
-        //all image
+
         if (allImg && !empty) {
+            //all image
+            suggestions = this.allImg(mime);
 
-            log.debug("All Image");
-            //General
-            suggestions.setStructure(Structure.ATOMIC);
-            suggestions.setAggregationLevel("1");
+        } else if (allPdf && !empty) {
+            //all PDF
+            suggestions = this.allPdf();
 
-            //Educational
-            suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
-            suggestions.setPerception(Perception.VISUAL);
-            suggestions.setSynchronism("false");
-            suggestions.setCopresense("false");
-            suggestions.setReciprocity(Reciprocity.ONE_ONE);
-            suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
-
-            //Accessibility
-            suggestions.setVisual("true");
-            suggestions.setAuditory("false");
-            suggestions.setTactil("false");
-            suggestions.setTextual("false");
-
-            //Technical
-            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
-            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-            suggestions.addSupportedPlatforms(SupportedPlatform.DTV);
-
-            if (mime.endsWith("jpeg") || mime.endsWith("jpg") || mime.endsWith("png") || mime.endsWith("gif")) {
-
-                suggestions.setRequirementsType(Type.OPERATING_SYSTEM);
-                suggestions.setRequirementsName(Name.ANY);
-            }
-
-        } else if (allPdf && !empty) { //all PDF
-
-            log.debug("All PDF");
-
-            //General
-            suggestions.setStructure(Structure.ATOMIC);
-            suggestions.setAggregationLevel("1");
-
-            //Educational
-            suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
-            suggestions.setPerception(Perception.VISUAL);
-            suggestions.setSynchronism("false");
-            suggestions.setCopresense("false");
-            suggestions.setReciprocity(Reciprocity.ONE_ONE);
-            suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
-
-            //Accessibility
-            suggestions.setVisual("true");
-            suggestions.setAuditory("false");
-            suggestions.setTactil("false");
-            suggestions.setTextual("true");
-
-            //Technical
-            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
-            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-
-            suggestions.setOtherPlatformRequirements("É necessário um programa como o Adobe Reader para ver esse arquivo.");
-            suggestions.setRequirementsType(Type.OPERATING_SYSTEM);
-            suggestions.setRequirementsName(Name.ANY);
-
-        } else if (allDoc && !empty) { //all DOC
-
-            log.debug("All Doc");
-
-            //General
-            suggestions.setStructure(Structure.ATOMIC);
-            suggestions.setAggregationLevel("1");
-
-            //Educational
-            suggestions.setInteractivityType(InteractivityType.EXPOSITIVE);
-            suggestions.setPerception(Perception.VISUAL);
-            suggestions.setSynchronism("false");
-            suggestions.setCopresense("false");
-            suggestions.setReciprocity(Reciprocity.ONE_ONE);
-            suggestions.setInteractivityLevel(InteractivityLevel.VERY_LOW);
-
-            //Accessibility
-            suggestions.setVisual("true");
-            suggestions.setAuditory("false");
-            suggestions.setTactil("false");
-            suggestions.setTextual("true");
-
-            //Technical
-            suggestions.addSupportedPlatforms(SupportedPlatform.WEB);
-            suggestions.addSupportedPlatforms(SupportedPlatform.MOBILE);
-
-            suggestions.setOtherPlatformRequirements("É necessário um programa como o Microsoft Word para ver esse arquivo.");
-            suggestions.setRequirementsType(Type.OPERATING_SYSTEM);
-            suggestions.setRequirementsName(Name.ANY);
+        } else if (allDoc && !empty) {
+            //all DOC
+            suggestions = this.allDoc();
         }
 
         //Title Suggestion
@@ -727,4 +647,110 @@ public final class DocumentsController {
         return "ok";
     }
 
+    /**
+     * Esses métodos foram feitos privado e aqui e não na classe ObaaDto, 
+     * por ela ser uma classe apenas para tranferência de dados.
+     */
+    private ObaaDto allImg(String mime) {
+        ObaaDto imgObj = new ObaaDto();
+
+        log.debug("All Image");
+        //General
+        imgObj.setStructure(Structure.ATOMIC);
+        imgObj.setAggregationLevel("1");
+
+        //Educational
+        imgObj.setInteractivityType(InteractivityType.EXPOSITIVE);
+        imgObj.setPerception(Perception.VISUAL);
+        imgObj.setSynchronism("false");
+        imgObj.setCopresense("false");
+        imgObj.setReciprocity(Reciprocity.ONE_ONE);
+        imgObj.setInteractivityLevel(InteractivityLevel.VERY_LOW);
+
+        //Accessibility
+        imgObj.setVisual("true");
+        imgObj.setAuditory("false");
+        imgObj.setTactil("false");
+        imgObj.setTextual("false");
+
+        //Technical
+        imgObj.addSupportedPlatforms(SupportedPlatform.WEB);
+        imgObj.addSupportedPlatforms(SupportedPlatform.MOBILE);
+        imgObj.addSupportedPlatforms(SupportedPlatform.DTV);
+
+        if (mime.endsWith("jpeg") || mime.endsWith("jpg") || mime.endsWith("png") || mime.endsWith("gif")) {
+
+            imgObj.setRequirementsType(Type.OPERATING_SYSTEM);
+            imgObj.setRequirementsName(Name.ANY);
+        }
+        return imgObj;
+    }
+
+    private ObaaDto allPdf() {
+        ObaaDto pdfObj = new ObaaDto();
+
+        log.debug("All PDF");
+
+        //General
+        pdfObj.setStructure(Structure.ATOMIC);
+        pdfObj.setAggregationLevel("1");
+
+        //Educational
+        pdfObj.setInteractivityType(InteractivityType.EXPOSITIVE);
+        pdfObj.setPerception(Perception.VISUAL);
+        pdfObj.setSynchronism("false");
+        pdfObj.setCopresense("false");
+        pdfObj.setReciprocity(Reciprocity.ONE_ONE);
+        pdfObj.setInteractivityLevel(InteractivityLevel.VERY_LOW);
+
+        //Accessibility
+        pdfObj.setVisual("true");
+        pdfObj.setAuditory("false");
+        pdfObj.setTactil("false");
+        pdfObj.setTextual("true");
+
+        //Technical
+        pdfObj.addSupportedPlatforms(SupportedPlatform.WEB);
+        pdfObj.addSupportedPlatforms(SupportedPlatform.MOBILE);
+
+        pdfObj.setOtherPlatformRequirements("É necessário um programa como o Adobe Reader para ver esse arquivo.");
+        pdfObj.setRequirementsType(Type.OPERATING_SYSTEM);
+        pdfObj.setRequirementsName(Name.ANY);
+
+        return pdfObj;
+    }
+
+    private ObaaDto allDoc() {
+        ObaaDto docObj = new ObaaDto();
+
+        log.debug("All Doc");
+
+        //General
+        docObj.setStructure(Structure.ATOMIC);
+        docObj.setAggregationLevel("1");
+
+        //Educational
+        docObj.setInteractivityType(InteractivityType.EXPOSITIVE);
+        docObj.setPerception(Perception.VISUAL);
+        docObj.setSynchronism("false");
+        docObj.setCopresense("false");
+        docObj.setReciprocity(Reciprocity.ONE_ONE);
+        docObj.setInteractivityLevel(InteractivityLevel.VERY_LOW);
+
+        //Accessibility
+        docObj.setVisual("true");
+        docObj.setAuditory("false");
+        docObj.setTactil("false");
+        docObj.setTextual("true");
+
+        //Technical
+        docObj.addSupportedPlatforms(SupportedPlatform.WEB);
+        docObj.addSupportedPlatforms(SupportedPlatform.MOBILE);
+
+        docObj.setOtherPlatformRequirements("É necessário um programa como o Microsoft Word para ver esse arquivo.");
+        docObj.setRequirementsType(Type.OPERATING_SYSTEM);
+        docObj.setRequirementsName(Name.ANY);
+
+        return docObj;
+    }
 }

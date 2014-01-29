@@ -30,7 +30,7 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentRepository docRep;
     
     @Autowired
-    FileService filesService;
+    private FileService filesService;
 
     private final Logger log = Logger.getLogger(DocumentServiceImpl.class);
 

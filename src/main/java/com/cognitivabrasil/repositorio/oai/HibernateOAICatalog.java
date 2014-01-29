@@ -49,12 +49,11 @@ public class HibernateOAICatalog extends AbstractHibernateOAICatalog {
      */
     @Override
     public Map listSets() {
-        purge(); // clean out old resumptionTokens
-        Map listSetsMap = new HashMap();
-		//Session session = getSessionFactory().getCurrentSession();
 
-		// Criteria criteria2 = session.createCriteria(Repositorio.class);
-        // List<Repositorio> fromdb = criteria2.list();
+        // clean out old resumptionTokens
+        purge();
+        Map listSetsMap = new HashMap();
+        
         List sets = new ArrayList();
 
         // TODO: Implement getSets()
@@ -87,5 +86,4 @@ public class HibernateOAICatalog extends AbstractHibernateOAICatalog {
         }
         return sessionFactory;
     }
-
 }
