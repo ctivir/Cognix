@@ -34,7 +34,7 @@ import spring.ApplicationContextProvider;
  */
 public class HibernateOAICatalog extends AbstractHibernateOAICatalog {
 
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     public HibernateOAICatalog(Properties properties) {
         super(properties);

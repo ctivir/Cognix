@@ -22,6 +22,7 @@
     <c:url var="jsMutateEvents" value="/scripts/mutate/mutate.events.js" />
     <c:url var="jsMutate" value="/scripts/mutate/mutate.min.js" />
     <c:url var="jsUI" value="/scripts/jquery-ui-1.10.3.custom.min.js" />
+    <c:url var="jsMask" value="/scripts/documents/new/jquery.mask.min.js" />
 
 
     <jsp:useBean id="booleanElement" class="cognitivabrasil.obaa.BooleanElement" >
@@ -44,7 +45,7 @@
     <script type="text/javascript" src="${jsMutateEvents}"><jsp:text/></script>
     <script type="text/javascript" src="${jsMutate}"><jsp:text/></script>
     <script type="text/javascript" src="${jsUI}"><jsp:text/></script>
-
+    <script type="text/javascript" src="${jsMask}"><jsp:text/></script>
 
 
     <cgbr:tabs tabNumber="1" />
@@ -491,7 +492,7 @@
 
                         <li class="typicalLearningTime marcador single" id="typicalLearningTime">
                             <span class="file">Tempo Típico de Aprendizado</span>
-                            <input id="typicalLearningTime" name="educational.typicalLearningTime" type="text" value="${obaa.educational.typicalLearningTime}" />
+                            <input id="typicalLearningTime" class="duration" name="educational.typicalLearningTime" type="text" value="${obaa.educational.typicalLearningTime}" />
                         </li>
 
                         <c:choose>
@@ -720,7 +721,7 @@
 
                         <li class="marcador single" id="duration">
                             <span class="file">Duração</span>
-                            <input id="duration" name="technical.duration" type="text" value="${obaa.technical.duration}" />
+                            <input id="duration" class="duration" name="technical.duration" type="text" value="${obaa.technical.duration}" />
                         </li>
 
                         <li class="marcador multi" id="supportedPlatforms">

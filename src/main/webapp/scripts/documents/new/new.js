@@ -324,7 +324,10 @@ $(function() {
         }, 18));
 
     });
-});
+    
+    $('.duration').mask('00h00min00s');
+    
+});//Jquery
 
 var removeInputFile = function() {
     var divUpload = $("#uploads");

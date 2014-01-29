@@ -50,7 +50,7 @@ public class FileController {
 
     private final Logger log = Logger.getLogger(FileController.class);
     @Autowired
-    FileService fileService;
+    private FileService fileService;
     @Autowired
     private DocumentService documentsService;
     private Files file = null;

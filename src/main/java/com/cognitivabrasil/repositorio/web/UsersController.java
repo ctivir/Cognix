@@ -39,7 +39,7 @@ public class UsersController {
 
     private static final Logger log = Logger.getLogger(UsersController.class);
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model, HttpServletRequest request) {

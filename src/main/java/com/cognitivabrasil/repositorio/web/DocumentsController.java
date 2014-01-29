@@ -37,6 +37,7 @@ import com.cognitivabrasil.repositorio.util.Message;
 import cognitivabrasil.util.VCarder;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.services.SubjectService;
+import com.cognitivabrasil.repositorio.util.Config;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -65,16 +66,15 @@ import org.springframework.web.bind.annotation.*;
 @Controller("documents")
 @RequestMapping("/documents")
 public final class DocumentsController {
-
-    public final String LOCAL = "/var/cognitiva/repositorio/";
+    
     private static final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
-    DocumentService docService;
+    private DocumentService docService;
     @Autowired
-    SubjectService subService;
+    private SubjectService subService;
     @Autowired
     @Qualifier("serverConfig")
-    Properties config;
+    private Properties config;
 
     public DocumentsController() {
         log.debug("Loaded DocumentsController");
@@ -390,8 +390,8 @@ public final class DocumentsController {
                     NameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            System.out.println("\n\n" + NameSubject + "\n\n");
-            if (!NameSubject.equals("")) {
+            log.debug("Assunto do OA: "+NameSubject);
+            if(!NameSubject.equals("")){
                 s = subService.getSubjectByName(NameSubject);
                 d.setSubject(s);
             }
@@ -448,6 +448,7 @@ public final class DocumentsController {
             obaa.getTechnical().getLocation().set(0, obaa.getGeneral().getIdentifiers().get(0).getEntry());
         }
 
+        // Preenchimento dos metametadados
         Metametadata meta = new Metametadata();
 
         meta.setLanguage("pt-BR");
@@ -479,6 +480,10 @@ public final class DocumentsController {
         meta.addSchema(metaSchema);
 
         d.getMetadata().setMetametadata(meta);
+        
+        //Parsing do duration
+        
+        
 
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
@@ -692,14 +697,14 @@ public final class DocumentsController {
 //    @ResponseBody
     public String recallFiles()
             throws IOException, Exception {
-        String location = LOCAL + "old/";
+        String location = Config.FILE_PATH + "old/";
 
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
             System.out.println("\n doc " + doc.getId());
 
-            String destinationPath = LOCAL + doc.getId();
+            String destinationPath = Config.FILE_PATH + doc.getId();
             File destinationDocFiles = new File(destinationPath);
             destinationDocFiles.mkdir();
 

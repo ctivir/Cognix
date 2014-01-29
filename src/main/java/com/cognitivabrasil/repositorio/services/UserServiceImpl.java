@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("UserService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    static Logger log = Logger.getLogger(UserServiceImpl.class);
+    private static Logger log = Logger.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRep;
 

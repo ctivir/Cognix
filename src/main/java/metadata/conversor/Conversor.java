@@ -12,10 +12,10 @@ import java.util.List;
  * @author Paulo Schreiner 
  */
 public class Conversor {
-	List<Rule> rules;
+	private List<Rule> rules;
 
 	Conversor() {
-		rules = new ArrayList<Rule>();
+		rules = new ArrayList<>();
 	}
 	
 	public void add(Rule r) {
