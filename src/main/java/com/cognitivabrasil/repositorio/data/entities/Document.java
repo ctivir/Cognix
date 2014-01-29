@@ -222,7 +222,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
         return new HashSet<>();
     }
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "owner")
     public User getOwner() {
         return owner;

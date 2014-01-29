@@ -11,13 +11,9 @@ import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -199,5 +195,4 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(docs, hasSize(1));
         assertThat(docs.get(0).getId(), equalTo(5));
     }
-
 }
