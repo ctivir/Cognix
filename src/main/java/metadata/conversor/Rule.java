@@ -46,18 +46,16 @@ public class Rule {
         
         try {            
             m1 = c1.getMethod("get" + from);
-        } catch (NoSuchMethodException e) {
-            log.error(e);
+        } catch (NoSuchMethodException e) {            
             throw new IllegalArgumentException("Cannot find method " + "get" + from
-                    + " in class" + c1.getName());
+                    + " in class" + c1.getName(), e);
         }
         
         try {
             m2 = c2.getMethod("set" + to, m1.getReturnType());
-        } catch (NoSuchMethodException e) {
-            log.error(e);
+        } catch (NoSuchMethodException e) {            
             throw new IllegalArgumentException("Cannot find method " + "set" + from
-                    + " in class" + c2.getName());
+                    + " in class" + c2.getName(), e);
         }
         
         
