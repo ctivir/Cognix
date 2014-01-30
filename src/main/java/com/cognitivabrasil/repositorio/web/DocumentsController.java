@@ -67,7 +67,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/documents")
 public final class DocumentsController {
 
-    private static final Logger log = Logger.getLogger(DocumentsController.class);
+    private final Logger log = Logger.getLogger(DocumentsController.class);
     @Autowired
     private DocumentService docService;
     @Autowired
@@ -260,7 +260,8 @@ public final class DocumentsController {
     @RequestMapping(value = "/new", params = "classPlan", method = RequestMethod.GET)
     public String newClassPlan(Model model) {
 
-        String result = newShow(model); //inicializa com o new basico
+        //inicializa com o new basico
+        String result = newShow(model); 
 
         Document d = (Document) model.asMap().get("doc");
 
@@ -384,15 +385,15 @@ public final class DocumentsController {
         if (d != null && d.getMetadata() != null && d.getMetadata().getGeneral() != null) {
             List<String> keysObaa = d.getMetadata().getGeneral().getKeywords();
             List<Subject> allSubjects = subService.getAll();
-            String NameSubject = "";
+            String nameSubject = "";
             for (String key : keysObaa) {
                 if (allSubjects.contains(retiraAcentos(key).toLowerCase())) {
-                    NameSubject = retiraAcentos(key).toLowerCase();
+                    nameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            log.debug("Assunto do OA: " + NameSubject);
-            if (!NameSubject.equals("")) {
-                s = subService.getSubjectByName(NameSubject);
+            log.debug("Assunto do OA: " + nameSubject);
+            if (!nameSubject.equals("")) {
+                s = subService.getSubjectByName(nameSubject);
                 d.setSubject(s);
             }
         }
@@ -431,7 +432,8 @@ public final class DocumentsController {
             size = Long.valueOf(originalTechical.getSize());
         }
 
-        t.setSize(size); // somatorio to tamanho de todos os arquivos
+        // somatorio to tamanho de todos os arquivos
+        t.setSize(size); 
         obaa.setTechnical(t);
         d.setMetadata(obaa);
 
@@ -496,8 +498,8 @@ public final class DocumentsController {
         String port = config.getProperty("Repositorio.port", "8080");
         return ("http://"
                 + config.getProperty("Repositorio.hostname")
-                + (port.equals("80") ? "" : (":" + port)) // if port 80, dont
-                // put anything
+                + (port.equals("80") ? "" : (":" + port)) 
+                // if port 80, dont put anything
                 + config.getProperty("Repositorio.rootPath", "/repositorio")
                 + "/documents/" + d.getId());
     }
@@ -562,7 +564,7 @@ public final class DocumentsController {
 
             // to remove the file extension
             if (fileName.contains(".")) {
-                suggestions.setTitle(fileName.substring(0, fileName.lastIndexOf(".")));
+                suggestions.setTitle(fileName.substring(0, fileName.lastIndexOf('.')));
             } else {
                 suggestions.setTitle(fileName);
             }
@@ -616,13 +618,13 @@ public final class DocumentsController {
 //    @RequestMapping(value = "/recallfiles", method = RequestMethod.GET)
 //    @ResponseBody
     public String recallFiles()
-            throws IOException, Exception {
+            throws IOException {
         String location = Config.FILE_PATH + "old/";
 
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
-            System.out.println("\n doc " + doc.getId());
+            log.trace("\n doc " + doc.getId());           
 
             String destinationPath = Config.FILE_PATH + doc.getId();
             File destinationDocFiles = new File(destinationPath);
@@ -641,7 +643,7 @@ public final class DocumentsController {
                 numberFiles++;
             }
             if (numberFiles == 0) {
-                throw new Exception("O Documento " + doc.getId() + " não possui nenhum arquivo!");
+                throw new IOException("O Documento " + doc.getId() + " não possui nenhum arquivo!");
             }
         }
         return "ok";
