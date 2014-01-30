@@ -4,6 +4,7 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.util.Message;
 import java.io.IOException;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
@@ -488,5 +489,16 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         assertThat(msg.getType(), equalTo(Message.ERROR));
         assertThat(msg.getMessage(), equalTo("Erro ao excluir o usuário"));
+    }
+    
+    @Test
+    public void tesDeleted() {
+        
+        String result = usersController.getDeleted(model);
+        assertNotNull(result);
+        assertEquals(result, "users/deleted");
+        List<User> users = (List<User>) model.get("users");
+
+        assertThat(users, hasSize(1));
     }
 }

@@ -124,17 +124,17 @@ public class UsersController {
 
     @RequestMapping(value = "/{id}/editPass", method = RequestMethod.POST)
     public String editPass(@PathVariable("id") int id, UserDto uDto,
-    BindingResult bindingResult,
-            ExtendedModelMap model, HttpServletResponse response) throws IOException{
-       
+            BindingResult bindingResult,
+            ExtendedModelMap model, HttpServletResponse response) throws IOException {
+
         User u = userService.get(id);
-        
+
         User uCurrent = getCurrentUser();
         if (!u.equals(uCurrent)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return "ajax";
         }
-        
+
         uDto.setName(u.getName());
         uDto.setUsername(u.getUsername());
         uDto.setRole(u.getRole());
@@ -165,6 +165,14 @@ public class UsersController {
             log.error("Erro ao excluir um usuário.", e);
         }
         return msg;
+    }
+
+    @RequestMapping(value = "deleted", method = RequestMethod.GET)
+    public String getDeleted(Model model) {
+
+        List<User> users = userService.getDeleted();
+        model.addAttribute("users", users);
+        return "users/deleted";
     }
 
     protected static User getCurrentUser() {
