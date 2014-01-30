@@ -71,7 +71,6 @@
                                                 <a class="delete btSemTexto confirmLink" title="excluir o usuário ${user.name}" href="${deletarUrl}">Excluir</a>
                                             </security:authorize>
 
-                                            
                                         </security:authorize>
 
                                     </td>
