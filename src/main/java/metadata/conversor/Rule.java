@@ -4,8 +4,9 @@
  */
 package metadata.conversor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.IllegalArgumentException;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,6 +17,7 @@ import java.lang.IllegalArgumentException;
 public class Rule {
 	private String from;
 	private String to;
+        private Logger log;
 
 	/**
 	 * 
@@ -57,10 +59,8 @@ public class Rule {
 		try {
 			m2.invoke(ob2, m1.invoke(ob1));
 		}
-		catch(Exception e ) {
-			System.err.print(e);
-			e.printStackTrace();
+		catch(IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
+                    log.error(e);			
 		}
-		
 	}
 }

@@ -655,6 +655,7 @@ public final class DocumentsController {
         ObaaDto imgObj = new ObaaDto();
 
         log.debug("All Image");
+        
         //General
         imgObj.setStructure(Structure.ATOMIC);
         imgObj.setAggregationLevel("1");
