@@ -9,6 +9,7 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.data.repositories.UserRepository;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.UserService;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -196,6 +197,16 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         u.setId(1);
         hasDocument = userService.hasDocument(u);
         assertThat(hasDocument, equalTo(false));
+    }
+    
+    @Test
+    public void testGetDeleted(){
+        List<User> users = userService.getDeleted();
+        
+        assertThat(users, hasSize(1));
+        
+        assertThat(users.get(0).isDeleted(), equalTo(true));
+        
     }
 }
 

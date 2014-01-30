@@ -64,4 +64,11 @@ public interface UserService {
      * @return true if have document and otherwise false.
      */
     public boolean hasDocument(User u);
+    
+    
+     /**
+     *
+     * @return All deleted users
+     */
+    public List<User> getDeleted();
 }

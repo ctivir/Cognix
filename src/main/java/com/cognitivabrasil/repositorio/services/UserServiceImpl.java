@@ -100,4 +100,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean hasDocument(User u) {
         return docRep.countByOwnerAndDeletedIsFalse(u) > 0;
     }
+    
+    @Override
+    public List<User> getDeleted(){
+        return userRep.findByDeletedIsTrue();
+    }
 }

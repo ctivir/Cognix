@@ -8,6 +8,7 @@ package com.cognitivabrasil.repositorio.repositories;
 
 import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.data.repositories.UserRepository;
+import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.Test;
