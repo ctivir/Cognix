@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FileServiceImpl implements FileService {
 
-    private final Logger log = Logger.getLogger(FileServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(FileServiceImpl.class);
     @Autowired
     private FileRepository fileRep;
 
@@ -27,7 +27,7 @@ public class FileServiceImpl implements FileService {
         try {
             file.deleteFile();
         } catch (IOException e) {
-            log.error("Ao tentar deletar, não foi possível encontrar o arquivo: " + file.getLocation(), e);
+            LOG.error("Ao tentar deletar, não foi possível encontrar o arquivo: " + file.getLocation(), e);
             throw e;
         } finally {
             fileRep.delete(file);

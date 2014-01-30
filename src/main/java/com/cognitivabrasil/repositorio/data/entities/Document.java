@@ -35,7 +35,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "documents")
 public class Document implements HibernateOaiDocument, java.io.Serializable {
 
-    private final Logger log = Logger.getLogger(Document.class);
+    private static final Logger LOG = Logger.getLogger(Document.class);
     private Integer id;
     private String obaaEntry;
     @DateTimeFormat(style = "M-")
@@ -150,7 +150,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
         if (metadata == null) {
             if (getObaaXml() == null) {
                 metadata = new OBAA();
-                log.warn("XML esta em branco");
+                LOG.warn("XML esta em branco");
             } else {
                 metadata = OBAA.fromString(getObaaXml());
             }
@@ -169,7 +169,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
         try {
             setObaaXml(metadata.toXml());
         } catch (RuntimeException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
     }
 

@@ -48,7 +48,7 @@ import org.apache.log4j.Logger;
 @Controller
 public class FileController {
 
-    private final Logger log = Logger.getLogger(FileController.class);
+    private static final Logger LOG = Logger.getLogger(FileController.class);
     @Autowired
     private FileService fileService;
     @Autowired
@@ -87,7 +87,7 @@ public class FileController {
             } catch (FileNotFoundException fe) {
                 response.sendError(410, "O arquivo solicitado não foi encontrado.");
             } catch (IOException ex) {
-                log.error("Error writing file to output stream. Filename was '" + fileName + "'");
+                LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;                
             }
         }
@@ -178,7 +178,7 @@ public class FileController {
                             bufferedOutput.write(data);
                             bufferedOutput.close();
                         } catch (Exception e) {
-                            log.error("Erro ao salvar o arquivo.", e);
+                            LOG.error("Erro ao salvar o arquivo.", e);
                             file = null;
                             throw e;
                         } finally {
@@ -186,7 +186,7 @@ public class FileController {
                                 try {
                                     input.close();
                                 } catch (IOException e) {
-                                    log.error("Erro ao fechar o ImputStream", e);
+                                    LOG.error("Erro ao fechar o ImputStream", e);
                                 }
                             }
 
@@ -207,7 +207,7 @@ public class FileController {
                 }
             } catch (org.apache.commons.fileupload.FileUploadException | IOException | NumberFormatException e) {
                 responseString = RESP_ERROR;
-                log.error("Erro ao salvar o arquivo", e);
+                LOG.error("Erro ao salvar o arquivo", e);
                 file = null;
                 throw e;
             }
@@ -246,7 +246,7 @@ public class FileController {
             } catch (FileNotFoundException fe) {
                 response.sendError(410, "O arquivo solicitado não foi encontrado.");
             } catch (IOException ex) {
-                log.error("Error writing file to output stream. Filename was '" + fileName + "'");
+                LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;
             }
         }

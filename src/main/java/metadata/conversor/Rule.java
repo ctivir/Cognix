@@ -4,6 +4,7 @@
  */
 package metadata.conversor;
 
+import com.cognitivabrasil.repositorio.web.MainController;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
@@ -18,7 +19,7 @@ public class Rule {
 
     private String from;
     private String to;
-    private Logger log;
+    private static final Logger LOG = Logger.getLogger(Rule.class);
 
     /**
      *
@@ -62,7 +63,7 @@ public class Rule {
         try {
             m2.invoke(ob2, m1.invoke(ob1));
         } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
-            log.error(e);            
+            LOG.error(e);            
         }
     }
 }

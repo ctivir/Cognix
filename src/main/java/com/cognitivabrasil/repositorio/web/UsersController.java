@@ -37,7 +37,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UsersController {
 
-    private static final Logger log = Logger.getLogger(UsersController.class);
+    private static final Logger LOG = Logger.getLogger(UsersController.class);
     @Autowired
     private UserService userService;
 
@@ -162,7 +162,7 @@ public class UsersController {
             msg = new Message(Message.SUCCESS, "Usuário excluido com sucesso");
         } catch (DataAccessException e) {
             msg = new Message(Message.ERROR, "Erro ao excluir o usuário");
-            log.error("Erro ao excluir um usuário.", e);
+            LOG.error("Erro ao excluir um usuário.", e);
         }
         return msg;
     }
@@ -180,7 +180,7 @@ public class UsersController {
         try {
             currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (NullPointerException e) {
-            log.error("Não foi possível recuperar o usuário que está utilizando o sistema.", e);
+            LOG.error("Não foi possível recuperar o usuário que está utilizando o sistema.", e);
             currentUser = null;
         }
         return currentUser;

@@ -67,7 +67,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/documents")
 public final class DocumentsController {
 
-    private final Logger log = Logger.getLogger(DocumentsController.class);
+    private static final Logger LOG = Logger.getLogger(DocumentsController.class);
     @Autowired
     private DocumentService docService;
     @Autowired
@@ -77,7 +77,7 @@ public final class DocumentsController {
     private Properties config;
 
     public DocumentsController() {
-        log.debug("Loaded DocumentsController");
+        LOG.debug("Loaded DocumentsController");
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -128,7 +128,7 @@ public final class DocumentsController {
     public Message delete(@PathVariable("id") int id, HttpServletRequest request) {
         Message msg;
 
-        log.info("Deletando o objeto: " + id);
+        LOG.info("Deletando o objeto: " + id);
         try {
             Document d = docService.get(id);
             if (d == null) {
@@ -142,7 +142,7 @@ public final class DocumentsController {
         } catch (IOException io) {
             msg = new Message(Message.SUCCESS, "Documento excluido com sucesso, mas os seus arquivos não foram encontrados", "");
         } catch (DataAccessException e) {
-            log.error("Não foi possivel excluir o documento.", e);
+            LOG.error("Não foi possivel excluir o documento.", e);
             msg = new Message(Message.ERROR, "Erro ao excluir documento", "");
         }
         return msg;
@@ -378,7 +378,7 @@ public final class DocumentsController {
     }
 
     private void setOBAAFiles(Document d, final HttpServletRequest request) {
-        log.debug("Trying to save");
+        LOG.debug("Trying to save");
 
         Subject s;
 
@@ -391,7 +391,7 @@ public final class DocumentsController {
                     nameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            log.debug("Assunto do OA: " + nameSubject);
+            LOG.debug("Assunto do OA: " + nameSubject);
             if (!nameSubject.equals("")) {
                 s = subService.getSubjectByName(nameSubject);
                 d.setSubject(s);
@@ -414,7 +414,7 @@ public final class DocumentsController {
             obaa.getGeneral().setKeywords(splittedKeywords);
         }
 
-        log.debug("Title: " + obaa.getGeneral().getTitles());
+        LOG.debug("Title: " + obaa.getGeneral().getTitles());
 
         Technical t = obaa.getTechnical();
 
@@ -438,7 +438,7 @@ public final class DocumentsController {
         d.setMetadata(obaa);
 
         if (obaa.getTechnical() == null) {
-            log.warn("Technical was null");
+            LOG.warn("Technical was null");
             obaa.setTechnical(new Technical());
         }
         List<String> l = obaa.getTechnical().getLocation();
@@ -548,7 +548,7 @@ public final class DocumentsController {
         for (Files file : files) {
 
             mime = file.getContentType();
-            log.debug("MIME Type: " + mime);
+            LOG.debug("MIME Type: " + mime);
 
             if (!mime.startsWith(IMAGE)) {
                 allImg = false;
@@ -624,7 +624,7 @@ public final class DocumentsController {
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
-            log.trace("\n doc " + doc.getId());           
+            LOG.trace("\n doc " + doc.getId());           
 
             String destinationPath = Config.FILE_PATH + doc.getId();
             File destinationDocFiles = new File(destinationPath);
@@ -656,7 +656,7 @@ public final class DocumentsController {
     private ObaaDto allImg(String mime) {
         ObaaDto imgObj = new ObaaDto();
 
-        log.debug("All Image");
+        LOG.debug("All Image");
         
         //General
         imgObj.setStructure(Structure.ATOMIC);
@@ -692,7 +692,7 @@ public final class DocumentsController {
     private ObaaDto allPdf() {
         ObaaDto pdfObj = new ObaaDto();
 
-        log.debug("All PDF");
+        LOG.debug("All PDF");
 
         //General
         pdfObj.setStructure(Structure.ATOMIC);
@@ -726,7 +726,7 @@ public final class DocumentsController {
     private ObaaDto allDoc() {
         ObaaDto docObj = new ObaaDto();
 
-        log.debug("All Doc");
+        LOG.debug("All Doc");
 
         //General
         docObj.setStructure(Structure.ATOMIC);

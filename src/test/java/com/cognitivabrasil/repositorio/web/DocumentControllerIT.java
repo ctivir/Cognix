@@ -25,7 +25,6 @@ import cognitivabrasil.obaa.LifeCycle.Status;
 import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Relation.Kind;
-import cognitivabrasil.obaa.Relation.Relation;
 import cognitivabrasil.obaa.Technical.Name;
 import cognitivabrasil.obaa.Technical.SupportedPlatform;
 import cognitivabrasil.obaa.Technical.Technical;

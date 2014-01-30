@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("UserService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private static Logger log = Logger.getLogger(UserServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRep;
 
@@ -85,11 +85,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login)
             throws UsernameNotFoundException {
-        log.debug("Trying to get user \"" + login + "\"");
+        LOG.debug("Trying to get user \"" + login + "\"");
         User d = get(login);
 
         if (d == null) {
-            log.debug("No such user " + login);
+            LOG.debug("No such user " + login);
             throw new UsernameNotFoundException(
                     "No such user: " + login);
         }

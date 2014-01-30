@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller("main")
 public final class MainController {
 
-    private final Logger log = Logger.getLogger(MainController.class);
+    private static final Logger LOG = Logger.getLogger(MainController.class);
 
     public MainController() {
-        log.debug("Loaded MainController");
+        LOG.debug("Loaded MainController");
     }
 
     @RequestMapping("/")

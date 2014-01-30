@@ -32,7 +32,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private FileService filesService;
 
-    private final Logger log = Logger.getLogger(DocumentServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(DocumentServiceImpl.class);
 
   
     @Override
@@ -62,7 +62,7 @@ public class DocumentServiceImpl implements DocumentService {
         try {
             FileUtils.forceDelete(new File(Config.FILE_PATH + d.getId()));
         } catch (IOException io) {
-            log.warn("Nao foi possivel deletar os arquivos do documento: " + d.getId() + "."
+            LOG.warn("Nao foi possivel deletar os arquivos do documento: " + d.getId() + "."
                     + "Mas o documento sera removido da base! "+ io.getMessage());
             throw io;
         } finally {
@@ -82,7 +82,7 @@ public class DocumentServiceImpl implements DocumentService {
                 try {
                     f.deleteFile();
                 } catch (IOException e) {
-                    log.error("Could not delete file", e);
+                    LOG.error("Could not delete file", e);
                 }
             }
             docRep.delete(d);

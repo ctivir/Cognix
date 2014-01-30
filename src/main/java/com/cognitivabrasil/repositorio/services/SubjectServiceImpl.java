@@ -24,10 +24,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectRepository subRep;
-
-    private final Logger log = Logger.getLogger(SubjectServiceImpl.class);
-
-    
+   
     @Override
     public Subject getSubjectByName(String name) {        
         return subRep.findByName(name);
