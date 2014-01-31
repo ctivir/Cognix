@@ -18,4 +18,8 @@
     <definition extends="ajax" name="users/editPass">
         <put-attribute name="body" value="/WEB-INF/views/users/editPassword.jspx" />
     </definition>
+    
+    <definition extends="ajax" name="users/deleted">
+        <put-attribute name="body" value="/WEB-INF/views/users/deleted.jspx" />
+    </definition>
 </tiles-definitions>

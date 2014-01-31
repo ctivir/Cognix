@@ -1,4 +1,9 @@
 $(function() {
+    $('.openModal').click(function(){
+         $('#modalContent').load($(this).attr('id'), function() {             
+             $('#mainModal').modal();            
+        });
+     });
     
     $( "#dialog:ui-dialog" ).dialog( "destroy" );
 
@@ -17,7 +22,7 @@ $(function() {
             "Salvar": function() {
                 var d = $(this);
                 $.post($("#entityUpdateForm").attr("action"), $("#entityUpdateForm").serialize()).done( function(data, status, jqxhr) {
-                    if(jqxhr.status == 200) {                        
+                    if(jqxhr.status === 200) {                        
                         $( "#dialog-form" ).empty().append( data );
                     }
                     else {                        

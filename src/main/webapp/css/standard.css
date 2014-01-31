@@ -14,10 +14,11 @@ body {
 
 th {text-align: left}
 
-.hidden {display: none;}
 .clear {clear: both;}
 .floatRight {float: right}
+.floatLeft{float:left}
 .center{text-align: center;}
+.txtLeft{text-align: left}
 .smallerText {font-size: 80%;color: #444444}
 
 li {list-style-type: none;}
@@ -81,7 +82,7 @@ div.error,span.error, label.error{color:red;}
 input.error,textarea.error{border-color: red;}
 label.error,input.error{margin-top: 5px;}
 #message{margin: 5px 0 20px 15px}
-#message.success{color:#22C162; font-weight: bold;}
+#message.success, span.success{color:#22C162; font-weight: bold;}
 .gliphycon-text{
     padding:0 0 0 7px;
     font-family:'Helvetica Neue',Helvetica,Arial,sans-serif !important;
@@ -125,3 +126,4 @@ a.link-interno{
 .navbar-header{
    width:50%;
 }
+.icon-error{color: red; font-size: 1.5em; padding-bottom: 1em;}

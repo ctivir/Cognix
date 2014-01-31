@@ -501,4 +501,15 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         assertThat(users, hasSize(1));
     }
+    
+    @Test
+    public void testActivate() {
+        int size = userService.getAll().size();
+
+        Message msg = usersController.activateUserDeleted(4);
+        assertNotNull(msg);
+
+        assertThat(msg.getType(), equalTo(Message.SUCCESS));
+        assertThat(userService.getAll().size(), equalTo(size + 1));
+    }
 }

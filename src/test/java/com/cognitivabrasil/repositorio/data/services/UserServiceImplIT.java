@@ -208,5 +208,15 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(users.get(0).isDeleted(), equalTo(true));
         
     }
+    
+    @Test
+    public void testActivateUser(){
+        int sizeBefore = userService.getAll().size();
+        int numDel = userService.getDeleted().size();
+        User u = userService.get(4);
+        userService.activate(u);
+        assertThat(userService.getAll().size(), equalTo(sizeBefore+1));
+        assertThat(userService.getDeleted().size(), equalTo(numDel-1));
+    }
 }
 

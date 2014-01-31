@@ -1,11 +1,5 @@
 $(function() {
-       
-     $('.openModalUsuario').on('click',function(){
-         $('#modalContent').load($(this).attr('id'), function() {             
-             $('#formUsuario').modal();            
-        });
-     });
-     
+          
     /*
     
     $(".editar").click(function(ev) {

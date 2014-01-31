@@ -7,8 +7,8 @@
      version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
-
-    <div id="dialog-form" title="Adicionar Usuário">
+    
+    <div id="dialog-form" class="modal-body" >
         <form:form modelAttribute="userDto" id="entityUpdateForm" acceptCharset="utf-8"  method="post">
             <fieldset>
                 <legend>Informações do Usuário</legend>
@@ -26,5 +26,14 @@
             </fieldset>
 
         </form:form>
+    </div>
+    <div class="modal-footer">
+        <div id="buttonSave">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Salvar</button>
+        </div>
+<!--        <div id="buttonClose">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>-->
     </div>
 </div>

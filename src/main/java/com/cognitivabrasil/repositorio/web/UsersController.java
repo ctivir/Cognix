@@ -174,6 +174,20 @@ public class UsersController {
         model.addAttribute("users", users);
         return "users/deleted";
     }
+    
+    @RequestMapping(value = "/{id}/activate", method = RequestMethod.POST)
+    @ResponseBody
+    public Message activateUserDeleted(@PathVariable("id") int id) {
+        Message msg;
+        try {
+            userService.activate(userService.get(id));
+            msg = new Message(Message.SUCCESS, "Usuário ativado com sucesso");
+        } catch (DataAccessException e) {
+            msg = new Message(Message.ERROR, "Erro ao reativar o usuário");
+            LOG.error("Erro ao ativar um usuário.", e);
+        }
+        return msg;
+    }
 
     protected static User getCurrentUser() {
         User currentUser;

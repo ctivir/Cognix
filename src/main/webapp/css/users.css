@@ -1,9 +1,9 @@
-td:last-child{text-align: right; }
+td:last-child{text-align: le; }
 /*margin para os botões de editar e excluir da tabela usuarios*/
 td:last-child a{margin-left: 5px; }
 
 /* Formulario */
-fieldset { padding:0; margin:1em 0;border:none;border-top:1px solid #ccc;}
+fieldset { padding:0; margin:1em 0;border:none; /* border-top:1px solid #ccc; */}
 input, select { height:20px}
 input, textarea, select { border:1px solid #B3B3B3; }
 
@@ -29,3 +29,7 @@ input, textarea, select { border:1px solid #B3B3B3; }
 }
 
 div.error,span.error {margin-left: 180px;}
+
+
+div#divDeleted table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+div#divDeleted table td, div#divDeleted table th {padding: .4em 5px; }

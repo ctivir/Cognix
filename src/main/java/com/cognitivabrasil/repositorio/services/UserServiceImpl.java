@@ -105,4 +105,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getDeleted(){
         return userRep.findByDeletedIsTrue();
     }
+    
+    @Override
+    public void activate(User u){
+        if (u == null) {
+            throw new DataAccessException("This user can not be null") {
+            };
+        }
+        u.setDeleted(false);
+        userRep.save(u);
+    }
 }

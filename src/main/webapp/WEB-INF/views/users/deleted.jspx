@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : deleted
+    Created on : 30/01/2014, 16:18:25
+    Author     : Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
+-->
+<div id="divDeleted" xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+    <div class="modal-body" >
+        <fieldset>
+            <legend>Usuários Deletados</legend>
+            Nesta lista aparecerão apenas os usuários que são autores de algum documento.
+            <table
+                class="ui-widget ui-widget-content zebra">
+                <thead>
+                    <tr class="ui-widget-header ">
+                        <th id="nome">Nome</th>
+                        <th>Login</th>
+                        <th>Perfil</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${users}" var="user">
+                        <tr>
+                            <td>${user.name}</td>
+                            <td>${user.username}</td>
+                            <td>${user.roleNameText}</td>
+                            <td class="center">
+                                <c:url value="/users/${user.id}/activate" var="activateUrl" />
+                                <button type="button" class="btn btn-default actionModal"
+                                        href="${activateUrl}"><span class="glyphicon glyphicon-ok"></span>
+                                    <span class='gliphycon-text'>Ativar</span>
+                                </button>
+
+                                <span class="success glyphicon glyphicon-ok hidden"></span>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+
+    </div>
+</div>

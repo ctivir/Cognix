@@ -71,4 +71,10 @@ public interface UserService {
      * @return All deleted users
      */
     public List<User> getDeleted();
+    
+    /**
+     * Ative the user deleted
+     * @param u User
+     */
+    public void activate(User u);
 }

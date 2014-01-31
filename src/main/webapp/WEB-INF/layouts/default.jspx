@@ -7,16 +7,16 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:directive.page pageEncoding="UTF-8" />
     <head>
-        
+
         <c:url value="/images/favicon.ico" var="favicon" />
         <link rel="shortcut icon" href="${favicon}" />
-        
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />       
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
-        
+
+
         <!-- jQuery and jQuery UI -->       
         <c:url value="/scripts/jquery-1.9.1.min.js" var="jquery_url" />
         <script src="${jquery_url}" type="text/javascript"><jsp:text/></script>                
@@ -26,48 +26,48 @@
 
         <c:url value="/scripts/default.js" var="jsDefault" />
         <script src="${jsDefault}" type="text/javascript"><jsp:text/></script>
-            
+
         <c:url value="/" var="urlRoot" />
         <script>
             window.urlRoot = "${urlRoot}";
         </script>
-                     
+
         <!-- Bootstrap js -->
         <c:url value="/scripts/bootstrap/js/main.js" var="bootstrap_js_main" />
         <script src="${bootstrap_js_main}" type="text/javascript"><jsp:text/></script>
-        
+
         <c:url value="/scripts/bootstrap/js/vendor/bootstrap.min.js" var="bootstrap_js_min" />
         <script src="${bootstrap_js_min}" type="text/javascript"><jsp:text/></script>
-        
+
         <c:url value="/scripts/bootstrap/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js" var="bootstrap_modernizr" />
         <script src="${bootstrap_modernizr}" type="text/javascript"><jsp:text/></script>                   
-        
+
         <!-- Booststrap CSS -->
-        
+
         <c:url value="/scripts/bootstrap/css/bootstrap-theme.min.css" var="bootstrap_theme" />
         <link rel="stylesheet" type="text/css" media="screen" href="${bootstrap_theme}" />
-        
+
         <c:url value="/scripts/bootstrap/css/bootstrap.min.css" var="bootstrap_css" />
         <link rel="stylesheet" type="text/css" media="screen" href="${bootstrap_css}" />
-        
+
         <c:url value="/scripts/bootstrap/css/main.css" var="main_bootstrap" />
         <link rel="stylesheet" type="text/css" media="screen" href="${main_bootstrap}" />
-        
-        
+
+
         <c:url value="/css/custom-theme/jquery-ui-1.10.0.custom.min.css" var="jquery_ui_theme_css" />
         <link rel="stylesheet" type="text/css" media="screen" href="${jquery_ui_theme_css}" />
-        
+
         <c:url value="/css/standard.css" var="app_css_url" />
         <link rel="stylesheet" type="text/css" media="screen" href="${app_css_url}" />       
-        
+
         <title>Repositório Cognitiva Brasil</title>
     </head>
 
 
     <body>
-        
+
         <tiles:insertAttribute name="header" ignore="true" />                
-        
+
         <div id="dialog-form" title="Adicionar"><jsp:text/></div>
 
         <div class="dialog-confirm hidden" title="Confirmação">
@@ -92,64 +92,94 @@
             <div class="alert alert-danger">Você precisa estar logado para acessar esta página</div>
         </c:if>         
         <div id="wrapper" class="ui-widget ui-widget-content ui-corner-all">                   
-                <tiles:insertAttribute name="body" />
+            <tiles:insertAttribute name="body" />
         </div>
-        
+
         <!-- MODAL -->            
-            <div class="modal fade" id="excluir_documento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
+        <div class="modal fade" id="excluir_documento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                    <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-                  </div>
-                  <div class="modal-body">
-                    Excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <a href="" class="delete btn btn-primary" id="confirmExclude">Excluir</a>
-                  </div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
+                    </div>
+                    <div class="modal-body">
+                        Excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <a href="" class="delete btn btn-primary" id="confirmExclude">Excluir</a>
+                    </div>
                 </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
-            <!-- Modal -->
-            <div class="modal fade" id="excluido_com_sucesso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
+        <!-- Modal -->
+        <div class="modal fade" id="excluido_com_sucesso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                    <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-                  </div>
-                  <div class="modal-body">
-                    Documento excluído com sucesso!
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
-                  </div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
+                    </div>
+                    <div class="modal-body">
+                        Documento excluído com sucesso!
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
+                    </div>
                 </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
-            <!-- Modal -->
-            <div class="modal fade" id="nao_excluido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
+        <!-- Modal -->
+        <div class="modal fade" id="nao_excluido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                    <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-                  </div>
-                  <div class="modal-body">
-                    O documento não pode ser deletado. Por favor tente novamente mais tarde ou entre em contato com o nosso suporte.
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
-                  </div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
+                    </div>
+                    <div class="modal-body">
+                        O documento não pode ser deletado. Por favor tente novamente mais tarde ou entre em contato com o nosso suporte.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
+                    </div>
                 </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-            
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="modalContent">
+                    <!-- Conteúdo da modal que sera carregado via load em jquery -->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-error" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title" id="myModalLabel">Erro</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-md-1 glyphicon glyphicon-warning-sign icon-error"><jsp:text/></div>
+                        <div id="txtErrorModal" class="col-md-8">
+                            <!--o texto será inserido por jquery-->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <div id="footterWrapper">
             <tiles:insertAttribute name="footer" ignore="true" />
         </div>

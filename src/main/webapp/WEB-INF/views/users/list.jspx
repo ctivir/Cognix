@@ -13,11 +13,6 @@
     <spring:url value="/css/users.css" var="users_css" />
     <link rel="stylesheet" type="text/css" media="screen" href="${users_css}" />
 
-    <spring:url value="/scripts/users/list.js" var="jsUsr" />
-    <script src="${jsUsr}" type="text/javascript">
-        <jsp:text/>
-    </script>
-
     <tiles:importAttribute />
     <cgbr:tabs tabNumber="2" />
     <div id="tab-content">
@@ -69,10 +64,10 @@
                                             <security:authorize access="hasRole('PERM_MANAGE_USERS')">
                                                 <c:url value="/users/${user.id}/delete" var="deletarUrl" />
                                                 <a class="delete btSemTexto confirmLink" title="excluir o usuário ${user.name}" href="${deletarUrl}">Excluir</a>
+                                                <form action="${deletarUrl}" method="post"><input type="submit" value="deletar"/></form>
                                             </security:authorize>
-                                                
-                                        </security:authorize>
 
+                                        </security:authorize>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -87,23 +82,10 @@
         </div>
         <security:authorize access="hasRole('PERM_MANAGE_USERS')">
             <c:url value="/users/save" var="add" />
-            <button id="${add}" class="btn btn-primary btn-lg openModalUsuario">Adicionar Usuário</button>
-        </security:authorize>
-    </div> 
-    
-    <!-- Modal -->
-    <div class="modal fade" id="formUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body" id="modalContent">
-            <!-- Conteúdp da modal que sera carregado via load em jquery -->
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary">Salvar</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            <button id="${add}" class="btn btn-primary btn-lg openModal">Adicionar Usuário</button>
 
+            <c:url value="/users/deleted" var="deletedUrl" />
+            <button id="${deletedUrl}" class="btn btn-primary btn-lg openModal">Usuários deletados</button>
+        </security:authorize>
+    </div>
 </div>
