@@ -391,7 +391,7 @@ public final class DocumentsController {
                     nameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            LOG.debug("Assunto do OA: " + nameSubject);
+            LOG.trace("Assunto do OA: " + nameSubject);
             if (!nameSubject.equals("")) {
                 s = subService.getSubjectByName(nameSubject);
                 d.setSubject(s);
@@ -560,14 +560,6 @@ public final class DocumentsController {
                 allDoc = false;
             }
 
-            String fileName = file.getName().replaceAll("_", " ");
-
-            // to remove the file extension
-            if (fileName.contains(".")) {
-                suggestions.setTitle(fileName.substring(0, fileName.lastIndexOf('.')));
-            } else {
-                suggestions.setTitle(fileName);
-            }
         }
 
 
@@ -585,8 +577,18 @@ public final class DocumentsController {
         }
 
         //Title Suggestion
-        if (files.size() != 1) {
+        if (files.size() != 1 || files.size()>=2) {
             suggestions.setTitle("");
+        }
+        else {            
+            String fileName = files.get(0).getName().replaceAll("_", " ");
+
+            // to remove the file extension
+            if (fileName.contains(".")) {
+                suggestions.setTitle(fileName.substring(0, fileName.lastIndexOf('.')));
+            } else {
+                suggestions.setTitle(fileName);
+            }
         }
 
         return suggestions;

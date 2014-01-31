@@ -1,0 +1,7 @@
+Trouble shooting Repositório
+
+Erros na interface:
+#2032 - Erro de E/S: Erro de permissão de escrita na pasta var/cogntiva/repositório
+	Solução: sudo chown tomcat7 
+
+

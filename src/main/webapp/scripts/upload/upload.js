@@ -118,7 +118,7 @@ $(function() {
             $('#hasAuditory').children().last().addClass('suggestions ui-corner-all');
         }
         if ($('#hasText input:last').prop('checked')) {
-            $('#hasText input[value=' + suggestions.visual + ']').prop('checked', true);
+            $('#hasText input[value=' + suggestions.textual + ']').prop('checked', true);
             $('#hasText').children().last().addClass('suggestions ui-corner-all');
         }
         if ($('#hasTactile input:last').prop('checked') && suggestions.tactil !== "") {

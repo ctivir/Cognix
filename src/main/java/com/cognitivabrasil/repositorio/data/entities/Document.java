@@ -2,7 +2,6 @@ package com.cognitivabrasil.repositorio.data.entities;
 
 import ORG.oclc.oai.models.HibernateOaiDocument;
 import cognitivabrasil.obaa.OBAA;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;

@@ -161,8 +161,9 @@ public class FileController {
                                 docId = Integer.parseInt(value);
                                 docPath = FILEPATH + "/" + docId;
                                 File documentPath = new File(docPath);
-                                documentPath.mkdirs();// cria o diretorio
-
+                                // cria o diretorio
+                                documentPath.mkdirs();
+                                
                                 break;
                         }
 
