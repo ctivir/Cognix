@@ -114,10 +114,7 @@ a.link-interno{
 }
 
 .navbar-brand{
-    padding:25px 10px;
-    font-size:1.9em;
-    color:#FFF;
-    text-decoration: none;
+    padding-top:5px;
 }
 
 .navbar-brand:hover{
@@ -125,4 +122,6 @@ a.link-interno{
     text-decoration: none;
 }
 
-
+.navbar-header{
+   width:50%;
+}

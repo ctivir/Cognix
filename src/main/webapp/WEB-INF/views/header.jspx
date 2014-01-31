@@ -5,11 +5,12 @@
      xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
+    <c:url var="logo" value="/images/logo.png" />
     <div class="container">
       <div class="navbar-header">              
         <c:url var="index" value="/" />               
         <a href="${index}" class="navbar-brand">
-            Cognix
+            <img src="${logo}" alt="logo" class="col-xs-12 col-sm-8 col-md-5"/>
         </a>     
       </div>
 

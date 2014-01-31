@@ -5,7 +5,7 @@
     <jsp:directive.attribute name="tabNumber" required="true" />
     <c:url var="root" value="/"/>
     
-    <div class="tabs ui-tabs ui-widget ui-corner-all">
+    <div class="tabs ui-tabs ui-widget ui-corner-all visible-lg hidden-xs hidden-sm hidden-md" >
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
 
             <li class="ui-state-default ui-corner-top 
