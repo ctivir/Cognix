@@ -11,36 +11,48 @@
     <div class="modal-body" >
         <fieldset>
             <legend>Usuários Deletados</legend>
-            Nesta lista aparecerão apenas os usuários que são autores de algum documento.
-            <table
-                class="ui-widget ui-widget-content zebra">
-                <thead>
-                    <tr class="ui-widget-header ">
-                        <th id="nome">Nome</th>
-                        <th>Login</th>
-                        <th>Perfil</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${users}" var="user">
-                        <tr>
-                            <td>${user.name}</td>
-                            <td>${user.username}</td>
-                            <td>${user.roleNameText}</td>
-                            <td class="center">
-                                <c:url value="/users/${user.id}/activate" var="activateUrl" />
-                                <button type="button" class="btn btn-default actionModal"
-                                        href="${activateUrl}"><span class="glyphicon glyphicon-ok"></span>
-                                    <span class='gliphycon-text'>Ativar</span>
-                                </button>
+            <c:choose>
+                <c:when test="${empty users}">
+                    Nenhum usuário, autor de algum documento, foi deletado.
+                    <p>
+                        <br/>
+                    Apenas os usuários que criaram algum documento e foram deletados aparecerão aqui.
+                    </p>
+                </c:when>
+                <c:otherwise>
 
-                                <span class="success glyphicon glyphicon-ok hidden"></span>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+                    Nesta lista aparecerão apenas os usuários que são autores de algum documento.
+                    <table
+                        class="ui-widget ui-widget-content zebra">
+                        <thead>
+                            <tr class="ui-widget-header ">
+                                <th id="nome">Nome</th>
+                                <th>Login</th>
+                                <th>Perfil</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${users}" var="user">
+                                <tr>
+                                    <td class="tdName">${user.name}</td>
+                                    <td class="tdLogin">${user.username}</td>
+                                    <td class="tdRole">${user.roleNameText}</td>
+                                    <td class="tdButton">
+                                        <c:url value="/users/${user.id}/activate" var="activateUrl" />
+                                        <button type="button" userid="${user.id}" class="btn btn-default actionModal"
+                                                href="${activateUrl}"><span class="glyphicon glyphicon-ok"></span>
+                                            <span class='gliphycon-text'>Ativar</span>
+                                        </button>
+
+                                        <span class="success glyphicon glyphicon-ok hidden"></span>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </c:otherwise>
+            </c:choose>
         </fieldset>
     </div>
     <div class="modal-footer">

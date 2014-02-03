@@ -31,7 +31,7 @@
                         usuário(s) cadastrado(s) no sistema
                     </div>
 
-                    <table
+                    <table id="table-users"
                         class="ui-widget ui-widget-content zebra">
                         <thead>
                             <tr class="ui-widget-header ">
@@ -44,10 +44,10 @@
                         <tbody>
                             <c:forEach items="${users}" var="user">
                                 <tr>
-                                    <td>${user.name}</td>
-                                    <td>${user.username}</td>
-                                    <td>${user.roleNameText}</td>
-                                    <td>
+                                    <td class="tdName">${user.name}</td>
+                                    <td class="tdLogin">${user.username}</td>
+                                    <td class="tdRole">${user.roleNameText}</td>
+                                    <td class="tdButton">
                                         <security:authorize access="hasRole('${manageUser}') or ${username == user.username}">
 
                                             <c:choose>
@@ -59,12 +59,11 @@
                                                 </c:otherwise>
                                             </c:choose>
 
-                                            <a class='editar btSemTexto' href="${editarUrl}">Editar</a> 
+                                            <a class='editar btn btn-default' href="${editarUrl}"><span class="glyphicon glyphicon-pencil"/></a> 
 
                                             <security:authorize access="hasRole('PERM_MANAGE_USERS')">
                                                 <c:url value="/users/${user.id}/delete" var="deletarUrl" />
-                                                <a class="delete btSemTexto confirmLink" title="excluir o usuário ${user.name}" href="${deletarUrl}">Excluir</a>
-                                                <form action="${deletarUrl}" method="post"><input type="submit" value="deletar"/></form>
+                                                <a class="delete confirmLink btn btn-default" title="excluir o usuário ${user.name}" href="${deletarUrl}"><span class="glyphicon glyphicon-trash"/></a>
                                             </security:authorize>
 
                                         </security:authorize>
@@ -82,10 +81,10 @@
         </div>
         <security:authorize access="hasRole('PERM_MANAGE_USERS')">
             <c:url value="/users/save" var="add" />
-            <button id="${add}" class="btn btn-primary btn-lg openModal">Adicionar Usuário</button>
+            <button id="${add}" class="btn btn-primary btn-lg openModal"><span class="glyphicon glyphicon-plus"/><span class='gliphycon-text'>Adicionar Usuário</span></button>
 
             <c:url value="/users/deleted" var="deletedUrl" />
-            <button id="${deletedUrl}" class="btn btn-primary btn-lg openModal">Usuários deletados</button>
+            <button id="${deletedUrl}" class="btn btn-default btn-lg openModal"><span class="glyphicon glyphicon-trash"/><span class='gliphycon-text'>Usuários deletados</span></button>
         </security:authorize>
     </div>
 </div>
