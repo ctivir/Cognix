@@ -18,38 +18,38 @@ $(function() {
                             $this.siblings(".success").removeClass("hidden");
                             $this.remove();
                         }
-                        else{
+                        else {
                             //mensagem de erro.
-                            $("#txtErrorModal").text(unescape(resultado["message"]));
-                            $("#modal-error").modal();
+                            $("#errorThrown").text(unescape(resultado["message"]));
+                            $("#modalMsg").modal();
                         }
                     } else {
-                        $("#txtErrorModal").text("Erro! Não foi possível executar a operação!");
-                        $("#modal-error").modal();
+                        $("#errorThrown").text("Erro! Não foi possível executar a operação!");
+                        $("#modalMsg").modal();
                     }
                 }, "json").error(function() {
-                    $("#txtErrorModal").text("Erro! Não foi possível executar a operação!");
-                    $("#modal-error").modal();
+                    $("#errorThrown").text("Erro! Não foi possível executar a operação!");
+                    $("#modalMsg").modal();
                 });
 
             });
         });
 
     });
-    
+
     var updateTableUsers = function(btAction) {
         var thisTd = btAction.parent();
         var tempName = thisTd.siblings(".tdName").text();
         var tempLogin = thisTd.siblings(".tdLogin").text();
         var tempRole = thisTd.siblings(".tdRole").text();
         var userId = btAction.attr("userid");
-        console.log("id: "+userId+" nome: "+tempName+" login: "+tempLogin+" role:"+tempRole)
+        console.log("id: " + userId + " nome: " + tempName + " login: " + tempLogin + " role:" + tempRole)
         $("#table-users tbody").append($("#table-users tr").last().clone());
         var newTr = $("#table-users tr").last();
         newTr.find(".tdName").text(tempName);
         newTr.find(".tdLogin").text(tempLogin);
         newTr.find(".tdRole").text(tempRole);
-        
+
         var hrefEditar = newTr.find(".editar").attr("href");
         var newHrefEditar = hrefEditar.replace(/[\d]+/, userId);
         newTr.find(".editar").attr("href", newHrefEditar);
@@ -63,76 +63,54 @@ $(function() {
 
 
     /*Dialogo de confirmacao*/
-    /*$( ".dialog-confirm" ).dialog({
-     resizable: true,
-     width: 440,
-     autoOpen: false,
-     modal: true,
-     buttons: [
-     {
-     text: "Apagar",
-     id: "botaoDialogo",
-     click: function() {
-     _thisDialog = $(this);
-     $.post($(this).data('url'), "", function(resultado) {
-     if (resultado["type"]) {
-     var type = unescape(resultado["type"]);
-     if (type == "error" || type == "warn") {
-     _thisDialog.dialog('close');
-     $("#textStatus").text(unescape(resultado["type"]));
-     $("#errorThrown").text(unescape(resultado["message"]));
-     if (type == 'warn') {
-     $("#error-type").text("Warn: ");
-     }
-     $("#dialog-error").dialog('open');
-     } else {
-     _thisDialog.dialog("close");
-     //$(window.document.location).attr('href',window.grecoUrlRoot +unescape(resultado["href"]));
-     location.reload();
-     }
-     } else {
-     _thisDialog.dialog('close');
-     $("#errorThrown").text("Não foi possível executar a operação!");
-     $("#dialog-error").dialog('open');
-     }
-     }, "json")
-     .error(function() {
-     _thisDialog.dialog('close');
-     $("#errorThrown").text("Não foi possível executar a operação!");
-     $("#dialog-error").dialog('open');
-     });
-     
-     $(".dialog-confirm").siblings(".ui-dialog-buttonpane").hide();
-     $(".dialog-confirm").html("<p> Excluindo... Por favor aguarde.</p>");
-     }
-     },
-     {
-     text: "Cancelar",
-     click: function() {
-     $(this).dialog("close");
-     }
-     }
-     ]
-     });
-     
-     $("#dialog-error").dialog({
-     modal: true,
-     autoOpen: false,
-     buttons: {
-     Ok: function() {
-     $(this).dialog("close");
-     location.reload();
-     }
-     }
-     });*/
-
     $('.confirmLink').click(function(e) {
         e.preventDefault();
-        /*$(".dialog-confirm")
-         .data('url', $(this).attr('href')) // sends url to the dialog
-         .dialog('open'); // opens the dialog
-         $("#msgApagar").text($(this).attr('title')); */
-        //        $(" #botaoDialogo ").children("span").text($(this).text()); //altera o texto do botão submit do dialog
+        $('#actionModalConfirm')
+                .attr('href', $(this).attr('href'))
+                .attr('id', $(this).attr('id'));
+
+        $("#msgApagar").text($(this).attr('title'));
+        $("#confirmModal").modal();
+    });
+
+    $('#actionModalConfirm').click(function(e) {
+        e.preventDefault();
+        _thisButton = $(this);
+
+        $.post($(this).attr('href'), "", function(resultado) {
+            if (resultado["type"]) {
+                console.log("type: " + resultado["type"] + " Message: " + resultado["message"]);
+                var type = unescape(resultado["type"]);
+                if (type === "success") {
+                    var container = $('#container' + _thisButton.attr('id'));
+                    $('#confirmModal').modal('hide');
+                    container.fadeOut(1000, function() {
+                        container.remove();
+                    });
+                    //abrir aqui o modal msg e colocar sucesso no lugar de erro.
+                    $('#excluido_com_sucesso').modal();
+                } else {
+                    $('#confirmModal').modal('hide');
+                    $("#textStatus").text(type);
+                    $("#errorThrown").text(unescape(resultado["message"]));
+                    if (type === 'warn') {
+                        $("#error-type").text("Warn: ");
+                    }
+                    $("#modalMsg").modal();
+                }
+            } else {
+                $('#confirmModal').modal('hide');
+                $("#errorThrown").text("Erro! Não foi possível executar a operação!");
+                $("#modalMsg").modal();
+            }
+        }, "json")
+                .error(function() {
+                    $('#confirmModal').modal('hide');
+                    $("#errorThrown").text("Erro! Não foi possível executar a operação!");
+                    $("#modalMsg").modal();
+                });
+
+        //todo: colocar aqui um gif loading
     });
 
 });

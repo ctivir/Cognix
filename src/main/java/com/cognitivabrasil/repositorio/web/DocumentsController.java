@@ -143,7 +143,7 @@ public final class DocumentsController {
             msg = new Message(Message.SUCCESS, "Documento excluido com sucesso, mas os seus arquivos não foram encontrados", "");
         } catch (DataAccessException e) {
             LOG.error("Não foi possivel excluir o documento.", e);
-            msg = new Message(Message.ERROR, "Erro ao excluir documento", "");
+            msg = new Message(Message.ERROR, "Erro ao excluir o documento.", "");
         }
         return msg;
     }

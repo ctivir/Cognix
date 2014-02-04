@@ -12,7 +12,7 @@
     <c:url var="css" value="/css/pageError.css" />
     <head>
         <link rel="StyleSheet" href="${css}" type="text/css"/>
-        <title>Erro 404 - Acesso negado</title>
+        <title>Erro 403 - Acesso negado</title>
     </head>
 
     <body>

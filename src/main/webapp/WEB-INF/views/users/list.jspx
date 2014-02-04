@@ -43,7 +43,7 @@
                         </thead>
                         <tbody>
                             <c:forEach items="${users}" var="user">
-                                <tr>
+                                <tr id="container${user.id}">
                                     <td class="tdName">${user.name}</td>
                                     <td class="tdLogin">${user.username}</td>
                                     <td class="tdRole">${user.roleNameText}</td>
@@ -63,7 +63,7 @@
 
                                             <security:authorize access="hasRole('PERM_MANAGE_USERS')">
                                                 <c:url value="/users/${user.id}/delete" var="deletarUrl" />
-                                                <a class="delete confirmLink btn btn-default" title="excluir o usuário ${user.name}" href="${deletarUrl}"><span class="glyphicon glyphicon-trash"/></a>
+                                                <a id="${user.id}" class="delete confirmLink btn btn-default" title="excluir o usuário ${user.name}?" href="${deletarUrl}"><span class="glyphicon glyphicon-trash"/></a>
                                             </security:authorize>
 
                                         </security:authorize>

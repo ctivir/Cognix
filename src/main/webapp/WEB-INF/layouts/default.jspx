@@ -70,20 +70,7 @@
 
         <div id="dialog-form" title="Adicionar"><jsp:text/></div>
 
-        <div class="dialog-confirm hidden" title="Confirmação">
-            <p>
-                <span class="ui-icon ui-icon-alert"><jsp:text/></span>
-                Deseja realmente <span id="msgApagar"><jsp:text/></span>
-            </p>
-        </div>                
-        <div class="ui-widget hidden" id="dialog-error" title="Erro">
-            <div class="ui-state-error ui-corner-all">
-                <p>
-                    <span class="ui-icon ui-icon-alert"><jsp:text/></span>
-                    <strong id="error-type">Erro: </strong> <span id="errorThrown"><jsp:text/></span>
-                </p>
-            </div>
-        </div>                                        
+                                      
         <div id="headerWrapper"></div>
         <c:if test="${param.error == true }">
             <div class="alert alert-danger">Login ou senha inválidos</div>
@@ -96,59 +83,24 @@
         </div>
 
         <!-- MODAL -->            
-        <div class="modal fade" id="excluir_documento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                        <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
+                        <h4 class="modal-title" id="myModalLabel">Excluir</h4>
                     </div>
                     <div class="modal-body">
-                        Excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!
+                        Deseja realmente <span id="msgApagar"><jsp:text/></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <a href="" class="delete btn btn-primary" id="confirmExclude">Excluir</a>
+                        <a href="" class="delete btn btn-primary" id="actionModalConfirm">Excluir</a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="excluido_com_sucesso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                        <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-                    </div>
-                    <div class="modal-body">
-                        Documento excluído com sucesso!
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <!-- Modal -->
-        <div class="modal fade" id="nao_excluido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                        <h4 class="modal-title" id="myModalLabel">Excluir documento</h4>
-                    </div>
-                    <div class="modal-body">
-                        O documento não pode ser deletado. Por favor tente novamente mais tarde ou entre em contato com o nosso suporte.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>            
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
 
         <!-- Modal -->
         <div class="modal fade" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -160,7 +112,7 @@
         </div><!-- /.modal -->
 
         <!-- Modal -->
-        <div class="modal fade" id="modal-error" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -169,7 +121,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="col-md-1 glyphicon glyphicon-warning-sign icon-error"><jsp:text/></div>
-                        <div id="txtErrorModal" class="col-md-8">
+                        <div id="errorThrown" class="col-md-8">
                             <!--o texto será inserido por jquery-->
                         </div>
                     </div>
