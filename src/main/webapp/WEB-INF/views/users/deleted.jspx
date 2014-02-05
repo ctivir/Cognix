@@ -40,7 +40,7 @@
                                     <td class="tdRole">${user.roleNameText}</td>
                                     <td class="tdButton">
                                         <c:url value="/users/${user.id}/activate" var="activateUrl" />
-                                        <button type="button" userid="${user.id}" class="btn btn-default actionModal"
+                                        <button type="button" userid="${user.id}" class="btn btn-default enableUser"
                                                 href="${activateUrl}"><span class="glyphicon glyphicon-ok"></span>
                                             <span class='gliphycon-text'>Ativar</span>
                                         </button>

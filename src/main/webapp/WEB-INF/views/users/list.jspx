@@ -12,6 +12,9 @@
 
     <spring:url value="/css/users.css" var="users_css" />
     <link rel="stylesheet" type="text/css" media="screen" href="${users_css}" />
+    
+    <c:url var="jsList" value="/scripts/users/list.js" />
+    <script type="text/javascript" src="${jsList}"><jsp:text/></script>
 
     <tiles:importAttribute />
     <cgbr:tabs tabNumber="2" />
