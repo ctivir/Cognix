@@ -33,7 +33,9 @@
        </security:authorize>
        <security:authorize access="isAuthenticated()">
             <c:url var="logoutUrl1" value="/j_spring_security_logout" /> 
-            <p class="navbar-text pull-right" style="margin:30px 0;"><a class="navbar-link" id="logout" href="${logoutUrl1}" >Sair</a></p>
+            <p class="navbar-text pull-right" style="margin:30px 0;">
+                <a class="navbar-link" id="logout" href="${logoutUrl1}" ><span class="glyphicon glyphicon-off"/> <span class='gliphycon-text'>Sair</span></a>
+            </p>
         </security:authorize>
       </div><!--/.navbar-collapse -->                        
     </div>

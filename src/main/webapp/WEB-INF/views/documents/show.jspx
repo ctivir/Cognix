@@ -40,7 +40,10 @@
                 <div class="treeheader"><jsp:text/></div>
                 <security:authorize access="hasRole('PERM_MANAGE_DOC')">
                     <div class="floatRight">
-                        <a class="editar" href="${docs}${doc.id}/edit">Editar</a>
+                        <a class="editar btn btn-default" href="${docs}${doc.id}/edit" id="edit_link">
+                            <span class="glyphicon glyphicon-pencil"/>
+                            <span class='gliphycon-text'>Editar</span>
+                        </a>
                     </div>
                 </security:authorize>
                 <div id="sidetreecontrol"><a href="?#">Contrair Todos</a> | <a href="?#">Expandir Todos</a></div>

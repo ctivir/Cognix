@@ -11,9 +11,6 @@
     <spring:url value="/css/listDocuments.css" var="listDocuments_css" />
     <link rel="stylesheet" type="text/css" media="screen" href="${listDocuments_css}" />
 
-    <c:url var="jsList" value="/scripts/listDocuments.js" />
-    <script type="text/javascript" src="${jsList}"><jsp:text/></script>
-
     <cgbr:tabs tabNumber="1" />
     <div id="tab-content">                
 
@@ -21,7 +18,7 @@
             <div id="message" class="${message.type}">${message.message}</div>
         </c:if>
 
-        <div id="entities-list" class="ui-widget">
+        <div id="entities-list">
             <c:url var="logoutUrl" value="/j_spring_security_logout" />
             <c:url var="imgSair" value="/images/sair100x120.png" />
             <c:url var="imgNewDoc" value="/images/document-new.png" />
@@ -55,9 +52,9 @@
                                     </c:if>
                                     ${doc.title}</a>                                                       
                                 <span class="buttonList">
-                                    <button href="${docUrl}/${doc.id}" class="btn btn-default" alt="Metadados" title="Metadados">
+                                    <a href="${docUrl}/${doc.id}" class="btn btn-default" alt="Metadados" title="Metadados">
                                         <span class="glyphicon glyphicon-list-alt"></span>
-                                    </button>
+                                    </a>
                                     <security:authorize access="hasRole('${permDocAdmin}') or ${currentUser == doc.owner.username}">
 
                                         <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
@@ -68,7 +65,7 @@
                                                 href="${deleteDoc}" id="${doc.id}">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </button>
-                                        <button class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-pencil"></span></button>
+                                        <a class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-pencil"></span></a>
 
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
