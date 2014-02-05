@@ -7,9 +7,15 @@ package com.cognitivabrasil.repositorio.data.repositories;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.entities.User;
+
+import java.util.Date;
 import java.util.List;
+
 import org.joda.time.DateTime;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -29,4 +35,36 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     public List<Document> findByCreatedLessThanAndObaaXmlIsNullAndDeletedIsFalse(DateTime d);
     
     public long countByOwnerAndDeletedIsFalse(User u);
+
+	public List<Document> findByCreatedBetween(DateTime from, DateTime until);
+
+	public List<Document> findByCreatedLessThan(DateTime dateTime);
+
+	public List<Document> findByCreatedGreaterThan(DateTime dateTime);
+	
+
+	// Hack: we add one second to the date and use non-inclusive comparison for until, and 
+	// use incluse queries for from, in this way we ignore fractions of seconds.
+	@Query("SELECT d FROM Document d WHERE created >= ?1")
+	public Page<Document> from(DateTime dateTime, Pageable p);
+	
+	@Query("SELECT count(*) FROM Document d WHERE created >= ?1")
+	public Integer countFrom(DateTime dateTime);
+	
+	@Query("SELECT d FROM Document d WHERE created < ?1")
+	public Page<Document> until(DateTime dateTime, Pageable p);
+	
+	@Query("SELECT count(*) FROM Document d WHERE created < ?1")
+	public Integer countUntil(DateTime dateTime);
+	
+	@Query("SELECT d FROM Document d WHERE created >= ?1 AND created < ?2")
+	public Page<Document> betweenInclusive(DateTime from, DateTime until, Pageable p);
+	
+	@Query("SELECT count(*) FROM Document d WHERE created >= ?1 AND created < ?2")
+	public Integer countBetweenInclusive(DateTime from, DateTime until);
+
+	@Query("SELECT d FROM Document d")
+	public Page<Document> all(Pageable pageable);
+
+	public long count();
 }

@@ -10,16 +10,25 @@
  */
 package com.cognitivabrasil.repositorio.oai;
 
-import ORG.oclc.oai.models.HibernateOaiDocument;
-import ORG.oclc.oai.server.catalog.AbstractHibernateOAICatalog;
+import ORG.oclc.oai.models.OaiDocument;
+import ORG.oclc.oai.server.catalog.AbstractJpaOaiCatalog;
+import ORG.oclc.oai.server.catalog.OaiDocumentService;
+
 import com.cognitivabrasil.repositorio.data.entities.Document;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import org.hibernate.SessionFactory;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+
+import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
+
 import spring.ApplicationContextProvider;
 
 /**
@@ -32,11 +41,12 @@ import spring.ApplicationContextProvider;
  *
  * @author Jeffrey A. Young, OCLC Online Computer Library Center
  */
-public class HibernateOAICatalog extends AbstractHibernateOAICatalog {
+public class JpaOaiCatalog extends AbstractJpaOaiCatalog {
 
-    private SessionFactory sessionFactory;
+	@PersistenceContext
+    private EntityManager em;
 
-    public HibernateOAICatalog(Properties properties) {
+    public JpaOaiCatalog(Properties properties) {
         super(properties);
     }
 
@@ -73,17 +83,16 @@ public class HibernateOAICatalog extends AbstractHibernateOAICatalog {
     }
 
     @Override
-    public Class<? extends HibernateOaiDocument> getHibernateClass() {
+    public Class<? extends OaiDocument> getHibernateClass() {
         return Document.class;
     }
 
-    @Override
-    public SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            ApplicationContext ctx = ApplicationContextProvider
-                    .getApplicationContext();
-            sessionFactory = ctx.getBean(SessionFactory.class);
-        }
-        return sessionFactory;
-    }
+	@Override
+	public OaiDocumentService getDocumentService() {
+		  ApplicationContext ctx = ApplicationContextProvider
+                  .getApplicationContext();
+          return ctx.getBean(OaiDocumentService.class);
+	}
+
+
 }

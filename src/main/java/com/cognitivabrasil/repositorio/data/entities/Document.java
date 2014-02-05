@@ -1,11 +1,13 @@
 package com.cognitivabrasil.repositorio.data.entities;
 
-import ORG.oclc.oai.models.HibernateOaiDocument;
+import ORG.oclc.oai.models.OaiDocument;
 import cognitivabrasil.obaa.OBAA;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -32,7 +35,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Table(name = "documents")
-public class Document implements HibernateOaiDocument, java.io.Serializable {
+public class Document implements OaiDocument, java.io.Serializable {
 
     private static final Logger LOG = Logger.getLogger(Document.class);
     private Integer id;
@@ -191,7 +194,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     }
 
     /**
-     * Return the OBAA xml. To satisfy HibernateOaiDocument.
+     * Return the OBAA xml. To satisfy OaiDocument.
      * @return OBAA xml
      */
     @Transient
@@ -203,7 +206,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     @Transient
     @Override
     /**
-     * To satisfy HibernateOaiDocument.
+     * To satisfy OaiDocument.
      * return ObaaEntry
      */
     public String getOaiIdentifier() {
@@ -213,7 +216,7 @@ public class Document implements HibernateOaiDocument, java.io.Serializable {
     @Transient
     @Override
     /**
-     * To satisfy HibernateOaiDocument. Sets not yet implemented.
+     * To satisfy OaiDocument. Sets not yet implemented.
      * return Empty set.
      */
     public Collection<String> getSets() {

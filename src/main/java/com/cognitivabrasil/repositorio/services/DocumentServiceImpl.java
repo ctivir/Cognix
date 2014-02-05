@@ -4,18 +4,29 @@
  */
 package com.cognitivabrasil.repositorio.services;
 
+import ORG.oclc.oai.models.OaiDocument;
+import ORG.oclc.oai.server.catalog.OaiDocumentService;
+
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.util.Config;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +35,7 @@ import org.springframework.stereotype.Service;
  * @author Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
  */
 @Service
-public class DocumentServiceImpl implements DocumentService {
+public class DocumentServiceImpl implements DocumentService, OaiDocumentService {
 
     @Autowired
     private DocumentRepository docRep;
@@ -113,5 +124,63 @@ public class DocumentServiceImpl implements DocumentService {
             deleteFromDatabase(doc);            
         }
     }
+
+	@Override
+	public Iterator find(Date from, Date until, int oldCount, int maxListSize) {	
+		System.out.println("maxListSize: " + maxListSize);
+		
+		PageRequest pr = new PageRequest(oldCount/maxListSize, maxListSize, Sort.Direction.ASC, "created");
+		
+		if(from != null && until != null) {
+			return docRep.betweenInclusive(new DateTime(from), add1Second(new DateTime(until)), pr).iterator();
+		}
+		else if (from != null && until == null) {
+			System.err.println("From");
+
+			return docRep.from(new DateTime(from), pr).iterator();
+		}
+		else if(from == null && until != null) {
+			System.err.println("Until");
+
+			return docRep.until(add1Second(new DateTime(until)), pr).iterator();
+
+		}
+		else {
+			System.err.println("All");
+
+			return docRep.all(
+					pr).iterator();
+		}
+	}
+
+
+
+	@Override
+	public int count(Date from, Date until) {
+		if(from != null && until != null) {
+			return docRep.countBetweenInclusive(new DateTime(from), add1Second(new DateTime(until)));
+		}
+		else if (from != null && until == null) {
+			System.err.println("From");
+
+			return docRep.countFrom(new DateTime(from));
+		}
+		else if(from == null && until != null) {
+			System.err.println("Until");
+
+			return docRep.countUntil(add1Second(new DateTime(until)));
+
+		}
+		else {
+			System.err.println("All");
+
+			return (int) docRep.count();
+		}
+		
+	}
+	
+	private DateTime add1Second(DateTime dateTime) {
+		return dateTime.plusSeconds(1);
+	}
 
 }
