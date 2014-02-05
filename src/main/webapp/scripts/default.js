@@ -63,32 +63,29 @@ $(function() {
 
 
     /*Dialogo de confirmacao*/
-    $('.confirmLink').click(function(e) {
+    $('.confirmLink').on("click",function(e) {
         e.preventDefault();
         $('#actionModalConfirm')
                 .attr('href', $(this).attr('href'))
-                .attr('id', $(this).attr('id'));
+                .attr('idObj', $(this).attr('id'));
 
         $("#msgApagar").text($(this).attr('title'));
         $("#confirmModal").modal();
     });
 
-    $('#actionModalConfirm').click(function(e) {
+    $('#actionModalConfirm').on("click",function(e) {
         e.preventDefault();
         _thisButton = $(this);
 
         $.post($(this).attr('href'), "", function(resultado) {
             if (resultado["type"]) {
-                console.log("type: " + resultado["type"] + " Message: " + resultado["message"]);
                 var type = unescape(resultado["type"]);
                 if (type === "success") {
-                    var container = $('#container' + _thisButton.attr('id'));
+                    var container = $('#container' + _thisButton.attr('idObj'));
                     $('#confirmModal').modal('hide');
                     container.fadeOut(1000, function() {
                         container.remove();
                     });
-                    //abrir aqui o modal msg e colocar sucesso no lugar de erro.
-                    $('#excluido_com_sucesso').modal();
                 } else {
                     $('#confirmModal').modal('hide');
                     $("#textStatus").text(type);

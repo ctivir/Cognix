@@ -59,11 +59,11 @@
                                                 </c:otherwise>
                                             </c:choose>
 
-                                            <a class='editar btn btn-default' href="${editarUrl}"><span class="glyphicon glyphicon-pencil"/></a> 
+                                            <button class='editar btn btn-default' href="${editarUrl}"><span class="glyphicon glyphicon-pencil"/></button>
 
                                             <security:authorize access="hasRole('PERM_MANAGE_USERS')">
                                                 <c:url value="/users/${user.id}/delete" var="deletarUrl" />
-                                                <a id="${user.id}" class="delete confirmLink btn btn-default" title="excluir o usuário ${user.name}?" href="${deletarUrl}"><span class="glyphicon glyphicon-trash"/></a>
+                                                <button id="${user.id}" class="delete confirmLink btn btn-default" title="excluir o usuário ${user.name}?" href="${deletarUrl}"><span class="glyphicon glyphicon-trash"/></button>
                                             </security:authorize>
 
                                         </security:authorize>

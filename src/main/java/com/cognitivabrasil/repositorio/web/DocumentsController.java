@@ -183,6 +183,7 @@ public final class DocumentsController {
         //Criação de nova versão
         Document d = docService.get(versionOf);
         Document dv = new Document();
+        dv.setCreated(new DateTime());
         //o documento precisa ser salvo para gerar um id da base
         docService.save(dv);
         //copia o original

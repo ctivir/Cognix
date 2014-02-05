@@ -7,16 +7,16 @@
      version="2.0">    
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
-    
+
     <spring:url value="/css/listDocuments.css" var="listDocuments_css" />
     <link rel="stylesheet" type="text/css" media="screen" href="${listDocuments_css}" />
 
     <c:url var="jsList" value="/scripts/listDocuments.js" />
     <script type="text/javascript" src="${jsList}"><jsp:text/></script>
-    
+
     <cgbr:tabs tabNumber="1" />
     <div id="tab-content">                
-        
+
         <c:if test="${not empty message}">
             <div id="message" class="${message.type}">${message.message}</div>
         </c:if>
@@ -42,84 +42,88 @@
                 <a href="${docUrl}/filter/portugues" class="btn btn-default btn-sm">Português</a>
             </div>
             <br/><br/>
-           <div class="container">
-                
+            <div class="container">
+
                 <c:if test="${empty documents}">Nenhum documento cadastrado</c:if>
                 <c:forEach var="doc" items="${documents}" varStatus="status">
                     <c:if test="${doc.title != 'IndexOutOfBounds'}"> 
-                     <div id="container${doc.id}" class="col-md-4 coluna-lista">
+                        <div id="container${doc.id}" class="col-md-4 coluna-lista">
                             <div class="ui-state-default ui-corner-all title-list">                            
                                 <a href="${doc.metadata.technical.firstHttpLocation} " class="title-link">
                                     <c:if test="${empty doc.title}">
                                         Título não informado
                                     </c:if>
                                     ${doc.title}</a>                                                       
-                            <span class="buttonList">
-                                <a href="${docUrl}/${doc.id}" class="btn btn-default" alt="Metadados" title="Metadados">
-                                    <span class="glyphicon glyphicon-list-alt"></span>
-                                </a>
-                            <security:authorize access="hasRole('${permDocAdmin}') or ${currentUser == doc.owner.username}">
-                                                                  
-                                    <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
-                                    <c:url var="edit" value="/documents/${doc.id}/edit"/>
+                                <span class="buttonList">
+                                    <button href="${docUrl}/${doc.id}" class="btn btn-default" alt="Metadados" title="Metadados">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </button>
+                                    <security:authorize access="hasRole('${permDocAdmin}') or ${currentUser == doc.owner.username}">
 
-                                    <a class="delete confirmLink btn btn-default"
-                                       title="excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!" 
-                                       href="${deleteDoc}" id="${doc.id}">
-                                        <span class="glyphicon glyphicon-trash"></span></a>
-                                    <a class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-pencil"></span></a>
-                         
-                                    <a href="#" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-arrow-down"></span><span class='gliphycon-text'>Criar relação</span>
-                                    </a>
+                                        <c:url var="deleteDoc" value="/documents/${doc.id}/delete"/>
+                                        <c:url var="edit" value="/documents/${doc.id}/edit"/>
 
-                                        <ul class="ui-corner-all hidden relation_dropdown"> 
+                                        <button class="delete confirmLink btn btn-default"
+                                                title="excluir este documento? Esta operação irá apagar o item e todos seus arquivos relacionados!" 
+                                                href="${deleteDoc}" id="${doc.id}">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                        <button class="editar btn btn-default" href="${edit}" id="edit_link"><span class="glyphicon glyphicon-pencil"></span></button>
 
-                                            <li><a href="${docUrl}/new?versionOf=${doc.id}">Criar Versão</a></li>
-                                            <!--                                <li><a>&Eacute; formato de</a></li>
-                                                                                <li><a>Tem formatos</a></li>
-                                                                                <li><a>Referencia</a></li>
-                                                                                <li><a>&Eacute; referenciado por</a></li>
-                                                                                <li><a>&Eacute; baseado em</a></li>
-                                                                                <li><a>&Eacute; base para</a></li>
-                                                                                <li><a>Requer</a></li>
-                                                                                <li><a>&Eacute; requerido por</a></li>-->
-                                        </ul>                                                                                             
-                            </security:authorize>
-                            </span>
-                            <div class="clear"><jsp:text/></div>
-                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                Criar relação <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="${docUrl}/new?versionOf=${doc.id}">Criar Versão</a></li>
+                                               <!-- <li><a href="#">É formato de</a></li>
+                                                <li><a href="#">Tem formatos</a></li>
+                                                
+                                                <li class="divider"></li>
+                                                <li><a href="#">Referencia</a></li>
+                                                <li><a>É referenciado por</a></li>
+                                                <li><a>É baseado em</a></li>
+                                                <li><a>É base para</a></li>
+                                                <li><a>Requer</a></li>
+                                                <li><a>É requerido por</a></li>-->
+                                            </ul>
+                                        </div> 
+                                                
+                                    </security:authorize>
+                                </span>
+                                <div class="clear"><jsp:text/></div>
+                            </div>
 
 
-                        <ul class="documentData">
+                            <ul class="documentData">
 
-                            <li class="obaaEntry">
-                                 <a href="${doc.metadata.technical.firstHttpLocation}"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
-                            </li>                            
+                                <li class="obaaEntry">
+                                    <a href="${doc.metadata.technical.firstHttpLocation}"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
+                                </li>                            
 
-                            <!--<c:if test="${!empty doc.files}">
-                                <li>
-                                    <label>Arquivo<c:if test="${doc.files.size() > 1}">s</c:if></label>
-                                        <div class="files ">
-                                        <c:forEach var="file" items="${doc.files }">
-                                            <c:url var="location" value="/files/${file.id}" />
-                                            <div>                                            
-                                                <a class="" href="${location}">${file.name}</a> 
-                                                <span class="smallerText">
-                                                    <c:if test="${!empty file.contentType}"> (${file.contentType})</c:if>
-                                                    <c:if test="${file.sizeInBytes > 0}"> ${file.sizeFormatted}</c:if>
-                                                    </span>
-                                                </div>
-
-                                        </c:forEach>
+                                <!--<c:if test="${!empty doc.files}">
+                                    <li>
+                                        <label>Arquivo<c:if test="${doc.files.size() > 1}">s</c:if></label>
+                                            <div class="files ">
+                                    <c:forEach var="file" items="${doc.files }">
+                                        <c:url var="location" value="/files/${file.id}" />
+                                        <div>                                            
+                                            <a class="" href="${location}">${file.name}</a> 
+                                            <span class="smallerText">
+                                        <c:if test="${!empty file.contentType}"> (${file.contentType})</c:if>
+                                        <c:if test="${file.sizeInBytes > 0}"> ${file.sizeFormatted}</c:if>
+                                        </span>
                                     </div>
-                                </li>
-                            </c:if> -->
-                        </ul>
-                     </div>
+
+                                    </c:forEach>
+                                </div>
+                            </li>
+                                </c:if> -->
+                            </ul>
+                        </div>
                     </c:if>
                 </c:forEach>
-           </div>
+            </div>
         </div>
     </div>
 </div>
