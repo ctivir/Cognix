@@ -157,7 +157,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         
         msg = controller.delete(1, request);
         assertThat(msg.getType(), equalTo(Message.ERROR));
-        assertThat(msg.getMessage(), equalTo("O documento solicitado não foi encontrado."));        
+        assertThat(msg.getMessage(), equalTo("O documento solicitado já foi deletado."));        
     }
 
     @Test

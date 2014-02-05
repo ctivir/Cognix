@@ -134,6 +134,9 @@ public final class DocumentsController {
             if (d == null) {
                 return new Message(Message.ERROR, "O documento solicitado não foi encontrado.");
             }
+            if(d.isDeleted()){
+                return new Message(Message.ERROR, "O documento solicitado já foi deletado.");
+            }
             if (!isManagerForThisDocument(d, request)) {
                 return new Message(Message.ERROR, "Acesso negado! Você não ter permissão para deletar este documento.");
             }
