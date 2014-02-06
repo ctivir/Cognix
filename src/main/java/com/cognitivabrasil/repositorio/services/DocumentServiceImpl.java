@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
  * The Class DocumentServiceImpl.
  *
  * @author Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  */
 @Service
 public class DocumentServiceImpl implements DocumentService, OaiDocumentService {
@@ -127,27 +128,19 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
 
 	@Override
 	public Iterator find(Date from, Date until, int oldCount, int maxListSize) {	
-		System.out.println("maxListSize: " + maxListSize);
-		
 		PageRequest pr = new PageRequest(oldCount/maxListSize, maxListSize, Sort.Direction.ASC, "created");
 		
 		if(from != null && until != null) {
 			return docRep.betweenInclusive(new DateTime(from), add1Second(new DateTime(until)), pr).iterator();
 		}
 		else if (from != null && until == null) {
-			System.err.println("From");
-
 			return docRep.from(new DateTime(from), pr).iterator();
 		}
 		else if(from == null && until != null) {
-			System.err.println("Until");
-
 			return docRep.until(add1Second(new DateTime(until)), pr).iterator();
 
 		}
 		else {
-			System.err.println("All");
-
 			return docRep.all(
 					pr).iterator();
 		}
@@ -161,19 +154,13 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
 			return docRep.countBetweenInclusive(new DateTime(from), add1Second(new DateTime(until)));
 		}
 		else if (from != null && until == null) {
-			System.err.println("From");
-
 			return docRep.countFrom(new DateTime(from));
 		}
 		else if(from == null && until != null) {
-			System.err.println("Until");
-
 			return docRep.countUntil(add1Second(new DateTime(until)));
 
 		}
 		else {
-			System.err.println("All");
-
 			return (int) docRep.count();
 		}
 		

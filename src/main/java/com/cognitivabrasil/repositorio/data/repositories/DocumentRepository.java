@@ -18,8 +18,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 /**
+ * <b>ATENTION!</b>
+ * 
+ * Beware the inconsistency between from and until ({@link #from(DateTime, Pageable)},
+ * {@link #countFrom(DateTime)}, {@link #until()}, {@link #countUntil(DateTime)},
+ * {@link #betweenInclusive(DateTime, DateTime, Pageable)},
+ * {@link #countBetweenInclusive(DateTime, DateTime)} in this repository.
+ * 
+ * From is inclusive, until is NOT inclusive. This is necessary for us to
+ * ignore the milliseconds portion of the timestamp.
  *
  * @author Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
+ * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
  */
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
 

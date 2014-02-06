@@ -10,26 +10,17 @@
  */
 package com.cognitivabrasil.repositorio.oai;
 
-import ORG.oclc.oai.models.OaiDocument;
-import ORG.oclc.oai.server.catalog.AbstractJpaOaiCatalog;
-import ORG.oclc.oai.server.catalog.OaiDocumentService;
-
-import com.cognitivabrasil.repositorio.data.entities.Document;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-
-import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 
 import spring.ApplicationContextProvider;
+import ORG.oclc.oai.server.catalog.AbstractServiceOaiCatalog;
+import ORG.oclc.oai.server.catalog.OaiDocumentService;
 
 /**
  * DummyOAICatalog is an example of how to implement the AbstractCatalog
@@ -41,12 +32,9 @@ import spring.ApplicationContextProvider;
  *
  * @author Jeffrey A. Young, OCLC Online Computer Library Center
  */
-public class JpaOaiCatalog extends AbstractJpaOaiCatalog {
+public class DataServiceOaiCatalog extends AbstractServiceOaiCatalog {
 
-	@PersistenceContext
-    private EntityManager em;
-
-    public JpaOaiCatalog(Properties properties) {
+    public DataServiceOaiCatalog(Properties properties) {
         super(properties);
     }
 
@@ -82,10 +70,6 @@ public class JpaOaiCatalog extends AbstractJpaOaiCatalog {
         return listSetsMap;
     }
 
-    @Override
-    public Class<? extends OaiDocument> getHibernateClass() {
-        return Document.class;
-    }
 
 	@Override
 	public OaiDocumentService getDocumentService() {

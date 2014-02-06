@@ -371,7 +371,7 @@
         <dependency>
             <groupId>cognitivabrasil</groupId>
             <artifactId>oaicat</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1</version>
         </dependency>
        
         <!--ver se realmente precisa-->
