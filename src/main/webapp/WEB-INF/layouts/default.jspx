@@ -73,10 +73,10 @@
                                       
         <div id="headerWrapper"></div>
         <c:if test="${param.error == true }">
-            <div class="alert alert-danger">Login ou senha inválidos</div>
+            <div class="alert error-login alert-danger">Login ou senha inválidos</div>
         </c:if>
         <c:if test="${param.required == true }">
-            <div class="alert alert-danger">Você precisa estar logado para acessar esta página</div>
+            <div class="alert error-login alert-danger">Você precisa estar logado para acessar esta página</div>
         </c:if>         
         <div id="wrapper" class="ui-widget ui-widget-content ui-corner-all">                   
             <tiles:insertAttribute name="body" />
