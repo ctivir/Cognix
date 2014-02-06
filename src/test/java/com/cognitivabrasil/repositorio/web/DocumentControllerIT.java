@@ -454,6 +454,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(meta.getIdentifier().get(0).getCatalog(), equalTo("URI"));
         assertThat(meta.getIdentifier().get(0).getEntry(), equalTo("http://www.w3.org/2001/XMLSchema-instance"));
         assertThat(meta.getSchema(), hasSize(1));
+        
+        assertThat(technical.getSize(), equalTo(Long.toString(file.getSizeInBytes())));
     }
     
     @Test
