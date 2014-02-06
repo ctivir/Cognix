@@ -134,7 +134,7 @@ public final class DocumentsController {
             if (d == null) {
                 return new Message(Message.ERROR, "O documento solicitado não foi encontrado.");
             }
-            if(d.isDeleted()){
+            if (d.isDeleted()) {
                 return new Message(Message.ERROR, "O documento solicitado já foi deletado.");
             }
             if (!isManagerForThisDocument(d, request)) {
@@ -265,7 +265,7 @@ public final class DocumentsController {
     public String newClassPlan(Model model) {
 
         //inicializa com o new basico
-        String result = newShow(model); 
+        String result = newShow(model);
 
         Document d = (Document) model.asMap().get("doc");
 
@@ -426,18 +426,14 @@ public final class DocumentsController {
 
         Long size;
 
-        //TODO: isso tem que sair daqui e não precisa mais do else
-        if (originalTechical.getSize() == null) {
-            size = 0L;
-            for (Files f : d.getFiles()) {
-                size += f.getSizeInBytes();
-            }
-        } else {
-            size = Long.valueOf(originalTechical.getSize());
+
+        size = 0L;
+        for (Files f : d.getFiles()) {
+            size += f.getSizeInBytes();
         }
 
         // somatorio to tamanho de todos os arquivos
-        t.setSize(size); 
+        t.setSize(size);
         obaa.setTechnical(t);
         d.setMetadata(obaa);
 
@@ -502,7 +498,7 @@ public final class DocumentsController {
         String port = config.getProperty("Repositorio.port", "8080");
         return ("http://"
                 + config.getProperty("Repositorio.hostname")
-                + (port.equals("80") ? "" : (":" + port)) 
+                + (port.equals("80") ? "" : (":" + port))
                 // if port 80, dont put anything
                 + config.getProperty("Repositorio.rootPath", "/repositorio")
                 + "/documents/" + d.getId());
@@ -581,10 +577,9 @@ public final class DocumentsController {
         }
 
         //Title Suggestion
-        if (files.size() != 1 || files.size()>=2) {
+        if (files.size() != 1 || files.size() >= 2) {
             suggestions.setTitle("");
-        }
-        else {            
+        } else {
             String fileName = files.get(0).getName().replaceAll("_", " ");
 
             // to remove the file extension
@@ -630,7 +625,7 @@ public final class DocumentsController {
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
-            LOG.trace("\n doc " + doc.getId());           
+            LOG.trace("\n doc " + doc.getId());
 
             String destinationPath = Config.FILE_PATH + doc.getId();
             File destinationDocFiles = new File(destinationPath);
@@ -656,14 +651,14 @@ public final class DocumentsController {
     }
 
     /**
-     * Esses métodos foram feitos privado e aqui e não na classe ObaaDto, 
-     * por ela ser uma classe apenas para tranferência de dados.
+     * Esses métodos foram feitos privado e aqui e não na classe ObaaDto, por
+     * ela ser uma classe apenas para tranferência de dados.
      */
     private ObaaDto allImg(String mime) {
         ObaaDto imgObj = new ObaaDto();
 
         LOG.debug("All Image");
-        
+
         //General
         imgObj.setStructure(Structure.ATOMIC);
         imgObj.setAggregationLevel("1");
