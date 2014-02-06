@@ -31,7 +31,7 @@ $(function() {
                             makeSuggestions(result);
                         },
                         error: function() {
-                            alert("Sem sugestões para preenchimento.");
+                            console.log("Sem sugestões para preenchimento.");
                         },
                         datatype: "json"
                     });
@@ -45,7 +45,7 @@ $(function() {
     });
 
     var makeSuggestions = function(suggestions) {
-
+        
         var lang = window.navigator.userLanguage || window.navigator.language;
 
         //General
@@ -160,5 +160,7 @@ $(function() {
         $(':radio').focus(function() {
             $(this).parents(".suggestions").removeClass("suggestions");
         });
+        
+        $("#suggestion-alert").removeClass('hidden');
     };
 });
