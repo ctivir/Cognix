@@ -158,7 +158,11 @@ public class UsersController {
     public Message delete(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         Message msg;
         try {
-            userService.delete(userService.get(id));
+            User u = userService.get(id);
+            userService.delete(u);
+            if (u.equals(getCurrentUser())) {
+                SecurityContextHolder.getContext().setAuthentication(null);
+            }
             msg = new Message(Message.SUCCESS, "Usuário excluido com sucesso");
         } catch (DataAccessException e) {
             msg = new Message(Message.ERROR, "Erro ao excluir o usuário");
@@ -174,7 +178,7 @@ public class UsersController {
         model.addAttribute("users", users);
         return "users/deleted";
     }
-    
+
     @RequestMapping(value = "/{id}/activate", method = RequestMethod.POST)
     @ResponseBody
     public Message activateUserDeleted(@PathVariable("id") int id) {
