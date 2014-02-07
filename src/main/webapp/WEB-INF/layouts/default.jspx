@@ -68,8 +68,6 @@
 
         <tiles:insertAttribute name="header" ignore="true" />                
 
-        <div id="dialog-form" title="Adicionar"><jsp:text/></div>
-
                                       
         <div id="headerWrapper"></div>
         <c:if test="${param.error == true }">
@@ -110,7 +108,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-
+        
         <!-- Modal -->
         <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

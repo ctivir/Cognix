@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="newLineUser" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <table id="table-users"
+           class="ui-widget ui-widget-content zebra">
+        <thead>
+            <tr class="ui-widget-header ">
+                <th id="nome">Nome</th>
+                <th>Login</th>
+                <th>Perfil</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="container${user.id}">
+                <td class="tdName">${user.name}</td>
+                <td class="tdLogin">${user.username}</td>
+                <td class="tdRole">${user.roleNameText}</td>
+                <td class="tdButton">
+                    <c:url value="/users/${user.id}/edit" var="editarUrl" />
+                    <button class='editar btn btn-default openModalForm' href="${editarUrl}"><span class="glyphicon glyphicon-pencil"/></button>
+                    <c:url value="/users/${user.id}/delete" var="deletarUrl" />
+                    <button id="${user.id}" class="delete confirmLink btn btn-default" title="excluir o usuário ${user.name}?" href="${deletarUrl}"><span class="glyphicon glyphicon-trash"/></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

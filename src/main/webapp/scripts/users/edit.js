@@ -1,10 +1,6 @@
 $(function() {
     /*editando user*/
-    $( "#alterPass" ).button({
-        icons: {
-            primary: "ui-icon-key"
-        }
-    }).click(function(ev){
+    $( "#alterPass" ).click(function(ev){
         ev.preventDefault();
         $("#passwords").show();
         $(this).hide();

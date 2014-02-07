@@ -4,9 +4,9 @@ $(function() {
 
     $('.openModal').click(function() {
         $('#modalContent').load($(this).attr('id'), function() {
+            // abrir a modal somente apos carregar o conteudo
             $('#mainModal').modal();
         });
-
     });
 
     /*Dialogo de confirmacao*/

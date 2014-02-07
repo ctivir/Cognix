@@ -175,7 +175,10 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         String result = usersController.save(u, bindingResult, model, response);
         assertNotNull(result);
-        assertEquals(result, "ajax");
+        assertEquals(result, "users/newLine");
+        User newUser = (User) model.get("user");
+        assertNotNull(newUser);
+        assertThat(newUser.getName(), equalTo("marcos"));
         assertThat(bindingResult.hasErrors(), equalTo(false));
         assertThat(response.getStatus(), equalTo(201));
         assertThat(userService.getAll(), hasSize(size+1));
@@ -352,7 +355,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         String result = usersController.edit(uOrg.getId(), u, bindingResult, model, response);
         assertNotNull(result);
-        assertEquals(result, "ajax");
+        assertThat(result, equalTo("users/newLine"));
         assertThat(response.getStatus(), equalTo(201));
         
         em.flush();
@@ -402,7 +405,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         String result = usersController.edit(uOrg.getId(), u, bindingResult, model, response);
         
         assertNotNull(result);
-        assertThat(result, equalTo("ajax"));
+        assertThat(result, equalTo("users/newLine"));
 
         assertThat(bindingResult.hasErrors(), equalTo(false));
         assertThat(response.getStatus(), equalTo(201));
@@ -453,7 +456,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         String result = usersController.edit(uOrg.getId(), u, bindingResult, model, response);
         assertNotNull(result);
-        assertThat(result, equalTo("ajax"));
+        assertThat(result, equalTo("users/newLine"));
 
         assertThat(bindingResult.hasErrors(), equalTo(false));
         assertThat(response.getStatus(), equalTo(201));

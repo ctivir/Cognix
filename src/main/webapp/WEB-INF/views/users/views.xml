@@ -22,4 +22,8 @@
     <definition extends="ajax" name="users/deleted">
         <put-attribute name="body" value="/WEB-INF/views/users/deleted.jspx" />
     </definition>
+    
+    <definition extends="ajax" name="users/newLine">
+        <put-attribute name="body" value="/WEB-INF/views/users/newLineTable.jspx" />
+    </definition>
 </tiles-definitions>

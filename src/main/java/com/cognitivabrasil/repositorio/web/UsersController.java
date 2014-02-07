@@ -50,7 +50,6 @@ public class UsersController {
         String name = auth.getName(); //get logged in username
 
         model.addAttribute("username", name);
-        model.addAttribute("manageUser", User.MANAGE_USER);
         model.addAttribute("userAdministrator", request.isUserInRole(User.MANAGE_USER));
         return "users/list";
     }
@@ -75,9 +74,12 @@ public class UsersController {
             return "users/save";
         }
         model.asMap().clear();
-        userService.save(user.getUser());
+        User u = user.getUser();
+        userService.save(u);
         response.setStatus(201);
-        return "ajax";
+
+        model.addAttribute("user", u);
+        return "users/newLine";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
@@ -106,7 +108,8 @@ public class UsersController {
         model.asMap().clear();
         userService.save(user.updateUser(u));
         response.setStatus(201);
-        return "ajax";
+        model.addAttribute("user", u);
+        return "users/newLine";
     }
 
     @RequestMapping(value = "/{id}/editPass", method = RequestMethod.GET)
