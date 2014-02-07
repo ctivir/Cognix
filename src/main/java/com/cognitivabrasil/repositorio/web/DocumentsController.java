@@ -82,6 +82,8 @@ public final class DocumentsController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String main(Model model) {
+        // Criando novo sistema de paginação
+        // Alterando nome de usuário novamente
         // TODO: getAll cannot be used if the collection is very big, have to
         // use server-side pagination
         model.addAttribute("documents", docService.getAll());
