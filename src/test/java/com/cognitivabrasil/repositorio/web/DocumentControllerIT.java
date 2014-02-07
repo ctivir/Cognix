@@ -329,7 +329,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         request.addParameter("obaa.lifeCycle.contribute[0].role", "graphical_designer");
         request.addParameter("obaa.lifeCycle.contribute[0].entity[0]", "MFN");
         request.addParameter("obaa.lifeCycle.contribute[0].date", "20/11/2013");
-        request.addParameter("obaa.rights.cost", "true");
+        request.addParameter("obaa.rights.cost", "no");
         request.addParameter("obaa.rights.copyright", "true");
         request.addParameter("obaa.rights.description", "Todos os direitos autorais reservados");
         request.addParameter("obaa.educational.interactivityType", "mixed");
@@ -400,7 +400,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(docResult.getMetadata().getLifeCycle().getContribute().get(0).getRole().toString(), equalTo("graphical_designer"));
         assertThat(docResult.getMetadata().getLifeCycle().getContribute().get(0).getEntities().get(0), equalTo("MFN"));
         assertThat(docResult.getMetadata().getLifeCycle().getContribute().get(0).getDate(), equalTo("20/11/2013"));
-        assertThat(docResult.getMetadata().getRights().getCost().toString(), equalTo("true"));
+        assertThat(docResult.getMetadata().getRights().getCost().toString(), equalTo("no"));
         assertThat(docResult.getMetadata().getRights().getCopyright().toString(), equalTo("true"));
         assertThat(docResult.getMetadata().getRights().getDescription(), equalTo("Todos os direitos autorais reservados"));
         Educational educational = docResult.getMetadata().getEducational();
