@@ -77,4 +77,6 @@ public interface UserService {
      * @param u User
      */
     public void activate(User u);
+    
+    public boolean isLastAdmin(User u);
 }

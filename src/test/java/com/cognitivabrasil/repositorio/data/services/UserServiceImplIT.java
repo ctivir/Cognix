@@ -218,5 +218,12 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(userService.getAll().size(), equalTo(sizeBefore+1));
         assertThat(userService.getDeleted().size(), equalTo(numDel-1));
     }
+    
+    @Test
+    public void testIsLastAdmin(){
+        userService.delete(userService.get(1));
+        User u = userService.get(2);
+        assertThat(userService.isLastAdmin(u), equalTo(true));        
+    }
 }
 

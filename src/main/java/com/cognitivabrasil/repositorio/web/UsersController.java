@@ -170,6 +170,9 @@ public class UsersController {
         } catch (DataAccessException e) {
             msg = new Message(Message.ERROR, "Erro ao excluir o usuário");
             LOG.error("Erro ao excluir um usuário.", e);
+        } catch (IllegalStateException i){
+            msg = new Message(Message.ERROR, i.getMessage());
+            LOG.error("Erro ao excluir um usuário.", i);
         }
         return msg;
     }
