@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new DataAccessException("This user can not be null") {
             };
         }
-        if(isLastAdmin(u)){
+        if (isLastAdmin(u)) {
             throw new IllegalStateException("Não é permitido deletar o último administrador do sistema.");
         }
         //testa se possui algum documento
@@ -103,14 +103,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean hasDocument(User u) {
         return docRep.countByOwnerAndDeletedIsFalse(u) > 0;
     }
-    
+
     @Override
-    public List<User> getDeleted(){
+    public List<User> getDeleted() {
         return userRep.findByDeletedIsTrue();
     }
-    
+
     @Override
-    public void activate(User u){
+    public void activate(User u) {
         if (u == null) {
             throw new DataAccessException("This user can not be null") {
             };
@@ -118,9 +118,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         u.setDeleted(false);
         userRep.save(u);
     }
-    
+
     @Override
-    public boolean isLastAdmin(User u){
-        return userRep.countByRole("admin")<2;
+    public boolean isLastAdmin(User u) {
+        if (!u.isRoot()) {
+            return false;
+        }
+        return userRep.countByRole(User.ROLE_ROOT) < 2;
     }
 }

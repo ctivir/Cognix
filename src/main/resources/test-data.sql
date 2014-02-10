@@ -1,5 +1,5 @@
-INSERT INTO users (id,name,login,role,permissions,password) VALUES (1, 'Administrador','admin','admin','PERM_CREATE_DOC,PERM_MANAGE_DOC,PERM_VIEW,PERM_MANAGE_USERS','698dc19d489c4e4db73e28a713eab07b');
-INSERT INTO users (id,name,login,role,permissions,password) VALUES (2, 'Marcos Nunes', 'marcos','admin','PERM_CREATE_DOC,PERM_MANAGE_DOC,PERM_VIEW,PERM_MANAGE_USERS','698dc19d489c4e4db73e28a713eab07b');
+INSERT INTO users (id,name,login,role,permissions,password) VALUES (1, 'Administrador','admin','docadmin','PERM_CREATE_DOC,PERM_MANAGE_DOC,PERM_VIEW,PERM_MANAGE_USERS','698dc19d489c4e4db73e28a713eab07b');
+INSERT INTO users (id,name,login,role,permissions,password) VALUES (2, 'Marcos Nunes', 'marcos','root','PERM_CREATE_DOC,PERM_MANAGE_DOC,PERM_VIEW,PERM_MANAGE_USERS','698dc19d489c4e4db73e28a713eab07b');
 INSERT INTO users (id,name,login,role,permissions,password) VALUES (3, 'Noob', 'autor','author','PERM_CREATE_DOC','698dc19d489c4e4db73e28a713eab07b');
 INSERT INTO users (id,name,login,role,permissions,password, deleted) VALUES (4, 'user4', 'user4','author','PERM_CREATE_DOC','698dc19d489c4e4db73e28a713eab07b', true);
 INSERT INTO users (id,name,login,role,permissions,password) VALUES (5, 'user5', 'user5','author','PERM_CREATE_DOC','698dc19d489c4e4db73e28a713eab07b');

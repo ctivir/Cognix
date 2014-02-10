@@ -32,6 +32,11 @@ public class User implements UserDetails {
     public static final String VIEW = "PERM_VIEW";
     public static final String MANAGE_USER = "PERM_MANAGE_USERS";
     public static final String CREATE_DOC = "PERM_CREATE_DOC";
+    public static final String ROLE_DOC_ADMIN = "docadmin";
+    public static final String ROLE_AUTHOR = "author";
+    public static final String ROLE_VIEW = "view";
+    public static final String ROLE_ROOT = "root";
+    
     private static PasswordEncoder passEncoder;
     private Integer id;
     private String login;
@@ -45,10 +50,10 @@ public class User implements UserDetails {
 
     static {
         SortedMap<String, String> myRoles = new TreeMap<>();
-        myRoles.put("admin", "Administrador de documentos");
-        myRoles.put("author", "Criador de documentos");
-        myRoles.put("view", "Somente visualizar");
-        myRoles.put("root", "Superusu\u00e1rio");
+        myRoles.put(ROLE_DOC_ADMIN, "Administrador de documentos");
+        myRoles.put(ROLE_AUTHOR, "Criador de documentos");
+        myRoles.put(ROLE_VIEW, "Somente visualizar");
+        myRoles.put(ROLE_ROOT, "Superusu\u00e1rio");
         ROLES = Collections.unmodifiableSortedMap(myRoles);
     }
 
@@ -250,17 +255,26 @@ public class User implements UserDetails {
     private String getPermissions(String role) {
         Map<String, String> roles = new HashMap<>();
         roles.put(
-                "root",
+                ROLE_ROOT,
                 User.MANAGE_USER + "," + User.VIEW + "," + User.MANAGE_DOC + "," + User.CREATE_DOC);
         roles.put(
-                "admin",
+                ROLE_DOC_ADMIN,
                 User.VIEW + "," + User.MANAGE_DOC + "," + User.CREATE_DOC);
-        roles.put("author",
+        roles.put(ROLE_AUTHOR,
                 User.CREATE_DOC);
-        roles.put("view",
+        roles.put(ROLE_VIEW,
                 User.VIEW);
         return roles.get(role);
 
+    }
+    
+    /**
+     * Checks if the user is root.
+     * @return Return true if the user is root and false otherwise
+     */
+    @Transient
+    public boolean isRoot(){
+        return role.equalsIgnoreCase(ROLE_ROOT);
     }
 
     /**

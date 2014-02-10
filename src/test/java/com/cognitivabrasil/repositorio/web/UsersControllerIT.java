@@ -526,11 +526,17 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(msg.getType(), equalTo(Message.SUCCESS));
         assertThat(userService.getAll().size(), equalTo(size - 1));
         
+        //deleting non-admin user
+        msg = usersController.delete(3, redirectAttributes);
+        assertNotNull(msg);
+        assertThat(msg.getType(), equalTo(Message.SUCCESS));
+        assertThat(userService.getAll().size(), equalTo(size - 2));
+        
         //deleting the last admin
         msg = usersController.delete(2, redirectAttributes);
         assertNotNull(msg);
         assertThat(msg.getType(), equalTo(Message.ERROR));
         assertThat(msg.getMessage(), equalTo("Não é permitido deletar o último administrador do sistema."));
-        assertThat(userService.getAll().size(), equalTo(size - 1));
+        assertThat(userService.getAll().size(), equalTo(size - 2));
     }
 }
