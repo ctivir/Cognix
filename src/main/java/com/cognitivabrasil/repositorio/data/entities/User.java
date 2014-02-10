@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -295,21 +296,35 @@ public class User implements UserDetails {
     public String getRoleNameText() {
         return User.getRoles().get(role);
     }
-    
+
     @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof User)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        User u = (User) o;
-        return u.login.equals(login) && u.passwordMd5.equals(passwordMd5)
-                && u.name.equals(name)
-                && u.id.equals(id)
-                && u.permissionsInternal.equals(permissionsInternal)
-                && u.role.equals(role);
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.login, other.login)) {
+            return false;
+        }
+        if (!Objects.equals(this.passwordMd5, other.passwordMd5)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.permissionsInternal, other.permissionsInternal)) {
+            return false;
+        }
+        if (!Objects.equals(this.role, other.role)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -236,7 +236,7 @@ public class UserTest {
     @Test
     public void testAuthoritiesAdmin(){
         User a = new User();
-        a.setRole("admin");
+        a.setRole(User.ROLE_DOC_ADMIN);
         Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) a.getAuthorities();
         assertThat(authorities, hasSize(3));
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.VIEW)), equalTo(true));
@@ -248,7 +248,7 @@ public class UserTest {
     @Test
     public void testAuthoritiesRoot(){
         User a = new User();
-        a.setRole("root");
+        a.setRole(User.ROLE_ROOT);
         Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) a.getAuthorities();
         assertThat(authorities, hasSize(4));
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.VIEW)), equalTo(true));
@@ -263,13 +263,13 @@ public class UserTest {
         String result = a.getRoleNameText(); //teste de para ver se da nullPointer
         assertThat(result, nullValue());
         
-        a.setRole("root");
+        a.setRole(User.ROLE_ROOT);
         assertThat(a.getRoleNameText(), equalTo("Superusu\u00e1rio"));
-        a.setRole("admin");
+        a.setRole(User.ROLE_DOC_ADMIN);
         assertThat(a.getRoleNameText(), equalTo("Administrador de documentos"));
-        a.setRole("author");
+        a.setRole(User.ROLE_AUTHOR);
         assertThat(a.getRoleNameText(), equalTo("Criador de documentos"));
-        a.setRole("view");
+        a.setRole(User.ROLE_VIEW);
         assertThat(a.getRoleNameText(), equalTo("Somente visualizar"));
     }
     

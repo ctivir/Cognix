@@ -474,7 +474,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         int size = userService.getAll().size();
 
-        Message msg = usersController.delete(2, redirectAttributes);
+        Message msg = usersController.delete(1, redirectAttributes);
         assertNotNull(msg);
 
         assertThat(msg.getType(), equalTo(Message.SUCCESS));
@@ -520,7 +520,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         int size = userService.getAll().size();
 
-        //deleting the first admin
+        //deleting the doc admin
         Message msg = usersController.delete(1, redirectAttributes);
         assertNotNull(msg);
         assertThat(msg.getType(), equalTo(Message.SUCCESS));
