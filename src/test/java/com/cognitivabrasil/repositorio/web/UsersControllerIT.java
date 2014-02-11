@@ -119,6 +119,28 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         ObjectError erro = bindingResult.getAllErrors().get(0);
         assertThat(erro.getDefaultMessage(), equalTo("Já existe um usuário cadastrado com esse login"));
     }
+    
+    @Test
+    public void testErrorSalvarUsuarioExistenteDeletado() {
+        UserDto u = new UserDto();
+        u.setName("marcos");
+        u.setRole("root");
+        u.setPassword("aaaaa");
+        u.setConfirmPass("aaaaa");
+        u.setUsername("user4");
+
+        BindingResult bindingResult = new BeanPropertyBindingResult(u, "UserDto");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        String result = usersController.save(u, bindingResult, model, response);
+        assertNotNull(result);
+        assertEquals(result, "users/save");
+        assertThat(bindingResult.hasErrors(), equalTo(true));
+        assertThat(bindingResult.getErrorCount(), equalTo(1));
+        assertThat(response.getStatus(), equalTo(200));
+        ObjectError erro = bindingResult.getAllErrors().get(0);
+        assertThat(erro.getDefaultMessage(), equalTo("Existe usuário deletado com esse login, se desejar reativar entre na lista de usuários deletados."));
+    }
 
     @Test
     public void testErrorSalvarUsuarioSemSenha() {
