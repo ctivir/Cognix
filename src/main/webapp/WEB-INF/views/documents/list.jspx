@@ -36,13 +36,13 @@
             <div class="btn-group col-md-offset-4">
                 <a href="${docUrl}/filter/ciencias" class="btn btn-default btn-sm">Ciências</a>
                 <a href="${docUrl}/filter/matematica" class="btn btn-default btn-sm">Matemática</a>
-                <a href="${docUrl}/filter/portugues" class="btn btn-default btn-sm">Português</a>
+                <a href="${docUrl}/filter/portugues" class="btn btn-default btn-sm">Português</a>                
             </div>
             <br/><br/>
-            <div class="container">
+            <div class="container">                
 
-                <c:if test="${empty documents}">Nenhum documento cadastrado</c:if>
-                <c:forEach var="doc" items="${documents}" varStatus="status">
+                <c:if test="${empty documents.content}">Nenhum documento cadastrado</c:if>
+                <c:forEach var="doc" items="${documents.content}" varStatus="status">
                     <c:if test="${doc.title != 'IndexOutOfBounds'}"> 
                         <div id="container${doc.id}" class="col-md-4 coluna-lista">
                             <div class="ui-state-default ui-corner-all title-list">                            
@@ -120,6 +120,28 @@
                         </div>
                     </c:if>
                 </c:forEach>
+                
+                <!-- Pagination Bar -->
+                <div id="pagination">                  
+                    <ul class="pagination pagination-centered">
+                      <c:if test="${documents.hasPreviousPage()}">
+                        <li>                        
+                          <a href="${docUrl}" title="Ir para página anterior">Anterior</a>
+                        </li>           
+                      </c:if>
+                       
+                      <li class="${item.current}? 'active' : ''">                        
+                        <a if="${not item.current}" href="@{${document.url}(page.page=${item.number},page.size=${document.size})}"><span text="${item.number}">1</span></a>
+                      </li>
+      
+                      <c:if test="${documents.hasNextPage()}">
+                        <li>                        
+                          <a href="${docUrl}" title="Ir para próxima página">Próxima</a>
+                        </li>
+                      </c:if>
+                    </ul>                  
+                </div>
+                      
             </div>
         </div>
     </div>
