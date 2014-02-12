@@ -487,6 +487,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         Document docResult = docService.get(id);
         assertThat(docResult.getMetadata().getGeneral().getTitles(), hasSize(1));
         assertThat(docResult.getMetadata().getGeneral().getTitles().get(0), equalTo("title1"));
+        assertThat(docResult.getMetadata().getTechnical().getLocation().get(0).toString(), equalTo("5"));
     }
     
     @Test

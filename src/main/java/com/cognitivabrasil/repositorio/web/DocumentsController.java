@@ -423,7 +423,6 @@ public final class DocumentsController {
 
         Technical t = obaa.getTechnical();
 
-        Technical originalTechical = d.getMetadata().getTechnical();
 
         Long size;
 
@@ -441,14 +440,17 @@ public final class DocumentsController {
             LOG.warn("Technical was null");
             obaa.setTechnical(new Technical());
         }
-        List<String> l = obaa.getTechnical().getLocation();
+        List<Location> l = obaa.getTechnical().getLocation();
 
+        //TODO: verificar esse if, as duas condições são fazem a mesma coisa, e na verdade ainda está invertido
+        //se tiver em branco da um add se nao tiver seta a posição 0!? (Marcos)
         if (l == null || l.isEmpty()) {
             obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());
-        } else {
-            //não faz nada essa operação abaixo, getLocation devolve uma cópia
-            obaa.getTechnical().getLocation().set(0, obaa.getGeneral().getIdentifiers().get(0).getEntry());
-        }
+        } 
+//        else {
+//            //não faz nada essa operação abaixo, getLocation devolve uma cópia
+//            obaa.getTechnical().getLocation().set(0, new Location(obaa.getGeneral().getIdentifiers().get(0).getEntry()));
+//        }
 
         // Preenchimento dos metametadados
         Metametadata meta = new Metametadata();
