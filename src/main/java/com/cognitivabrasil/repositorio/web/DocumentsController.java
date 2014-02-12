@@ -195,7 +195,6 @@ public final class DocumentsController {
         //altera o id
         String versionUri = createUri(dv);
         dv.setObaaEntry(versionUri);
-        docService.save(dv);
 
         Identifier versionId = new Identifier("URI", versionUri);
         versionObaa.getGeneral().getIdentifiers().clear();
@@ -223,8 +222,8 @@ public final class DocumentsController {
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
 
-        dv.setMetadata(versionObaa);
         docService.save(d);
+        dv.setMetadata(versionObaa);
 
         model.addAttribute("doc", dv);
         model.addAttribute("obaa", dv.getMetadata());
@@ -428,7 +427,6 @@ public final class DocumentsController {
 
         Long size;
 
-
         size = 0L;
         for (Files f : d.getFiles()) {
             size += f.getSizeInBytes();
@@ -486,9 +484,6 @@ public final class DocumentsController {
         d.getMetadata().setMetametadata(meta);
 
         //Parsing do duration
-
-
-
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
         d.setMetadata(obaa);
@@ -563,7 +558,6 @@ public final class DocumentsController {
             }
 
         }
-
 
         if (allImg && !empty) {
             //all image
