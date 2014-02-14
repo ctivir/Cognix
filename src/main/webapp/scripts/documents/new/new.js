@@ -1,7 +1,7 @@
 var myform = new formtowizard({
-    formid : 'newobject', 
+    formid: 'newobject',
     home: window.urlRoot,
-    revealfx : [ 'slide', 500 ],
+    revealfx: ['slide', 500],
     validate: ['titulo', 'validation_locate_file']
 });
 
@@ -13,8 +13,8 @@ var numerate = function() {
                 if ($(this).attr("type") === "button" || $(this).attr("type") === "file" || $(this).attr("type") === "hidden") {
                     return;
                 }
-                var $this = $(this);                                                             
-                
+                var $this = $(this);
+
                 $this.addClass("ui-corner-all");
 
                 var newName = "";
@@ -34,16 +34,16 @@ var numerate = function() {
                                             "#" + $(this).attr("id")).length;
                                 }
                                 newName = "." + $(this).attr("id") + "["
-                                        + prevNum + "]" + newName;                                                                    
+                                        + prevNum + "]" + newName;
                             }
 
                         });
                 //alert(newName);
                 var aux = newName.split(".");
-                if($.isArray(aux)){
-                    var aux2 = aux[2].split("[");                    
-                    if($.isArray(aux2)){
-                        if(aux[1] == 'arquivos' && aux2[0] == 'location'){
+                if ($.isArray(aux)) {
+                    var aux2 = aux[2].split("[");
+                    if ($.isArray(aux2)) {
+                        if (aux[1] == 'arquivos' && aux2[0] == 'location') {
                             newName = newName.replace('arquivos', 'technical');
                         }
                     }
@@ -54,24 +54,24 @@ var numerate = function() {
 
 };
 
-$(function() {         
-    
-    $('input#location').on('keyup',function(){
-            if($(this).val() == ''){
-                if($('#validation_locate_file').val() == 'location'){
-                    $('#validation_locate_file').val('');
-                }
-            }else{
-                if($('#validation_locate_file').val() != 'file'){
-                    $('#validation_locate_file').val('location');
-                }
+$(function() {
+
+    $('input#location').on('keyup', function() {
+        if ($(this).val() == '') {
+            if ($('#validation_locate_file').val() == 'location') {
+                $('#validation_locate_file').val('');
             }
-        
+        } else {
+            if ($('#validation_locate_file').val() != 'file') {
+                $('#validation_locate_file').val('location');
+            }
+        }
+
     });
-    
+
     $('.addInParent').addClass('glyphicon glyphicon-plus-sign btn btn-default');
-    $('.add').addClass('glyphicon glyphicon-plus-sign btn btn-default');    
-    
+    $('.add').addClass('glyphicon glyphicon-plus-sign btn btn-default');
+
     $("#browser").treeview();
 
 
@@ -89,7 +89,6 @@ $(function() {
         if (this.id == 'identifier') {
             templates[this.id] = $('li.' + this.id).filter(':first').clone().
                     append("<a class='remove'/>");
-            ;
             templates[this.id].find("input").val("").attr("disabled", false);
         }
     });
@@ -115,10 +114,7 @@ $(function() {
         e.preventDefault();
         var $template = templates[this.id];
 
-        //                     var branches = $('li.'+this.id+' :last').parent().
-        //                     after($template.clone());
         var branches = $(this).parent().before($template.clone());
-
 
         $("#browser").treeview({
             add: branches
@@ -137,20 +133,15 @@ $(function() {
         }
     });
 
-    $("#submitButton").button({
-        icons: {
-            primary: "ui-icon-disk"
-        }
-    }).click(function() {
+    $("#submitButton").click(function() {
         $("input:text").attr("disabled", false);
         numerate();
     });
 
-    $(".sliderSelect").change(function() { 
-        
+    $(".sliderSelect").change(function() {
         $(this).parents('li').children('div .slider').slider('value', this.selectedIndex);
     });
-               
+
     $(".slider").each(function(idx, elm) {
 
         var name = elm.id.replace('Slider', '');
@@ -158,8 +149,8 @@ $(function() {
         //remover o texto do primeiro option do select do slider, se não fica "- Nenhum -" 
         select.find('option:eq(0)').text('');
         //desabilitar todos os selects do slider
-        select.prop('disabled', 'disabled'); 
-        
+        select.prop('disabled', 'disabled');
+
         $('#' + elm.id).slider({
             value: select[ 0 ].selectedIndex,
             min: 0,
@@ -168,10 +159,10 @@ $(function() {
             slide: function(event, ui) {
 
                 if (ui.value < 1) {
-                    select.val("");                    
+                    select.val("");
                 }
                 if (ui.value >= 1 && ui.value < 2) {
-                    select.val("very low");                    
+                    select.val("very low");
                 }
                 if (ui.value >= 2 && ui.value < 3) {
                     select.val("low");
@@ -185,7 +176,7 @@ $(function() {
                 if (ui.value >= 5) {
                     select.val("very high");
                 }
-                
+
             }
         });
     });
@@ -203,81 +194,78 @@ $(function() {
     });
 
 
-    $("input:submit, input:file, input:reset, button, .button").button();  
-    
     /*Dialogo de confirmacao*/
-   /* var $dialog = $("#dialog-confirm-rm-file").dialog({
-        resizable: true,
-        width: 440,
-        autoOpen: false,
-        modal: true,
-        buttons: [
-            {
-                text: "Excluir",
-                id: "botaoDialogo",
-                click: function() {
-                    _thisDialog = $(this);
-
-                    $.post($(this).data('url'), "", function(resultado) {
-                        if (resultado["type"]) {
-                            var type = unescape(resultado["type"]);
-                            if (type == "error") {
-                                _thisDialog.dialog('close');
-                                $("#textStatus").text(type);
-                                $("#errorThrown").text(unescape(resultado["message"]));
-                                if (type == 'warn') {
-                                    $("#error-type").text("Warn: ");
-                                }
-                                $("#dialog-error").dialog('open');
-                            } else {
-                                _thisDialog.data('botao').closest("tr").remove();
-                                _thisDialog.dialog("close");
-                            }
-                        } else {
-                            _thisDialog.dialog('close');
-                            $("#errorThrown").text("Não foi possível executar a operação!");
-                            $("#dialog-error").dialog('open');
-                        }
-                    }, "json")
-                            .error(function(jqxhr) {
-                        _thisDialog.dialog('close');
-                        if (jqxhr.status == 403) {
-                            $("#errorThrown").text("Você não possui permissão para deletar esse arquivo!");
-                        } else {
-                            $("#errorThrown").text("Não foi possível executar a operação!");
-                        }
-
-                        $("#dialog-error").dialog('open');
-                    });
-
-                    $(".dialog-confirm").siblings(".ui-dialog-buttonpane").hide();
-                    $(".dialog-confirm").html("<p> Excluindo... Por favor aguarde.</p>");
-                }
-            },
-            {
-                text: "Cancelar",
-                click: function() {
-                    $(this).dialog("close");
-                }
-            }
-        ]
-    });*/
-
-
-    $('.delete_link').click(function(e) {
-        $("#confirm-file").text($(this).attr('name'));
-        e.preventDefault();
-        $("#dialog-confirm-rm-file")
-                .data({
-            'url': $(this).attr('href'),
-            'botao': $(this)
-        }) // sends url and line to the dialog
-                .dialog('open'); // opens the dialog
-    });
+    /* var $dialog = $("#dialog-confirm-rm-file").dialog({
+     resizable: true,
+     width: 440,
+     autoOpen: false,
+     modal: true,
+     buttons: [
+     {
+     text: "Excluir",
+     id: "botaoDialogo",
+     click: function() {
+     _thisDialog = $(this);
+     
+     $.post($(this).data('url'), "", function(resultado) {
+     if (resultado["type"]) {
+     var type = unescape(resultado["type"]);
+     if (type == "error") {
+     _thisDialog.dialog('close');
+     $("#textStatus").text(type);
+     $("#errorThrown").text(unescape(resultado["message"]));
+     if (type == 'warn') {
+     $("#error-type").text("Warn: ");
+     }
+     $("#dialog-error").dialog('open');
+     } else {
+     _thisDialog.data('botao').closest("tr").remove();
+     _thisDialog.dialog("close");
+     }
+     } else {
+     _thisDialog.dialog('close');
+     $("#errorThrown").text("Não foi possível executar a operação!");
+     $("#dialog-error").dialog('open');
+     }
+     }, "json")
+     .error(function(jqxhr) {
+     _thisDialog.dialog('close');
+     if (jqxhr.status == 403) {
+     $("#errorThrown").text("Você não possui permissão para deletar esse arquivo!");
+     } else {
+     $("#errorThrown").text("Não foi possível executar a operação!");
+     }
+     
+     $("#dialog-error").dialog('open');
+     });
+     
+     $(".dialog-confirm").siblings(".ui-dialog-buttonpane").hide();
+     $(".dialog-confirm").html("<p> Excluindo... Por favor aguarde.</p>");
+     }
+     },
+     {
+     text: "Cancelar",
+     click: function() {
+     $(this).dialog("close");
+     }
+     }
+     ]
+     });*/
 
 
+//    $('.delete_link').click(function(e) {
+//        $("#confirm-file").text($(this).attr('name'));
+//        e.preventDefault();
+//        $("#dialog-confirm-rm-file")
+//                .data({
+//                    'url': $(this).attr('href'),
+//                    'botao': $(this)
+//                }) // sends url and line to the dialog
+//                .dialog('open'); // opens the dialog
+//    });
+
+    //pega o primeiro parametro depois da ?. 
     var parameter = location.search.substr(1).split("?");
-
     if (parameter == "classPlan") {
         $('#coverages').hide();
         $('#cov').hide();
@@ -290,29 +278,6 @@ $(function() {
         $('#platformSpecificFeatureButton').hide();
     }
 
-    if ($("#files").html()) {
-        removeInputFile();
-    }
-
-    $("#addFile").button({
-        icons: {
-            primary: "ui-icon-circle-plus"
-        }
-    }).click(function(ev) {
-        ev.preventDefault();
-        addInputFile();
-    });
-
-    $("#rmFile").button({
-        icons: {
-            primary: "ui-icon-circle-minus"
-        },
-        text: false
-    }).click(function(ev) {
-        ev.preventDefault();
-        removeInputFile();
-    });
-
     refreshInputs();
 
     //atualiza o tamanho da arvore sempre que o sectionwrap tiver o tamanho alterado
@@ -324,25 +289,11 @@ $(function() {
         }, 18));
 
     });
-    
+
     $('.duration').mask('00h00min00s');
-    
+
 });//Jquery
 
-var removeInputFile = function() {
-    var divUpload = $("#uploads");
-    divUpload.find("input:file").attr('disabled', 'disabled');
-    divUpload.hide();
-    $("#addFile").show();
-};
-
-var addInputFile = function() {
-    var divUpload = $("#uploads");
-    divUpload.find("input:file").removeAttr('disabled');
-    divUpload.show();
-    $("#addFile").hide();
-    $("#rmFile").show();
-};
 
 var refreshInputs = function() {
     numerate();
@@ -351,28 +302,15 @@ var refreshInputs = function() {
             //                     		$(this).text($(this).text().replace("+ ", ""));Fr
             $(this).text($(this).text().replace("+", ""));
 
-            $(this).button({
-                icons: {
-                    primary: "ui-icon-circle-plus"
-                }
-            }).
-                    css({
-                fontSize: '8pt'
-            });
+            $(this).css({fontSize: '8pt'});
         }
         else if ($(this).hasClass("remove")) {
-            $(this).button({
-                icons: {
-                    primary: "ui-icon-circle-minus"
-                },
-                text: false
-            }).
-                    css({
+            $(this).css({
                 height: '16pt',
                 width: '16pt'
             });
         } else {
-            $(this).button().css({
+            $(this).css({
                 fontSize: '8pt'
             });
         }
@@ -382,7 +320,7 @@ var refreshInputs = function() {
 
 var updateHeightForm = function() {
     myform.loadsection('actual', true);
-}
+};
 
 $(window).bind("load", function() {
     updateHeightForm();
