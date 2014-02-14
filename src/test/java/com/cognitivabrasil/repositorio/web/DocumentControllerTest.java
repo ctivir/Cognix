@@ -64,7 +64,7 @@ public class DocumentControllerTest {
         securityContext.setAuthentication(auth);
         DocumentsController controller = new DocumentsController();
         DocumentService docService = mock(DocumentService.class);     
-        Pageable limit = new PageRequest(0,3);
+        Pageable limit = new PageRequest(0,9);
         when(docService.getPage(limit)).thenReturn(pageList);
         
         ReflectionTestUtils.setField(controller, "docService", docService);
