@@ -23,4 +23,6 @@ public interface UserRepository extends JpaRepository<User,Integer>{
     User findByUsername(final String username);
     
     List<User> findByDeletedIsTrue();
+    
+    public long countByRole(String role);
 }

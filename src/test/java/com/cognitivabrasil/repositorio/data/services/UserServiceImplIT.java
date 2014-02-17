@@ -58,9 +58,9 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(u.getName(), equalTo("Marcos Nunes"));
         assertThat(u.getUsername(), equalTo("marcos"));
         assertThat(u.getPassword(), equalTo("698dc19d489c4e4db73e28a713eab07b"));
-        assertThat(u.getRole(), equalTo("admin"));
-        assertThat(u.getRoleNameText(), equalTo("Administrador de documentos"));
-        assertThat(u.getPermissions(), hasSize(3));
+        assertThat(u.getRole(), equalTo(User.ROLE_ROOT));
+        assertThat(u.getRoleNameText(), equalTo("Superusuário"));
+        assertThat(u.getPermissions(), hasSize(4));
         assertThat(u.isDeleted(), equalTo(false));
     }
     
@@ -99,8 +99,13 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
     public void testDeleteUser(){
         int sizeAllBefore = userRep.findAll().size();
         int sizeBefore = userService.getAll().size();
-        User u = userService.get("marcos");
-        userService.delete(u);
+        
+        //Definir o user 1 como root para que seja possivel deletar o 2.
+        User u = userService.get(1);
+        u.setRole(User.ROLE_ROOT);
+        userService.save(u);
+        
+        userService.delete(userService.get(2));
         
         assertThat(userService.getAll().size(), equalTo(sizeBefore-1));
         assertThat(userRep.findAll().size(), equalTo(sizeAllBefore));
@@ -217,6 +222,19 @@ public class UserServiceImplIT extends AbstractTransactionalJUnit4SpringContextT
         userService.activate(u);
         assertThat(userService.getAll().size(), equalTo(sizeBefore+1));
         assertThat(userService.getDeleted().size(), equalTo(numDel-1));
+    }
+    
+    @Test
+    public void testIsLastAdmin(){
+        userService.delete(userService.get(1));
+        User u = userService.get(2);
+        assertThat(userService.isLastAdmin(u), equalTo(true));        
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public void testDeleteLastAdmin(){
+        User u = userService.get("marcos");
+        userService.delete(u);
     }
 }
 

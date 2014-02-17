@@ -1,7 +1,7 @@
 td:last-child{text-align: right; }
 
 /* Formulario */
-fieldset { padding:0; margin:1em 0;border:none}
+fieldset { padding:0; border:none}
 input, select { height:20px}
 input, textarea, select { border:1px solid #B3B3B3; }
 .fields{margin-top: 10px;}
@@ -29,3 +29,4 @@ div.error,span.error {margin-left: 180px;}
 
 div#divDeleted table { margin: 1em 0; border-collapse: collapse; width: 100%; }
 div#divDeleted table td, div#divDeleted table th {padding: .4em 5px; }
+input[disabled]{color:#777}

@@ -42,6 +42,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         <intercept-url  pattern="/documents((\?error=true)|(\?required=true))?" method="GET"
                         access="permitAll" />
         
+        <intercept-url  pattern="/documents/page/[0-9]+" method="GET"
+                        access="permitAll" />
+        
         <intercept-url  pattern="/documents/filter/.*" method="GET"
                         access="permitAll" />
         

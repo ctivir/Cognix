@@ -1,5 +1,33 @@
 $(function() {
 
+    $(document).on("click", ".openModalForm", function() {
+        $('#modalContentForm').load($(this).attr('href'), function() {
+            // abrir a modal somente apos carregar o conteudo
+            $('#modalForm').modal();
+        });
+    });
+
+    $(document).on("click", "#submitForm", function() {
+        var url = $("#entityUpdateForm").attr("action");
+
+        $.post(url, $("#entityUpdateForm").serialize()).done(function(data, status, jqxhr) {
+            if (jqxhr.status === 200) {
+                $("#modalContentForm").empty().append(data);
+            }
+            else {
+                //testa se esta editando ou salvando novo usuario
+                if (url.match("/edit$")) {
+                    var trNew = $(data).find("tbody tr");
+                    var trOld = $("#"+trNew.attr("id"));
+                    trOld.html(trNew.html());
+                } else {
+                    $("#table-users tbody").append($(data).find("tbody tr"));
+                }
+                $('#modalForm').modal('hide');
+            }
+        });
+    });
+
     $(document).on("click", ".enableUser", function() {
         var $this = $(this);
         var url = $(this).attr("href");
@@ -27,7 +55,7 @@ $(function() {
         });
 
     });
-    
+
     var updateTableUsers = function(btAction) {
         var thisTd = btAction.parent();
         var tempName = thisTd.siblings(".tdName").text();
@@ -36,7 +64,7 @@ $(function() {
         var userId = btAction.attr("userid");
         $("#table-users tbody").append($("#table-users tr").last().clone());
         var newTr = $("#table-users tr").last();
-        newTr.attr("id", "container"+userId);
+        newTr.attr("id", "container" + userId);
         newTr.find(".tdName").text(tempName);
         newTr.find(".tdLogin").text(tempLogin);
         newTr.find(".tdRole").text(tempRole);
@@ -50,44 +78,7 @@ $(function() {
         newTr.find(".delete")
                 .attr("href", newHrefExcluir)
                 .attr("id", userId)
-                .attr("title", "excluir o usuário "+tempName+"?");
+                .attr("title", "excluir o usuário " + tempName + "?");
     };
 
-    /*
-     
-     $(".editar").click(function(ev) {
-     ev.preventDefault();
-     var link = $(this).attr('href');
-     openDialog(link);
-     }); 
-     
-     $( "#dialog-form" ).dialog({
-     autoOpen: false,
-     modal: true,
-     width: 655,
-     //        height: $(window).height()-10,
-     buttons: {
-     "Salvar": function() {
-     var d = $(this);
-     $.post($("#entityUpdateForm").attr("action"), $("#entityUpdateForm").serialize()).done( function(data, status, jqxhr) {
-     if(jqxhr.status == 200) {                        
-     $( "#dialog-form" ).empty().append( data );
-     
-     }else {                        
-     $( "#dialog-form" ).empty();
-     $( d ).dialog( "close" );
-     window.location.reload();
-     }
-     });
-     
-     },
-     "Cancelar": function() {
-     $( this ).empty();
-     $( this ).dialog( "close" );
-     }
-     },
-     close: function() {
-     $( this ).empty();
-     }
-     });*/
 });

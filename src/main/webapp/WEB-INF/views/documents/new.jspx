@@ -843,7 +843,7 @@
                                 <table class="zebra">
                                     <th>Arquivos</th><th>Formato</th><th><jsp:text/></th>
                                         <c:forEach var="file" items="${doc.files }" varStatus="status">
-                                        <tr>
+                                        <tr id="container${file.id}">
                                             <td>
                                                 <c:url var="location" value="/files/${file.id}" />
                                                 <a class="" href="${location}">${file.name }</a>
@@ -855,7 +855,7 @@
                                                 <td>
                                                     <span class="buttonList">
                                                     <c:url var="deleteFile" value="/files/${file.id}/delete" />
-                                                    <a class="delete btSemTexto delete_link" name="${file.name}" href="${deleteFile}" id="dialog_link">apagar</a>
+                                                    <button id="${file.id}" class="delete confirmLink btn btn-default" title="excluir o arquivo: ${file.name}?" href="${deleteFile}"><span class="glyphicon glyphicon-trash"/></button>
                                                 </span>
                                                 <div class="clear"> </div>
 

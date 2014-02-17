@@ -12,7 +12,7 @@
 
     <spring:url value="/css/users.css" var="users_css" />
     <link rel="stylesheet" type="text/css" media="screen" href="${users_css}" />
-    
+
     <c:url var="jsList" value="/scripts/users/list.js" />
     <script type="text/javascript" src="${jsList}"><jsp:text/></script>
 
@@ -35,7 +35,7 @@
                     </div>
 
                     <table id="table-users"
-                        class="ui-widget ui-widget-content zebra">
+                           class="ui-widget ui-widget-content zebra">
                         <thead>
                             <tr class="ui-widget-header ">
                                 <th id="nome">Nome</th>
@@ -51,7 +51,7 @@
                                     <td class="tdLogin">${user.username}</td>
                                     <td class="tdRole">${user.roleNameText}</td>
                                     <td class="tdButton">
-                                        <security:authorize access="hasRole('${manageUser}') or ${username == user.username}">
+                                        <c:if test="${userAdministrator || username == user.username}">
 
                                             <c:choose>
                                                 <c:when test="${userAdministrator}">
@@ -62,14 +62,14 @@
                                                 </c:otherwise>
                                             </c:choose>
 
-                                            <button class='editar btn btn-default' href="${editarUrl}"><span class="glyphicon glyphicon-pencil"/></button>
+                                            <button class='editar btn btn-default openModalForm' href="${editarUrl}"><span class="glyphicon glyphicon-pencil"/></button>
 
-                                            <security:authorize access="hasRole('PERM_MANAGE_USERS')">
+                                            <c:if test="${userAdministrator}">
                                                 <c:url value="/users/${user.id}/delete" var="deletarUrl" />
                                                 <button id="${user.id}" class="delete confirmLink btn btn-default" title="excluir o usuário ${user.name}?" href="${deletarUrl}"><span class="glyphicon glyphicon-trash"/></button>
-                                            </security:authorize>
+                                            </c:if>
 
-                                        </security:authorize>
+                                        </c:if>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -84,10 +84,27 @@
         </div>
         <security:authorize access="hasRole('PERM_MANAGE_USERS')">
             <c:url value="/users/save" var="add" />
-            <button id="${add}" class="btn btn-primary btn-lg openModal"><span class="glyphicon glyphicon-plus"/><span class='gliphycon-text'>Adicionar Usuário</span></button>
+            <button href="${add}" class="btn btn-primary btn-lg openModalForm"><span class="glyphicon glyphicon-plus"/><span class='gliphycon-text'>Adicionar Usuário</span></button>
 
             <c:url value="/users/deleted" var="deletedUrl" />
             <button id="${deletedUrl}" class="btn btn-default btn-lg openModal"><span class="glyphicon glyphicon-trash"/><span class='gliphycon-text'>Usuários deletados</span></button>
         </security:authorize>
+            
+            <!-- Modal -->
+        <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" id="modalContentForm">
+                    <!-- Conteúdo da modal que sera carregado via load em jquery -->
+                    </div>
+                    <div class="modal-footer">
+                    <div id="buttonSave">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button id="submitForm" type="button" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </div>
 </div>

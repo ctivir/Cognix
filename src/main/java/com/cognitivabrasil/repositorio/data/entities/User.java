@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -32,6 +33,11 @@ public class User implements UserDetails {
     public static final String VIEW = "PERM_VIEW";
     public static final String MANAGE_USER = "PERM_MANAGE_USERS";
     public static final String CREATE_DOC = "PERM_CREATE_DOC";
+    public static final String ROLE_DOC_ADMIN = "docadmin";
+    public static final String ROLE_AUTHOR = "author";
+    public static final String ROLE_VIEW = "view";
+    public static final String ROLE_ROOT = "root";
+    
     private static PasswordEncoder passEncoder;
     private Integer id;
     private String login;
@@ -45,10 +51,10 @@ public class User implements UserDetails {
 
     static {
         SortedMap<String, String> myRoles = new TreeMap<>();
-        myRoles.put("admin", "Administrador de documentos");
-        myRoles.put("author", "Criador de documentos");
-        myRoles.put("view", "Somente visualizar");
-        myRoles.put("root", "Superusu\u00e1rio");
+        myRoles.put(ROLE_DOC_ADMIN, "Administrador de documentos");
+        myRoles.put(ROLE_AUTHOR, "Criador de documentos");
+        myRoles.put(ROLE_VIEW, "Somente visualizar");
+        myRoles.put(ROLE_ROOT, "Superusu\u00e1rio");
         ROLES = Collections.unmodifiableSortedMap(myRoles);
     }
 
@@ -250,17 +256,26 @@ public class User implements UserDetails {
     private String getPermissions(String role) {
         Map<String, String> roles = new HashMap<>();
         roles.put(
-                "root",
+                ROLE_ROOT,
                 User.MANAGE_USER + "," + User.VIEW + "," + User.MANAGE_DOC + "," + User.CREATE_DOC);
         roles.put(
-                "admin",
+                ROLE_DOC_ADMIN,
                 User.VIEW + "," + User.MANAGE_DOC + "," + User.CREATE_DOC);
-        roles.put("author",
+        roles.put(ROLE_AUTHOR,
                 User.CREATE_DOC);
-        roles.put("view",
+        roles.put(ROLE_VIEW,
                 User.VIEW);
         return roles.get(role);
 
+    }
+    
+    /**
+     * Checks if the user is root.
+     * @return Return true if the user is root and false otherwise
+     */
+    @Transient
+    public boolean isRoot(){
+        return role.equalsIgnoreCase(ROLE_ROOT);
     }
 
     /**
@@ -281,21 +296,35 @@ public class User implements UserDetails {
     public String getRoleNameText() {
         return User.getRoles().get(role);
     }
-    
+
     @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof User)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        User u = (User) o;
-        return u.login.equals(login) && u.passwordMd5.equals(passwordMd5)
-                && u.name.equals(name)
-                && u.id.equals(id)
-                && u.permissionsInternal.equals(permissionsInternal)
-                && u.role.equals(role);
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.login, other.login)) {
+            return false;
+        }
+        if (!Objects.equals(this.passwordMd5, other.passwordMd5)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.permissionsInternal, other.permissionsInternal)) {
+            return false;
+        }
+        if (!Objects.equals(this.role, other.role)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

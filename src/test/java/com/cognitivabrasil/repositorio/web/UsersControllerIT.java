@@ -53,12 +53,12 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
     public void testList() throws Exception {
         User loggerUser = new User();
         loggerUser.setName("marcos");
-        
+
         Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
         MockHttpServletRequest request = new MockHttpServletRequest();
-        
+
         String result = usersController.list(model, request);
         assertNotNull(result);
         assertEquals(result, "users/list");
@@ -121,6 +121,28 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
     }
     
     @Test
+    public void testErrorSalvarUsuarioExistenteDeletado() {
+        UserDto u = new UserDto();
+        u.setName("marcos");
+        u.setRole("root");
+        u.setPassword("aaaaa");
+        u.setConfirmPass("aaaaa");
+        u.setUsername("user4");
+
+        BindingResult bindingResult = new BeanPropertyBindingResult(u, "UserDto");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        String result = usersController.save(u, bindingResult, model, response);
+        assertNotNull(result);
+        assertEquals(result, "users/save");
+        assertThat(bindingResult.hasErrors(), equalTo(true));
+        assertThat(bindingResult.getErrorCount(), equalTo(1));
+        assertThat(response.getStatus(), equalTo(200));
+        ObjectError erro = bindingResult.getAllErrors().get(0);
+        assertThat(erro.getDefaultMessage(), equalTo("Existe usuário deletado com esse login, se desejar reativar entre na lista de usuários deletados."));
+    }
+
+    @Test
     public void testErrorSalvarUsuarioSemSenha() {
         UserDto u = new UserDto();
         u.setName("marcos");
@@ -137,7 +159,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(bindingResult.getErrorCount(), equalTo(2));
         assertThat(response.getStatus(), equalTo(200));
     }
-    
+
     @Test
     public void testErrorSalvarSenha4Caracteres() {
         UserDto u = new UserDto();
@@ -175,10 +197,13 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         String result = usersController.save(u, bindingResult, model, response);
         assertNotNull(result);
-        assertEquals(result, "ajax");
+        assertEquals(result, "users/newLine");
+        User newUser = (User) model.get("user");
+        assertNotNull(newUser);
+        assertThat(newUser.getName(), equalTo("marcos"));
         assertThat(bindingResult.hasErrors(), equalTo(false));
         assertThat(response.getStatus(), equalTo(201));
-        assertThat(userService.getAll(), hasSize(size+1));
+        assertThat(userService.getAll(), hasSize(size + 1));
     }
 
     @Test
@@ -212,57 +237,56 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         ObjectError erro = bindingResult.getAllErrors().get(0);
         assertThat(erro.getDefaultMessage(), equalTo("As senhas não conferem"));
     }
-    
+
     @Test
-    public void testEditPassGet() throws IOException{
+    public void testEditPassGet() throws IOException {
         User uOrg = userService.get(2);
-        
+
         Authentication auth = new UsernamePasswordAuthenticationToken(uOrg, "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
         MockHttpServletResponse response = new MockHttpServletResponse();
-        
+
         String result = usersController.editPass(uOrg.getId(), model, response);
-        
+
         assertThat(result, equalTo("users/editPass"));
         UserDto uDto = (UserDto) model.get("userDto");
         assertThat(uDto.getId(), equalTo(uOrg.getId()));
         assertThat(uDto.getName(), equalTo(uOrg.getName()));
         assertThat(uDto.getUsername(), equalTo(uOrg.getUsername()));
         assertThat(uDto.getPassword(), equalTo(uOrg.getPassword()));
-        assertThat(uDto.getRole(), equalTo(uOrg.getRole()));       
-        
+        assertThat(uDto.getRole(), equalTo(uOrg.getRole()));
+
     }
-    
-    
+
     @Test
-    public void testEditPassGetPermissionError() throws IOException{
+    public void testEditPassGetPermissionError() throws IOException {
         User uOrg = userService.get(1);
-        
+
         Authentication auth = new UsernamePasswordAuthenticationToken(uOrg, "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
         MockHttpServletResponse response = new MockHttpServletResponse();
-        
+
         String result = usersController.editPass(2, model, response);
-        
+
         assertThat(result, equalTo("ajax"));
         assertThat(response.getStatus(), equalTo(HttpServletResponse.SC_FORBIDDEN));
-        
+
     }
-    
+
     /**
-     * Testa se usuário sem permissão PERM_MANAGE_USERS pode alterar a 
-     * senha de outro usuário.
+     * Testa se usuário sem permissão PERM_MANAGE_USERS pode alterar a senha de
+     * outro usuário.
      */
     @Test
-    public void testEditPassAnotherUser() throws IOException{
+    public void testEditPassAnotherUser() throws IOException {
         User uOrg = userService.get(2);
         UserDto u = new UserDto(uOrg);
         u.setPassword("new");
         u.setConfirmPass("new");
         u.setCurrentPass("old");
-        
+
         Authentication auth = new UsernamePasswordAuthenticationToken(userService.get(1), "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
@@ -275,19 +299,19 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         assertEquals(result, "ajax");
         assertThat(response.getStatus(), equalTo(HttpServletResponse.SC_FORBIDDEN));
     }
-    
+
     /**
-     * Testa se usuário sem permissão de managem user alterar sua senha sem 
+     * Testa se usuário sem permissão de managem user alterar sua senha sem
      * informar a senha atual.
      */
     @Test
-    public void testEditPassWithoutCurrentPass() throws IOException{
+    public void testEditPassWithoutCurrentPass() throws IOException {
         User uOrg = userService.get(2);
         UserDto u = new UserDto(uOrg);
         u.setPassword("12345");
         u.setConfirmPass("12345");
         u.setCurrentPass("");
-        
+
         Authentication auth = new UsernamePasswordAuthenticationToken(uOrg, "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
@@ -303,18 +327,19 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         ObjectError erro = bindingResult.getAllErrors().get(0);
         assertThat(erro.getDefaultMessage(), equalTo("Senha incorreta"));
     }
-    
+
     /**
-     * Testa alteração de senha de um usuário com permissão de visualização apenas.
+     * Testa alteração de senha de um usuário com permissão de visualização
+     * apenas.
      */
     @Test
-    public void testEditPassUserViewer() throws IOException{
+    public void testEditPassUserViewer() throws IOException {
         User uOrg = userService.get(2);
         UserDto u = new UserDto(uOrg);
         u.setPassword("12345");
         u.setConfirmPass("12345");
         u.setCurrentPass("teste");
-        
+
         Authentication auth = new UsernamePasswordAuthenticationToken(uOrg, "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
@@ -332,11 +357,11 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         User uresult = userService.get(2);
         assertThat(uresult.getName(), equalTo("Marcos Nunes"));
         assertThat(uresult.getPassword(), equalTo("827ccb0eea8a706c4c34a16891f84e7b"));
-        
+
     }
 
     /**
-     * Testa se o sistema permite ao manage users alterar a senha sem informar a 
+     * Testa se o sistema permite ao manage users alterar a senha sem informar a
      * senha atual.
      */
     @Test
@@ -352,9 +377,9 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         String result = usersController.edit(uOrg.getId(), u, bindingResult, model, response);
         assertNotNull(result);
-        assertEquals(result, "ajax");
+        assertThat(result, equalTo("users/newLine"));
         assertThat(response.getStatus(), equalTo(201));
-        
+
         em.flush();
         em.clear();
 
@@ -383,8 +408,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         ObjectError erro = bindingResult.getAllErrors().get(0);
         assertThat(erro.getDefaultMessage(), equalTo("As senhas não conferem"));
     }
-    
- 
+
     @Test
     public void testEditarNomeSemTrocarSenha() {
         User uOrg = userService.get(2);
@@ -400,9 +424,9 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         String result = usersController.edit(uOrg.getId(), u, bindingResult, model, response);
-        
+
         assertNotNull(result);
-        assertThat(result, equalTo("ajax"));
+        assertThat(result, equalTo("users/newLine"));
 
         assertThat(bindingResult.hasErrors(), equalTo(false));
         assertThat(response.getStatus(), equalTo(201));
@@ -414,7 +438,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(uresult.getName(), equalTo("Cognitiva"));
         assertThat(uresult.getPassword(), equalTo("698dc19d489c4e4db73e28a713eab07b"));
     }
-    
+
     @Test
     public void testAlterarUsernamePara1Existente() {
         User uOrg = userService.get(2);
@@ -428,7 +452,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         String result = usersController.edit(uOrg.getId(), u, bindingResult, model, response);
-        
+
         assertNotNull(result);
         assertThat(result, equalTo("users/edit"));
         assertThat(bindingResult.hasErrors(), equalTo(true));
@@ -453,7 +477,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         String result = usersController.edit(uOrg.getId(), u, bindingResult, model, response);
         assertNotNull(result);
-        assertThat(result, equalTo("ajax"));
+        assertThat(result, equalTo("users/newLine"));
 
         assertThat(bindingResult.hasErrors(), equalTo(false));
         assertThat(response.getStatus(), equalTo(201));
@@ -472,14 +496,14 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         int size = userService.getAll().size();
 
-        Message msg = usersController.delete(2, redirectAttributes);
+        Message msg = usersController.delete(1, redirectAttributes);
         assertNotNull(msg);
 
         assertThat(msg.getType(), equalTo(Message.SUCCESS));
         assertThat(userService.getAll().size(), equalTo(size - 1));
 
     }
-    
+
     @Test
     public void testDeleteError() {
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
@@ -490,10 +514,10 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(msg.getType(), equalTo(Message.ERROR));
         assertThat(msg.getMessage(), equalTo("Erro ao excluir o usuário"));
     }
-    
+
     @Test
     public void tesDeleted() {
-        
+
         String result = usersController.getDeleted(model);
         assertNotNull(result);
         assertEquals(result, "users/deleted");
@@ -501,7 +525,7 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         assertThat(users, hasSize(1));
     }
-    
+
     @Test
     public void testActivate() {
         int size = userService.getAll().size();
@@ -511,5 +535,30 @@ public class UsersControllerIT extends AbstractTransactionalJUnit4SpringContextT
 
         assertThat(msg.getType(), equalTo(Message.SUCCESS));
         assertThat(userService.getAll().size(), equalTo(size + 1));
+    }
+
+    @Test
+    public void testDeleteLastAdmin() {
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        int size = userService.getAll().size();
+
+        //deleting the doc admin
+        Message msg = usersController.delete(1, redirectAttributes);
+        assertNotNull(msg);
+        assertThat(msg.getType(), equalTo(Message.SUCCESS));
+        assertThat(userService.getAll().size(), equalTo(size - 1));
+        
+        //deleting non-admin user
+        msg = usersController.delete(3, redirectAttributes);
+        assertNotNull(msg);
+        assertThat(msg.getType(), equalTo(Message.SUCCESS));
+        assertThat(userService.getAll().size(), equalTo(size - 2));
+        
+        //deleting the last admin
+        msg = usersController.delete(2, redirectAttributes);
+        assertNotNull(msg);
+        assertThat(msg.getType(), equalTo(Message.ERROR));
+        assertThat(msg.getMessage(), equalTo("Não é permitido deletar o último administrador do sistema."));
+        assertThat(userService.getAll().size(), equalTo(size - 2));
     }
 }

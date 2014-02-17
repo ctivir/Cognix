@@ -52,6 +52,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +72,8 @@ import org.springframework.web.bind.annotation.*;
 public final class DocumentsController {
 
     private static final Logger LOG = Logger.getLogger(DocumentsController.class);
+    private static int pageSize = 9;
+    private static int pagesToPresent = 5;
     @Autowired
     private DocumentService docService;
     @Autowired
@@ -80,17 +85,63 @@ public final class DocumentsController {
     public DocumentsController() {
         LOG.debug("Loaded DocumentsController");
     }
-
+    
     @RequestMapping(method = RequestMethod.GET)
     public String main(Model model) {
-        // Criando novo sistema de paginação
-        // Alterando nome de usuário novamente
-        // TODO: getAll cannot be used if the collection is very big, have to
-        // use server-side pagination
-        model.addAttribute("documents", docService.getAll());
+        return mainPage(model, 0);
+    }
+
+    @RequestMapping(value = "/page/{page}", method = RequestMethod.GET)
+    public String mainPage(Model model, @PathVariable Integer page) {
+        
+        Pageable limit = new PageRequest(page,pageSize);
+        Page pageResult = docService.getPage(limit);
+        
+        int divisor = pagesToPresent/2;
+        
+        //Criando o array com as páginas a serem apresentadas
+        int totalPage = pageResult.getTotalPages();
+        int sobraDePaginasDireita = 0;
+        int sobraDePaginasEsquerda = 0;
+        List<Integer> pagesAvaliable = new ArrayList<>();
+        pagesAvaliable.add(page);
+        for(int i=1;i<=divisor;i++){            
+            //Teste de sobras na esquerda
+            if((page-i)>=0){
+                pagesAvaliable.add(page-i);
+            }else{
+                sobraDePaginasEsquerda++;
+            }
+            //Teste de sobras na direita
+            if((page+i)<totalPage){
+                pagesAvaliable.add(page+i);
+            }else{
+                sobraDePaginasDireita++;
+            }
+        }         
+        if(sobraDePaginasEsquerda==0||sobraDePaginasDireita==0){
+            int i;            
+            for(i=1;i<=sobraDePaginasDireita;i++){                
+                if(page-divisor-i>=0){
+                    pagesAvaliable.add(page-divisor-i);
+                }
+            }
+            sobraDePaginasDireita = sobraDePaginasDireita-i+1;
+            for(i=1;i<=sobraDePaginasEsquerda;i++){
+                if(page+divisor+i<totalPage){
+                    pagesAvaliable.add(page+divisor+i);
+                }
+            }
+            sobraDePaginasEsquerda = sobraDePaginasEsquerda-i+1;
+        }
+        Collections.sort(pagesAvaliable);      
+//        LOG.debug("Sobra de paginas esquerda: "+sobraDePaginasEsquerda+" direita: "+sobraDePaginasDireita+" pagina: "+page);
+        
+        model.addAttribute("documents", pageResult);  
+        model.addAttribute("pages", pagesAvaliable);  
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("permDocAdmin", User.MANAGE_DOC);
-        model.addAttribute("permCreateDoc", User.CREATE_DOC);
+        model.addAttribute("permCreateDoc", User.CREATE_DOC);      
         return "documents/";
     }
 
@@ -196,7 +247,6 @@ public final class DocumentsController {
         //altera o id
         String versionUri = createUri(dv);
         dv.setObaaEntry(versionUri);
-        docService.save(dv);
 
         Identifier versionId = new Identifier("URI", versionUri);
         versionObaa.getGeneral().getIdentifiers().clear();
@@ -224,8 +274,8 @@ public final class DocumentsController {
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
 
-        dv.setMetadata(versionObaa);
         docService.save(d);
+        dv.setMetadata(versionObaa);
 
         model.addAttribute("doc", dv);
         model.addAttribute("obaa", dv.getMetadata());
@@ -426,10 +476,8 @@ public final class DocumentsController {
 
         Technical t = obaa.getTechnical();
 
-        Technical originalTechical = d.getMetadata().getTechnical();
 
         Long size;
-
 
         size = 0L;
         for (Files f : d.getFiles()) {
@@ -445,14 +493,17 @@ public final class DocumentsController {
             LOG.warn("Technical was null");
             obaa.setTechnical(new Technical());
         }
-        List<String> l = obaa.getTechnical().getLocation();
+        List<Location> l = obaa.getTechnical().getLocation();
 
+        //TODO: verificar esse if, as duas condições são fazem a mesma coisa, e na verdade ainda está invertido
+        //se tiver em branco da um add se nao tiver seta a posição 0!? (Marcos)
         if (l == null || l.isEmpty()) {
             obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());
-        } else {
-            //não faz nada essa operação abaixo, getLocation devolve uma cópia
-            obaa.getTechnical().getLocation().set(0, obaa.getGeneral().getIdentifiers().get(0).getEntry());
-        }
+        } 
+//        else {
+//            //não faz nada essa operação abaixo, getLocation devolve uma cópia
+//            obaa.getTechnical().getLocation().set(0, new Location(obaa.getGeneral().getIdentifiers().get(0).getEntry()));
+//        }
 
         // Preenchimento dos metametadados
         Metametadata meta = new Metametadata();
@@ -489,9 +540,6 @@ public final class DocumentsController {
         d.getMetadata().setMetametadata(meta);
 
         //Parsing do duration
-
-
-
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
         d.setMetadata(obaa);
@@ -567,7 +615,6 @@ public final class DocumentsController {
 
         }
 
-
         if (allImg && !empty) {
             //all image
             suggestions = this.allImg(mime);
@@ -626,7 +673,7 @@ public final class DocumentsController {
     public String recallFiles()
             throws IOException {
         String location = Config.FILE_PATH + "old/";
-
+        
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {

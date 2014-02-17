@@ -79,6 +79,7 @@ table.zebra tbody tr:nth-child(odd) {background: #d2e2e9}
 table.zebra tbody tr:nth-child(even) {background: white}
 
 div.error,span.error, label.error{color:red;}
+span.error{display: block;}
 input.error,textarea.error{border-color: red;}
 label.error,input.error{margin-top: 5px;}
 #message{margin: 5px 0 20px 15px}
@@ -130,3 +131,9 @@ a.link-interno{
 
 .btn{margin-right: .3em;}
 .btn:last-child{margin-right: 0em;}
+
+.modal-footer{margin-top: 0}
+
+.pagination-centered{
+    
+}

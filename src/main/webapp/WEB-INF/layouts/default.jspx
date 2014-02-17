@@ -18,7 +18,7 @@
 
 
         <!-- jQuery and jQuery UI -->       
-        <c:url value="/scripts/jquery-1.9.1.min.js" var="jquery_url" />
+        <c:url value="/scripts/jquery-1.11.0.min.js" var="jquery_url" />
         <script src="${jquery_url}" type="text/javascript"><jsp:text/></script>                
 
         <c:url value="/scripts/jquery-ui-1.10.3.custom.min.js" var="jquery_ui_url" />
@@ -68,8 +68,6 @@
 
         <tiles:insertAttribute name="header" ignore="true" />                
 
-        <div id="dialog-form" title="Adicionar"><jsp:text/></div>
-
                                       
         <div id="headerWrapper"></div>
         <c:if test="${param.error == true }">
@@ -110,7 +108,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-
+        
         <!-- Modal -->
         <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

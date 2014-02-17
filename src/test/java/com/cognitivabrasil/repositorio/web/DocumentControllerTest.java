@@ -20,6 +20,10 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -53,20 +57,26 @@ public class DocumentControllerTest {
         docList.add(d1);
         docList.add(d2);
         
+        Page<Document> pageList = new PageImpl<>(docList);
+        
         Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
         DocumentsController controller = new DocumentsController();
-        DocumentService docService = mock(DocumentService.class);
-        when(docService.getAll()).thenReturn(docList);
+        DocumentService docService = mock(DocumentService.class);     
+        Pageable limit = new PageRequest(0,9);
+        when(docService.getPage(limit)).thenReturn(pageList);
+        
         ReflectionTestUtils.setField(controller, "docService", docService);
         
         String result = controller.main(uiModel);
         assertThat(result, equalTo("documents/"));
        
-        List<Document> docs = (List<Document>) uiModel.get("documents");
+        Page<Document> pageDocs = (Page<Document>) uiModel.get("documents");
+        List<Document> docs = pageDocs.getContent();
         assertThat(docs, notNullValue());
         assertThat(docs, hasSize(2)); //a ordem já é testada no service
+        assertThat(pageDocs.getTotalPages(), equalTo(1)); //Testando paginação
         
         String currentUser = (String) uiModel.get("currentUser");
         assertThat(currentUser, equalTo(loggerUser.getName()));
