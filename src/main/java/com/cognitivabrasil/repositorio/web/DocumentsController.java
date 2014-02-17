@@ -35,7 +35,6 @@ import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.util.Message;
-import cognitivabrasil.util.VCarder;
 import com.cognitivabrasil.repositorio.data.entities.Subject;
 import com.cognitivabrasil.repositorio.services.SubjectService;
 import com.cognitivabrasil.repositorio.util.Config;
@@ -72,8 +71,8 @@ import org.springframework.web.bind.annotation.*;
 public final class DocumentsController {
 
     private static final Logger LOG = Logger.getLogger(DocumentsController.class);
-    private static int pageSize = 9;
-    private static int pagesToPresent = 5;
+    private static final int pageSize = 9;
+    private static final int pagesToPresent = 5;
     @Autowired
     private DocumentService docService;
     @Autowired
@@ -88,6 +87,7 @@ public final class DocumentsController {
     
     @RequestMapping(method = RequestMethod.GET)
     public String main(Model model) {
+        docService.deleteEmpty();
         return mainPage(model, 0);
     }
 
