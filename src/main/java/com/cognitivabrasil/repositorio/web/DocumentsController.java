@@ -497,8 +497,7 @@ public final class DocumentsController {
         
         //if doesn't have location, an entry based is created
         if (l == null || l.isEmpty()) {
-            obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());
-            System.out.println(obaa.getTechnical().getLocation().get(0).toString());
+            obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());            
         } 
 
         // Preenchimento dos metametadados
