@@ -446,7 +446,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificInstallationRemarks(), equalTo("installationRemarks"));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificOtherPlatformRequirements(), equalTo("otherPlatformRequirements"));
         Metametadata meta = docResult.getMetadata().getMetametadata();
-        assertThat(meta.getContribute().get(0).getFirstEntity(),equalTo("BEGIN:VCARD\nVERSION:3.0\nN:marcos;;;;\nFN:marcos\nEND:VCARD"));
+        assertThat(meta.getContribute().get(0).getFirstEntity(),equalTo("BEGIN:VCARD\nVERSION:3.0\nN:;marcos;;;\nFN:marcos \nEND:VCARD"));
         assertThat(meta.getContribute().get(0).getRole(),equalTo("author"));
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
