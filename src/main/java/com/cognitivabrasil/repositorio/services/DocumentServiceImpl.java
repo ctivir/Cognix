@@ -71,6 +71,11 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
     public List<Document> getBySubject(Subject s) {
         return docRep.findBySubjectAndDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(s);
     }
+    
+    @Override
+    public Page<Document> getPageBySubject(Subject s, Pageable pageable) {
+        return docRep.findBySubjectAndDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(s, pageable);
+    }
 
     @Override
     public void delete(Document d) throws IOException {

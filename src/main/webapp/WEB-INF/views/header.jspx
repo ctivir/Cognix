@@ -14,7 +14,7 @@
         </a>     
       </div>
 
-      <div class="navbar-collapse collapse visible-lg hidden-xs hidden-sm hidden-md">   
+      <div class="navbar-collapse collapse visible-lg hidden-xs hidden-sm visible-md">   
         <security:authorize access="isAnonymous()"> 
             <c:url var="postLoginUrl" value="/j_spring_security_check" />
             <form class="navbar-form navbar-right" action="${postLoginUrl}" method="POST" name="login">
