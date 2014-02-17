@@ -18,6 +18,7 @@ import cognitivabrasil.obaa.General.General;
 import cognitivabrasil.obaa.General.Identifier;
 import cognitivabrasil.obaa.General.Keyword;
 import cognitivabrasil.obaa.General.Structure;
+import cognitivabrasil.obaa.LifeCycle.Entity;
 import cognitivabrasil.obaa.LifeCycle.LifeCycle;
 import cognitivabrasil.obaa.LifeCycle.Role;
 import cognitivabrasil.obaa.LifeCycle.Status;
@@ -290,16 +291,17 @@ public final class DocumentsController {
         cognitivabrasil.obaa.LifeCycle.Contribute contribute;
         contribute = new cognitivabrasil.obaa.LifeCycle.Contribute();
 
-        VCarder autor = new VCarder();
-        autor.setName("do Brasil", "Ministério da Educação", "Ministério da Educação do Brasil");
+        Entity e = new Entity();
+        
+        e.setName("Ministério da Educação", "do Brasil");
 
-        contribute.addEntity(autor.getVCard());
+        contribute.addEntity(e);
         contribute.setRole(Role.PUBLISHER);
 
         // today date
         Date date = new Date();
         DateFormat dateFormat;
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         contribute.setDate(dateFormat.format(date));
         lifeCycle.addContribute(contribute);
 
@@ -462,10 +464,11 @@ public final class DocumentsController {
         String userName = currentUser.getUsername();
         Contribute c = new Contribute();
 
-        // Quando fizer o cadastro dos usuários do sistema cuidar para que possa por os dados do vcard
-        VCarder grafica = new VCarder();
-        grafica.setName("", userName, userName);
-        c.addEntity(grafica.getVCard());
+        // Quando fizer o cadastro dos usuários do sistema cuidar para que possa por os dados do vcard        
+        Entity e = new Entity();
+        e.setName(userName, "");
+        
+        c.addEntity(e);
         c.setRole(Role.AUTHOR);
 
         // today date
