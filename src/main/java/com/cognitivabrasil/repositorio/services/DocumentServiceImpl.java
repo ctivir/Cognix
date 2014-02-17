@@ -4,7 +4,6 @@
  */
 package com.cognitivabrasil.repositorio.services;
 
-import ORG.oclc.oai.models.OaiDocument;
 import ORG.oclc.oai.server.catalog.OaiDocumentService;
 
 import com.cognitivabrasil.repositorio.data.entities.Document;
@@ -15,7 +14,6 @@ import com.cognitivabrasil.repositorio.util.Config;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +24,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +60,11 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
     @Override
     public List<Document> getAll() {
         return docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
+    }
+    
+    @Override
+    public Page<Document> getPage(Pageable pageable) {                                
+        return docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(pageable);
     }
     
     @Override

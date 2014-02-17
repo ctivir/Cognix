@@ -40,6 +40,8 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     
     public List<Document> findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
     
+    public Page<Document> findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(Pageable pageable);
+    
     public Document findByObaaEntry(String entry);
     
     public List<Document> findByCreatedLessThanAndObaaXmlIsNullAndDeletedIsFalse(DateTime d);
