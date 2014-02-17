@@ -494,16 +494,12 @@ public final class DocumentsController {
             obaa.setTechnical(new Technical());
         }
         List<Location> l = obaa.getTechnical().getLocation();
-
-        //TODO: verificar esse if, as duas condições são fazem a mesma coisa, e na verdade ainda está invertido
-        //se tiver em branco da um add se nao tiver seta a posição 0!? (Marcos)
+        
+        //if doesn't have location, an entry based is created
         if (l == null || l.isEmpty()) {
             obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());
+            System.out.println(obaa.getTechnical().getLocation().get(0).toString());
         } 
-//        else {
-//            //não faz nada essa operação abaixo, getLocation devolve uma cópia
-//            obaa.getTechnical().getLocation().set(0, new Location(obaa.getGeneral().getIdentifiers().get(0).getEntry()));
-//        }
 
         // Preenchimento dos metametadados
         Metametadata meta = new Metametadata();

@@ -245,10 +245,11 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         
         assertThat(obaa.getLifeCycle().getVersion(), equalTo("1"));
         assertThat(obaa.getLifeCycle().getStatus(), equalTo(Status.FINALIZED));
-        assertThat(obaa.getLifeCycle().getContribute().get(0).getRole().toString(), equalTo(Role.PUBLISHER));
-        assertThat(obaa.getLifeCycle().getContribute().get(0).getFirstEntity(), equalTo("BEGIN:VCARD\nVERSION:3.0\nN:Ministério da Educação;do Brasil;;;\nFN:Ministério da Educação do Brasil\nEND:VCARD"));
+        assertThat(obaa.getLifeCycle().getContribute().get(0).getRole().toString(), equalTo(Role.PUBLISHER));        
+        assertThat(obaa.getLifeCycle().getContribute().get(0).getFirstEntity(), equalTo("BEGIN:VCARD\nVERSION:3.0\nN:do Brasil;Ministério da Educação;;;\nFN:Ministério da Educação do Brasil\nEND:VCARD"));
+        
         Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         assertThat(obaa.getLifeCycle().getContribute().get(0).getDate(), equalTo(dateFormat.format(date)));
         Technical technical = obaa.getTechnical();
         assertThat(technical.getRequirement().get(0).getOrComposite().get(0).getType(), equalTo(Type.OPERATING_SYSTEM));
