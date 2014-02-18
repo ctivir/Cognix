@@ -43,6 +43,7 @@ public class Document implements OaiDocument, java.io.Serializable {
     @DateTimeFormat(style = "M-")
     private DateTime created;
     private Boolean deleted;
+    private Boolean active;
     private String obaaXml;
     private List<Files> files;
     private OBAA metadata;
@@ -52,6 +53,7 @@ public class Document implements OaiDocument, java.io.Serializable {
     public Document() {
         obaaEntry = "";
         deleted = false;
+        active = false;
         created = new DateTime();
     }
 
@@ -118,9 +120,14 @@ public class Document implements OaiDocument, java.io.Serializable {
         this.deleted = excluido;
     }
 
-    public void isDeleted(boolean excluido) {
-        this.deleted = excluido;
+    public Boolean isActive() {
+        return active;
     }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
 
     /**
      * Gets the OBAA XML directly, consider using getMetadata() instead.

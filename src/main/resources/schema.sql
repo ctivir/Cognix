@@ -20,6 +20,7 @@ CREATE TABLE documents (
     obaa_entry text NOT NULL,
     created timestamp DEFAULT now(),
     deleted boolean DEFAULT false NOT NULL,
+    active boolean NOT NULL DEFAULT false,
     owner integer,
     obaaxml text,
     subject integer,

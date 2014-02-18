@@ -90,7 +90,7 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
             d.getFiles().clear();
             d.setObaaXml(null);
             d.setCreated(new DateTime());
-            d.isDeleted(true);
+            d.setDeleted(true);
             docRep.save(d);
         }        
         
