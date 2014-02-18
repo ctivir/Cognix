@@ -32,6 +32,7 @@ import cognitivabrasil.obaa.Technical.Type;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.util.Message;
@@ -82,6 +83,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     @Autowired
     private DocumentService docService;
     @Autowired
+    private DocumentRepository docRep;
+    @Autowired
     private UserService userService;
     @Autowired
     private DocumentsController controller;
@@ -95,6 +98,17 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     public void init() {
         uiModel = new ExtendedModelMap();
         response = new MockHttpServletResponse();
+    }
+    
+    @Test
+    public void testMainDeleteEmpty() {        
+        Authentication auth = new UsernamePasswordAuthenticationToken(new User(), "nada");
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
+        
+        int before = docRep.findAll().size(); //tem que ser com rep pq o service retorna apenas os que não foram deletados
+        controller.main(uiModel);
+        assertThat(docRep.findAll().size(), equalTo(before - 1));
     }
 
     private HttpServletRequest logUserAndPermission(boolean docEditor) {
