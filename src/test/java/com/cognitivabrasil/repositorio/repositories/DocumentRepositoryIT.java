@@ -80,6 +80,6 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
         u.setId(2);
         long docs = docRep.countByOwnerAndDeletedIsFalseAndActiveIsTrue(u);
         
-        assertThat(docs, equalTo(2l));
+        assertThat(docs, equalTo(1l));
     }    
 }
