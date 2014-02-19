@@ -195,4 +195,15 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         assertThat(docs, hasSize(1));
         assertThat(docs.get(0).getId(), equalTo(5));
     }
+    
+    @Test
+    public void testActive() {
+        Document d = new Document();
+        d.setObaaEntry("entryActive");
+        docService.save(d);
+
+        em.flush();
+        Document d2 = docService.get("entryActive");
+        assertThat(d2.isActive(), equalTo(false));
+    }
 }

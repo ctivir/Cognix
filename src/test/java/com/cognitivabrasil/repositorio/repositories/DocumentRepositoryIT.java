@@ -44,7 +44,7 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
     public void testGetAllToBeDelete() {
         DateTime d = DateTime.now();
         
-        List<Document> docs = docRep.findByCreatedLessThanAndObaaXmlIsNullAndDeletedIsFalse(d.minusHours(3));
+        List<Document> docs = docRep.findByCreatedLessThanAndActiveIsFalse(d.minusHours(3));
         
         assertThat(docs.size(), equalTo(1));
     }
@@ -78,7 +78,7 @@ public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringConte
     public void testGetByOwner(){
         User u = new User();
         u.setId(2);
-        long docs = docRep.countByOwnerAndDeletedIsFalse(u);
+        long docs = docRep.countByOwnerAndDeletedIsFalseAndActiveIsTrue(u);
         
         assertThat(docs, equalTo(2l));
     }    

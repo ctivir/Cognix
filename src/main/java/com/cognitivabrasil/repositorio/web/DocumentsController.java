@@ -339,6 +339,7 @@ public final class DocumentsController {
 
         Document d = new Document();
         d.setCreated(new DateTime());
+        d.setOwner(UsersController.getCurrentUser());
         //o documento precisa ser salvo para gerar um id da base
         docService.save(d);
 

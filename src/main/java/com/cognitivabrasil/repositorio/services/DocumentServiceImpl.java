@@ -39,13 +39,12 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
 
     @Autowired
     private DocumentRepository docRep;
-    
+
     @Autowired
     private FileService filesService;
 
     private static final Logger LOG = Logger.getLogger(DocumentServiceImpl.class);
 
-  
     @Override
     public Document get(String e) {
         return docRep.findByObaaEntry(e);
@@ -61,17 +60,17 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
     public List<Document> getAll() {
         return docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
     }
-    
+
     @Override
-    public Page<Document> getPage(Pageable pageable) {                                
+    public Page<Document> getPage(Pageable pageable) {
         return docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(pageable);
     }
-    
+
     @Override
     public List<Document> getBySubject(Subject s) {
         return docRep.findBySubjectAndDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(s);
     }
-    
+
     @Override
     public Page<Document> getPageBySubject(Subject s, Pageable pageable) {
         return docRep.findBySubjectAndDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(s, pageable);
@@ -79,12 +78,12 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
 
     @Override
     public void delete(Document d) throws IOException {
-        
+
         try {
             FileUtils.forceDelete(new File(Config.FILE_PATH + d.getId()));
         } catch (IOException io) {
             LOG.warn("Nao foi possivel deletar os arquivos do documento: " + d.getId() + "."
-                    + "Mas o documento sera removido da base! "+ io.getMessage());
+                    + "Mas o documento sera removido da base! " + io.getMessage());
             throw io;
         } finally {
             d.getFiles().clear();
@@ -92,8 +91,8 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
             d.setCreated(new DateTime());
             d.setDeleted(true);
             docRep.save(d);
-        }        
-        
+        }
+
     }
 
     @Override
@@ -123,60 +122,55 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
      */
     @Override
     public void save(Document d) throws IllegalStateException {
+        //if the document has xml then set active
+        if (!(d.getObaaXml() == null || d.getObaaXml().isEmpty())) {
+            d.setActive(true);
+        }
         docRep.save(d);
     }
-    
+
     @Override
     public void deleteEmpty() {
         DateTime d = DateTime.now();
-        List<Document> docs = docRep.findByCreatedLessThanAndObaaXmlIsNullAndDeletedIsFalse(d.minusHours(3));
-        for(Document doc : docs){
-            deleteFromDatabase(doc);            
+        List<Document> docs = docRep.findByCreatedLessThanAndActiveIsFalse(d.minusHours(3));
+        for (Document doc : docs) {
+            deleteFromDatabase(doc);
         }
     }
 
-	@Override
-	public Iterator find(Date from, Date until, int oldCount, int maxListSize) {	
-		PageRequest pr = new PageRequest(oldCount/maxListSize, maxListSize, Sort.Direction.ASC, "created");
-		
-		if(from != null && until != null) {
-			return docRep.betweenInclusive(new DateTime(from), add1Second(new DateTime(until)), pr).iterator();
-		}
-		else if (from != null && until == null) {
-			return docRep.from(new DateTime(from), pr).iterator();
-		}
-		else if(from == null && until != null) {
-			return docRep.until(add1Second(new DateTime(until)), pr).iterator();
+    @Override
+    public Iterator find(Date from, Date until, int oldCount, int maxListSize) {
+        PageRequest pr = new PageRequest(oldCount / maxListSize, maxListSize, Sort.Direction.ASC, "created");
 
-		}
-		else {
-			return docRep.all(
-					pr).iterator();
-		}
-	}
+        if (from != null && until != null) {
+            return docRep.betweenInclusive(new DateTime(from), add1Second(new DateTime(until)), pr).iterator();
+        } else if (from != null && until == null) {
+            return docRep.from(new DateTime(from), pr).iterator();
+        } else if (from == null && until != null) {
+            return docRep.until(add1Second(new DateTime(until)), pr).iterator();
 
+        } else {
+            return docRep.all(pr).iterator();
+        }
+    }
 
+    @Override
+    public int count(Date from, Date until) {
+        if (from != null && until != null) {
+            return docRep.countBetweenInclusive(new DateTime(from), add1Second(new DateTime(until)));
+        } else if (from != null && until == null) {
+            return docRep.countFrom(new DateTime(from));
+        } else if (from == null && until != null) {
+            return docRep.countUntil(add1Second(new DateTime(until)));
 
-	@Override
-	public int count(Date from, Date until) {
-		if(from != null && until != null) {
-			return docRep.countBetweenInclusive(new DateTime(from), add1Second(new DateTime(until)));
-		}
-		else if (from != null && until == null) {
-			return docRep.countFrom(new DateTime(from));
-		}
-		else if(from == null && until != null) {
-			return docRep.countUntil(add1Second(new DateTime(until)));
+        } else {
+            return (int) docRep.count();
+        }
 
-		}
-		else {
-			return (int) docRep.count();
-		}
-		
-	}
-	
-	private DateTime add1Second(DateTime dateTime) {
-		return dateTime.plusSeconds(1);
-	}
+    }
+
+    private DateTime add1Second(DateTime dateTime) {
+        return dateTime.plusSeconds(1);
+    }
 
 }
