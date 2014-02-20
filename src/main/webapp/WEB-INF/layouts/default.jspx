@@ -116,7 +116,8 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                         <h4 class="modal-title" id="myModalLabel">
-                            <span class="glyphicon glyphicon-warning-sign icon-error"/><span class='gliphycon-text'>Erro</span>
+                            <span class="glyphicon glyphicon-warning-sign icon-error"><jsp:text /></span>
+                            <span class='gliphycon-text'>Erro</span>
                         </h4>
                     </div>
                     <div class="modal-body">                        
