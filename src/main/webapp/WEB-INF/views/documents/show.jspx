@@ -182,11 +182,9 @@
                                             <li><span class="nome">Idioma: </span><span class="valor">${doc.metadata.metametadata.language}</span></li>
                                         </c:if>
 
-                                        
-
-                                    </ul> <!--/LIFE CYCLE-->
-                                </li> <!--/LIFE CYCLE-->
-                            </c:if> <!--/LIFE CYCLE-->
+                                    </ul> 
+                                </li> 
+                            </c:if> 
                             
                             <c:if test="${!empty doc.metadata.technical}">
                                 <li><span class="title">Informações técnicas</span>
