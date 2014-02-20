@@ -24,6 +24,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -205,5 +208,43 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         em.flush();
         Document d2 = docService.get("entryActive");
         assertThat(d2.isActive(), equalTo(false));
+    }
+    
+    @Test
+    public void testGetPageBySubject(){
+        
+        Subject s = new Subject();
+        s.setId(2);
+        
+        Page<Document> pageDoc = docService.getPageBySubject(s, new PageRequest(0,2));
+        List<Document> docs = pageDoc.getContent();
+        assertThat(docs, hasSize(2));
+        assertThat(docs.get(0).getId(), equalTo(7));
+        assertThat(docs.get(1).getId(), equalTo(6));
+        
+        pageDoc = docService.getPageBySubject(s, new PageRequest(1,2));
+        docs = pageDoc.getContent();
+        assertThat(docs, hasSize(1));
+        assertThat(docs.get(0).getId(), equalTo(1));
+        
+    }
+    
+    @Test
+    public void testGetPage(){
+        Page<Document> pageDoc = docService.getPage(new PageRequest(0, 2));
+        List<Document> docs = pageDoc.getContent();
+        assertThat(docs, hasSize(2));
+        assertThat(docs.get(0).getId(), equalTo(7));
+        assertThat(docs.get(1).getId(), equalTo(6));
+        
+        pageDoc = docService.getPage(new PageRequest(1,2));
+        docs = pageDoc.getContent();
+        assertThat(docs, hasSize(2));
+        assertThat(docs.get(0).getId(), equalTo(5));
+        assertThat(docs.get(1).getId(), equalTo(1));
+        
+        pageDoc = docService.getPage(new PageRequest(2,2));
+        docs = pageDoc.getContent();
+        assertThat(docs, hasSize(0));
     }
 }
