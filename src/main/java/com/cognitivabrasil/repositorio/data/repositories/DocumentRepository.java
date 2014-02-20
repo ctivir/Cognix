@@ -49,7 +49,7 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     public List<Document> findByCreatedLessThanAndActiveIsFalse(DateTime d);
 
     public long countByOwnerAndDeletedIsFalseAndActiveIsTrue(User u);
-
+    
     // Hack: we add one second to the date and use non-inclusive comparison for until, and 
     // use incluse queries for from, in this way we ignore fractions of seconds.
     @Query("SELECT d FROM Document d WHERE created >= ?1")
