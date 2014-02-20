@@ -120,10 +120,10 @@
                                 </c:if> -->
                             </ul>
                         </div>
-                    </c:if>
+                    </c:if>                    
                 </c:forEach>              
                 <!-- Pagination Bar -->               
-                <div class="row pagination-centered">                    
+                <div class="row pagination-centered">
                     <ul class="pagination">
                       <c:if test="${documents.hasPreviousPage()}">
                         <li>                        
