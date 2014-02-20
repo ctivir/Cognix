@@ -223,6 +223,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         Identifier uri = idList.get(0);
         assertThat(uri.getCatalog(), equalTo("URI"));
         assertThat(uri.getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/" + id));
+        assertThat(d.isActive(), equalTo(false));
 
     }
     
@@ -298,6 +299,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(primary.isAuditory(), equalTo(false));
         assertThat(primary.isText(), equalTo(true));
         assertThat(primary.isTactile(), equalTo(false));
+        
+        assertThat(d.isActive(), equalTo(false));
     }
 
     
@@ -471,6 +474,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(meta.getSchema(), hasSize(1));
         
         assertThat(technical.getSize(), equalTo(Long.toString(file.getSizeInBytes())));
+        
+        assertThat(docResult.isActive(), equalTo(true));
     }
     
     @Test
@@ -595,6 +600,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         Document doc = docService.get(1);
+        assertThat(doc.isActive(), equalTo(true));
 
         request.addParameter("obaa.general.titles[0]", "title1");
         request.addParameter("obaa.general.keywords[0]", "keyword1");
@@ -611,6 +617,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(docResult.getMetadata().getGeneral().getKeywords(), hasSize(2));
         assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog(), equalTo("URI"));
         assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/1"));
+        assertThat(docResult.isActive(), equalTo(true));
     }
     
 }
