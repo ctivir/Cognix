@@ -136,4 +136,5 @@ a.link-interno{
 
 .pagination-centered{
     text-align: center;
+    clear:both;
 }
