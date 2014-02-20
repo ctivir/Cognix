@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean hasDocument(User u) {
-        return docRep.countByOwnerAndDeletedIsFalse(u) > 0;
+        return docRep.countByOwnerAndDeletedIsFalseAndActiveIsTrue(u) > 0;
     }
 
     @Override

@@ -32,6 +32,7 @@ import cognitivabrasil.obaa.Technical.Type;
 import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.data.repositories.DocumentRepository;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.util.Message;
@@ -82,6 +83,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     @Autowired
     private DocumentService docService;
     @Autowired
+    private DocumentRepository docRep;
+    @Autowired
     private UserService userService;
     @Autowired
     private DocumentsController controller;
@@ -95,6 +98,17 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     public void init() {
         uiModel = new ExtendedModelMap();
         response = new MockHttpServletResponse();
+    }
+    
+    @Test
+    public void testMainDeleteEmpty() {        
+        Authentication auth = new UsernamePasswordAuthenticationToken(new User(), "nada");
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
+        
+        int before = docRep.findAll().size(); //tem que ser com rep pq o service retorna apenas os que não foram deletados
+        controller.main(uiModel);
+        assertThat(docRep.findAll().size(), equalTo(before - 1));
     }
 
     private HttpServletRequest logUserAndPermission(boolean docEditor) {
@@ -209,6 +223,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         Identifier uri = idList.get(0);
         assertThat(uri.getCatalog(), equalTo("URI"));
         assertThat(uri.getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/" + id));
+        assertThat(d.isActive(), equalTo(false));
 
     }
     
@@ -284,6 +299,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(primary.isAuditory(), equalTo(false));
         assertThat(primary.isText(), equalTo(true));
         assertThat(primary.isTactile(), equalTo(false));
+        
+        assertThat(d.isActive(), equalTo(false));
     }
 
     
@@ -457,6 +474,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(meta.getSchema(), hasSize(1));
         
         assertThat(technical.getSize(), equalTo(Long.toString(file.getSizeInBytes())));
+        
+        assertThat(docResult.isActive(), equalTo(true));
     }
     
     @Test
@@ -581,6 +600,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         Document doc = docService.get(1);
+        assertThat(doc.isActive(), equalTo(true));
 
         request.addParameter("obaa.general.titles[0]", "title1");
         request.addParameter("obaa.general.keywords[0]", "keyword1");
@@ -597,6 +617,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(docResult.getMetadata().getGeneral().getKeywords(), hasSize(2));
         assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog(), equalTo("URI"));
         assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/1"));
+        assertThat(docResult.isActive(), equalTo(true));
     }
     
 }

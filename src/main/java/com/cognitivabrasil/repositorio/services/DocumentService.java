@@ -65,6 +65,16 @@ public interface DocumentService {
     List<Document> getBySubject(Subject s);
     
     /**
+     * Gets all NON-DELETED documents, on selected page, by the subject, present in the System.
+     *
+     * Use with extreme care, as it might return to many results.
+     *
+     * @return Documents by the subject passed and that are not deleted and are in the selected page
+     */
+    Page<Document> getPageBySubject(Subject s, Pageable pageable);
+    
+    
+    /**
      * Gets the document by ID.
      *
      * @param i the Id

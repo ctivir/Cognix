@@ -31,55 +31,59 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class DocumentRepositoryIT extends AbstractTransactionalJUnit4SpringContextTests {
-    
+
     @Autowired
     private DocumentRepository docRep;
 
     @Test
-    public void testGetAll(){
-        assertThat(docRep.findAll(), hasSize(5));
+    public void testGetAll() {
+        assertThat(docRep.findAll(), hasSize(7));
     }
-    
+
     @Test
     public void testGetAllToBeDelete() {
         DateTime d = DateTime.now();
-        
-        List<Document> docs = docRep.findByCreatedLessThanAndObaaXmlIsNullAndDeletedIsFalse(d.minusHours(3));
-        
+
+        List<Document> docs = docRep.findByCreatedLessThanAndActiveIsFalse(d.minusHours(3));
+
         assertThat(docs.size(), equalTo(1));
     }
-    
+
     @Test
-    public void testGetAllNotDeleted(){
+    public void testGetAllNotDeleted() {
         List<Document> docs = docRep.findByDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc();
         assertThat(docs, notNullValue());
-        assertThat(docs.size(), equalTo(2));
+        assertThat(docs.size(), equalTo(4));
+
+        assertThat(docs.get(0).getId(), equalTo(7));
+        assertThat(docs.get(1).getId(), equalTo(6));
+        assertThat(docs.get(2).getId(), equalTo(5));
+        assertThat(docs.get(3).getId(), equalTo(1));
         
-        assertThat(docs.get(0).getId(), equalTo(5));
-        assertThat(docs.get(1).getId(), equalTo(1));
+        
     }
-    
+
     @Test
-    public void testGetByObaaEntry(){
+    public void testGetByObaaEntry() {
         Document d = docRep.findByObaaEntry("entry2");
         assertThat(d.getId(), equalTo(2));
     }
-    
+
     @Test
-    public void testGetBySubject(){
+    public void testGetBySubject() {
         Subject s = new Subject();
         s.setId(1);
         s.setName("ciencias");
         List<Document> d = docRep.findBySubjectAndDeletedIsFalseAndObaaXmlNotNullOrderByCreatedDesc(s);
         assertThat(d.get(0).getId(), equalTo(5));
     }
-    
+
     @Test
-    public void testGetByOwner(){
+    public void testGetByOwner() {
         User u = new User();
         u.setId(2);
-        long docs = docRep.countByOwnerAndDeletedIsFalse(u);
-        
-        assertThat(docs, equalTo(2l));
-    }    
+        long docs = docRep.countByOwnerAndDeletedIsFalseAndActiveIsTrue(u);
+
+        assertThat(docs, equalTo(3l));
+    }
 }

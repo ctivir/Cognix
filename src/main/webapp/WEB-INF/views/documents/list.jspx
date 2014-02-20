@@ -33,10 +33,12 @@
                     <span class='gliphycon-text'>Novo documento</span>
                 </a>
             </security:authorize><br/>
-            <div class="btn-group col-md-offset-4">
-                <a href="${docUrl}/filter/ciencias" class="btn btn-default btn-sm">Ciências</a>
-                <a href="${docUrl}/filter/matematica" class="btn btn-default btn-sm">Matemática</a>
-                <a href="${docUrl}/filter/portugues" class="btn btn-default btn-sm">Português</a>                
+            <div class="row pagination-centered">
+                <div class="btn-group">
+                    <a href="${docUrl}/filter/ciencias" class="btn btn-default btn-sm">Ciências</a>
+                    <a href="${docUrl}/filter/matematica" class="btn btn-default btn-sm">Matemática</a>
+                    <a href="${docUrl}/filter/portugues" class="btn btn-default btn-sm">Português</a>                
+                </div>
             </div>
             <br/><br/>
             <div class="container">                
@@ -118,12 +120,11 @@
                                 </c:if> -->
                             </ul>
                         </div>
-                    </c:if>
+                    </c:if>                    
                 </c:forEach>              
                 <!-- Pagination Bar -->               
-                <div class="row">
-                    <div class="offset4 span4 col-md-offset-4">
-                    <ul class="pagination pagination-centered">
+                <div class="row pagination-centered">
+                    <ul class="pagination">
                       <c:if test="${documents.hasPreviousPage()}">
                         <li>                        
                           <a href="${docUrl}/page/${documents.number-1}" title="Ir para página anterior">Anterior</a>
@@ -150,8 +151,7 @@
                           <a href="${docUrl}/page/${documents.number+1}" title="Ir para próxima página">Próxima</a>
                         </li>
                       </c:if>
-                    </ul>        
-                    </div>
+                    </ul>                            
                 </div>
                       
             </div>

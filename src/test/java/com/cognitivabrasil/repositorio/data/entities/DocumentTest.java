@@ -47,7 +47,7 @@ public class DocumentTest {
         d.setCreated(new DateTime(1984, 8, 21, 0, 0, 0));
         assertThat(d.getTimestamp(), equalTo(new GregorianCalendar(1984, GregorianCalendar.AUGUST, 21).getTime()));
     }
-    
+
     @Test
     public void testTimestampFormatted() {
         Document d = new Document();
@@ -55,7 +55,7 @@ public class DocumentTest {
 
         assertThat(d.getTimestampFormatted(), equalTo("21/08/1984 00:00:00"));
     }
-    
+
     @Test
     public void testTimestampFormattedNull() {
         Document d = new Document();
@@ -84,45 +84,52 @@ public class DocumentTest {
         assertThat(d.getTitle(), notNullValue());
         assertThat(d.getTitle(), equalTo("Sem título"));
     }
-    
+
     @Test
     /**
-     * verifica se as operações feitas em getMetadata não alteram o OBAA, se já existir.
+     * verifica se as operações feitas em getMetadata não alteram o OBAA, se já
+     * existir.
      */
-    public void testGetMetadata(){
+    public void testGetMetadata() {
         Document d = new Document();
         assertThat(d.getMetadata(), notNullValue());
-        
+
         d = new Document();
         OBAA obaa = new OBAA();
         obaa.setGeneral(new General());
         obaa.getGeneral().addTitle("Marcos");
         d.setMetadata(obaa);
-        
-        assertThat(d.getTitle(), equalTo("Marcos"));        
+
+        assertThat(d.getTitle(), equalTo("Marcos"));
     }
 
     @Test
-    public void testGetXmlEqualToGetObaaXML(){
+    public void testGetXmlEqualToGetObaaXML() {
         Document d = new Document();
         d.setObaaXml("<xml>marcos</xml>");
         assertThat(d.getXml(), equalTo("<xml>marcos</xml>"));
         assertThat(d.getObaaXml(), equalTo(d.getXml()));
     }
-    
+
     @Test
-    public void testGetOAiIdentifier(){
+    public void testGetOAiIdentifier() {
         Document d = new Document();
         d.setObaaEntry("marcos");
         assertThat(d.getOaiIdentifier(), equalTo("marcos"));
     }
-    
+
     @Test
     /**
      * Just to test the existence.
      */
-    public void testGetSets(){
+    public void testGetSets() {
         Document d = new Document();
         assertThat(d.getSets(), notNullValue());
+    }
+
+    @Test
+    public void testActive() {
+        Document d = new Document();
+        assertThat(d.isActive(), equalTo(false));
     }
 }

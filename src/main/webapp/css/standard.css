@@ -135,5 +135,6 @@ a.link-interno{
 .modal-footer{margin-top: 0}
 
 .pagination-centered{
-    
+    text-align: center;
+    clear:both;
 }

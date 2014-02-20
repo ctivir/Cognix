@@ -196,7 +196,7 @@ public class FileController {
                 }
 
                 if ((this.chunk == this.chunks - 1) || this.chunks == 0) {
-                    file.setLocation(docPath + "/" + file.getName());
+                    file.setLocation(docPath + "/" + file.getName());                    
                     if (docId != null) {
                         file.setDocument(documentsService.get(docId));
                     }
