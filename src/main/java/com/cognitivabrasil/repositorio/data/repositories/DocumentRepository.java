@@ -52,27 +52,27 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     
     // Hack: we add one second to the date and use non-inclusive comparison for until, and 
     // use incluse queries for from, in this way we ignore fractions of seconds.
-    @Query("SELECT d FROM Document d WHERE created >= ?1")
+    @Query("SELECT d FROM Document d WHERE created >= ?1 AND active is true")
     public Page<Document> from(DateTime dateTime, Pageable p);
 
-    @Query("SELECT count(*) FROM Document d WHERE created >= ?1")
+    @Query("SELECT count(*) FROM Document d WHERE created >= ?1 AND active is true")
     public Integer countFrom(DateTime dateTime);
 
-    @Query("SELECT d FROM Document d WHERE created < ?1")
+    @Query("SELECT d FROM Document d WHERE created < ?1 AND active is true")
     public Page<Document> until(DateTime dateTime, Pageable p);
 
-    @Query("SELECT count(*) FROM Document d WHERE created < ?1")
+    @Query("SELECT count(*) FROM Document d WHERE created < ?1 AND active is true")
     public Integer countUntil(DateTime dateTime);
 
-    @Query("SELECT d FROM Document d WHERE created >= ?1 AND created < ?2")
+    @Query("SELECT d FROM Document d WHERE created >= ?1 AND created < ?2 AND active is true")
     public Page<Document> betweenInclusive(DateTime from, DateTime until, Pageable p);
 
-    @Query("SELECT count(*) FROM Document d WHERE created >= ?1 AND created < ?2")
+    @Query("SELECT count(*) FROM Document d WHERE created >= ?1 AND created < ?2 AND active is true")
     public Integer countBetweenInclusive(DateTime from, DateTime until);
 
-    @Query("SELECT d FROM Document d")
+    @Query("SELECT d FROM Document d WHERE active is true")
     public Page<Document> all(Pageable pageable);
 
-    @Override
-    public long count();
+    @Query("SELECT count(*) FROM Document d WHERE active is true")
+    public Integer countActiveTrue();
 }

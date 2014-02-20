@@ -164,7 +164,7 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
             return docRep.countUntil(add1Second(new DateTime(until)));
 
         } else {
-            return (int) docRep.count();
+            return docRep.countActiveTrue();
         }
 
     }

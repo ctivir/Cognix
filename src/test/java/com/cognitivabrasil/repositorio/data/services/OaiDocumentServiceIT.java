@@ -37,8 +37,7 @@ public class OaiDocumentServiceIT extends AbstractTransactionalJUnit4SpringConte
     @Test
     public void testCount(){
        int docs = oaiService.count(null, null);
-//        assertThat(docs, equalTo(5)); //sem inativos
-       assertThat(docs, equalTo(7));
+        assertThat(docs, equalTo(5));
     }
     
     @Test
@@ -46,8 +45,8 @@ public class OaiDocumentServiceIT extends AbstractTransactionalJUnit4SpringConte
         DateTime from = DateTime.parse("2013-05-08T03:00:01.000Z");
         DateTime until = DateTime.parse("2013-08-21T08:10:00.000Z");
         int docs = oaiService.count(from.toDate(), until.toDate());
-//        assertThat(docs, equalTo(2)); //somente ativos
-        assertThat(docs, equalTo(3));
+        assertThat(docs, equalTo(2));
+        
     }
     
     @Test
@@ -63,9 +62,85 @@ public class OaiDocumentServiceIT extends AbstractTransactionalJUnit4SpringConte
         
         DateTime from = DateTime.parse("2013-05-08T03:10:01.000Z");
         int docs = oaiService.count(from.toDate(), null);
-//        assertThat(docs, equalTo(3)); //somente ativos
-        assertThat(docs, equalTo(5));
+        assertThat(docs, equalTo(3));
     }
-
+    
+    @Test
+    public void testFindAllPageable(){
+        Iterator i = oaiService.find(null, null, 0, 2);
+        Document d = (Document) i.next();
+        assertThat(d.getId(), equalTo(2));
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(1));
+        assertThat(i.hasNext(), equalTo(false));
+        
+        i = oaiService.find(null, null, 2, 2);
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(5));
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(6));
+        assertThat(i.hasNext(), equalTo(false));
+        
+        i = oaiService.find(null, null, 4, 2);
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(7));
+        assertThat(i.hasNext(), equalTo(false));
+        
+        i = oaiService.find(null, null, 6, 2);
+        assertThat(i.hasNext(), equalTo(false));
+    }
+    
+    @Test
+    public void testFindFrom(){
+        DateTime from = DateTime.parse("2013-05-08T03:10:01.000Z");
+        Iterator i = oaiService.find(from.toDate(), null, 0, 2);
+        Document d = (Document) i.next();
+        assertThat(d.getId(), equalTo(5));
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(6));
+        assertThat(i.hasNext(), equalTo(false));
+        
+        i = oaiService.find(from.toDate(), null, 2, 2);
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(7));
+        assertThat(i.hasNext(), equalTo(false));
+        
+        i = oaiService.find(from.toDate(), null, 4, 2);
+        assertThat(i.hasNext(), equalTo(false));
+    }
+    
+    @Test
+    public void testFindUntil(){
+        DateTime until = DateTime.parse("2013-05-08T03:10:01.000Z");
+        
+        Iterator i = oaiService.find(null, until.toDate(), 0, 2);
+        Document d = (Document) i.next();
+        assertThat(d.getId(), equalTo(2));
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(1));
+        assertThat(i.hasNext(), equalTo(false));
+        
+        i = oaiService.find(null, until.toDate(), 2, 2);
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(5));
+        assertThat(i.hasNext(), equalTo(false));
+    }
+    
+    
+    @Test
+    public void testFindBetween(){
+        DateTime from = DateTime.parse("2013-05-08T03:10:01.000Z");
+        DateTime until = DateTime.parse("2013-08-21T08:10:00.000Z");
+        
+        Iterator i = oaiService.find(from.toDate(), until.toDate(), 0, 2);
+        Document d = (Document) i.next();
+        assertThat(d.getId(), equalTo(5));
+        d = (Document) i.next();
+        assertThat(d.getId(), equalTo(6));
+        assertThat(i.hasNext(), equalTo(false));
+        
+        i = oaiService.find(from.toDate(), until.toDate(), 2, 2);
+        assertThat(i.hasNext(), equalTo(false));
+    }
 
 }
