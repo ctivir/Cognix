@@ -8,8 +8,8 @@ INSERT INTO subject (id, name) VALUES (1,'ciencias');
 INSERT INTO subject (id, name) VALUES (2,'portugues');
 INSERT INTO subject (id, name) VALUES (3,'matematica');
 
-INSERT INTO documents (id, obaa_entry,created, owner, obaaxml, active) VALUES (1, 'entry1', '2013-05-08 03:00:00', 2, '<obaa:obaa xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd" xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-   <obaa:general><obaa:title>Ataque a o TCP - Mitnick</obaa:title><obaa:identifier><obaa:catalog>URI</obaa:catalog><obaa:entry>http://cognitivabrasil.com.br/repositorio/documents/1</obaa:entry></obaa:identifier><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>', true);
+INSERT INTO documents (id, obaa_entry,created, owner, obaaxml, subject, active) VALUES (1, 'entry1', '2013-05-08 03:00:00', 2, '<obaa:obaa xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/lom.xsd" xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <obaa:general><obaa:title>Ataque a o TCP - Mitnick</obaa:title><obaa:identifier><obaa:catalog>URI</obaa:catalog><obaa:entry>http://cognitivabrasil.com.br/repositorio/documents/1</obaa:entry></obaa:identifier><obaa:keyword>TCP</obaa:keyword><obaa:structure>atomic</obaa:structure></obaa:general></obaa:obaa>', 2, true);
 
 INSERT INTO documents (id, obaa_entry,created,deleted, subject, owner, active) VALUES (2, 'entry2', '2013-05-08',true,1,1, true);
 
