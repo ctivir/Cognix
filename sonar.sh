@@ -4,7 +4,7 @@ PROJECT_SUFFIX=$1
 SOURCES=$2
 
 VERSION=`mvn  org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version  | grep -v '\[' | grep -v Downl`
-NAME=`mvn  org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.name | grep -v '\[' | grep -v Downl`
+NAME="Repositorio"
 GROUP_ID=`mvn  org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.groupId | grep -v '\[' | grep -v Downl`
 ARTIFACT_ID=`mvn  org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.artifactId | grep -v '\[' | grep -v Downl`
 
@@ -15,4 +15,4 @@ echo ${PROJECT_KEY}
 echo ${PROJECT_NAME}
 
 SONAR_RUNNER_HOME=/var/lib/jenkins/sonar-runner-2.3/
-/var/lib/jenkins/sonar-runner-2.3/bin/sonar-runner -D sonar.language=${PROJECT_SUFFIX} -D sonar.projectKey=${PROJECT_KEY} -D sonar.projectName=\"${PROJECT_NAME}\" -D sonar.projectVersion=${VERSION} -D sonar.sources=${SOURCES}
+/var/lib/jenkins/sonar-runner-2.3/bin/sonar-runner -D sonar.language=${PROJECT_SUFFIX} -D sonar.projectKey=${PROJECT_KEY} -D sonar.projectName=${PROJECT_NAME} -D sonar.projectVersion=${VERSION} -D sonar.sources=${SOURCES}
