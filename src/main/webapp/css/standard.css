@@ -127,7 +127,7 @@ a.link-interno{
 .navbar-header{
    width:50%;
 }
-.icon-error{color: red; font-size: 1.5em; padding-bottom: 1em;}
+.icon-error{color: red; }
 
 .btn{margin-right: .3em;}
 .btn:last-child{margin-right: 0em;}
