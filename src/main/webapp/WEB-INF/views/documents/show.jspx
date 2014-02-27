@@ -139,6 +139,53 @@
                                 </li> <!--/LIFE CYCLE-->
                             </c:if> <!--/LIFE CYCLE-->
 
+                            <!--metametadata-->
+                            <c:if test="${!empty doc.metadata.metametadata}">
+                                <li><span class="title">Meta-metadados</span>
+                                    <ul>
+                                        <c:forEach var="identifier" items="${doc.metadata.metametadata.identifier}">
+                                            <li><span class="title">Identificador</span>
+                                                <ul>
+                                                    <c:if test="${!empty identifier.entry}">
+                                                        <li><span class="nome">Entry:</span><span class="valor">${identifier.entry}</span></li>
+                                                    </c:if>
+                                                    <c:if test="${!empty identifier.catalog}">
+                                                        <li><span class="nome">Catálogo:</span><span class="valor">${identifier.catalog}</span></li>
+                                                    </c:if>
+                                                </ul>
+                                            </li>
+                                        </c:forEach>
+                                            
+                                        <c:forEach var="contribute" items="${doc.metadata.metametadata.contribute}">
+                                            <li><span class="title">Contribuinte</span>
+                                                <ul>
+                                                    <c:if test="${!empty contribute.role}">
+                                                        <li><span class="nome">Papel:</span><span class="valor">${contribute.role}</span></li>
+                                                    </c:if>
+
+                                                    <c:forEach var="entity" items="${contribute.entity}">
+                                                        <li><span class="nome">Entidade:</span><span class="valor">${entity}</span></li>
+                                                    </c:forEach>
+
+                                                    <c:if test="${!empty contribute.date}">
+                                                        <li><span class="nome">Data:</span><span class="valor">${contribute.date}</span></li>
+                                                    </c:if>
+                                                </ul>
+                                            </li>
+                                        </c:forEach>
+                                            
+                                        <c:if test="${!empty doc.metadata.metametadata.schema}">
+                                            <li><span class="nome">Esquema de metadados: </span><span class="valor">${doc.metadata.metametadata.schema}</span></li>
+                                        </c:if>
+
+                                        <c:if test="${!empty doc.metadata.metametadata.language}">
+                                            <li><span class="nome">Idioma: </span><span class="valor">${doc.metadata.metametadata.language}</span></li>
+                                        </c:if>
+
+                                    </ul> 
+                                </li> 
+                            </c:if> 
+                            
                             <c:if test="${!empty doc.metadata.technical}">
                                 <li><span class="title">Informações técnicas</span>
                                     <ul>

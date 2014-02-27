@@ -19,10 +19,7 @@
         </c:if>
 
         <div id="entities-list">
-            <c:url var="logoutUrl" value="/j_spring_security_logout" />
-            <c:url var="imgSair" value="/images/sair100x120.png" />
-            <c:url var="imgNewDoc" value="/images/document-new.png" />
-            <c:url var="imgUsers" value="/images/users.png" />            
+            <c:url var="logoutUrl" value="/j_spring_security_logout" />      
             <c:url var="users" value="/users/"/>
             <c:url var="docUrl" value="/documents"/>
 
