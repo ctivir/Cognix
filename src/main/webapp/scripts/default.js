@@ -1,5 +1,5 @@
-$(function() {        
- 
+$(function() {                
+    
     /* Exemplo de Chamada da Função */
     if(isMobile()){        
         $('#menu-login').remove();
