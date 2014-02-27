@@ -28,6 +28,7 @@ import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Relation.Kind;
 import cognitivabrasil.obaa.Relation.Relation;
+import cognitivabrasil.obaa.Relation.Resource;
 import cognitivabrasil.obaa.Rights.Rights;
 import cognitivabrasil.obaa.Technical.*;
 import com.cognitivabrasil.repositorio.data.entities.Document;
@@ -225,6 +226,20 @@ public final class DocumentsController {
         }
         d.getMetadata().setLocale("pt-BR");
         model.addAttribute("doc", d);
+        
+        //mostrar a relação para o usuário
+        if(d.getMetadata() != null && !d.getMetadata().getRelations().isEmpty()){
+            for(Relation rel : d.getMetadata().getRelations()){
+                switch (rel.getKind()) {
+                    case Kind.IS_VERSION_OF:
+                        model.addAttribute("isversion", rel.getResource());
+                        break;
+                    case Kind.HAS_VERSION:
+                        model.addAttribute("hasversion", rel.getResource());
+                        break;
+                }
+            }
+        }
         return "documents/show";
     }
 
@@ -311,6 +326,7 @@ public final class DocumentsController {
         //Cria relação de versão no orginial
         Relation originalRelation = new Relation();
         originalRelation.setKind(Kind.HAS_VERSION);
+        originalRelation.setResource(new Resource());
         originalRelation.getResource().addIdentifier(versionId);
         List<Relation> relationsList = new ArrayList<>();
         relationsList.add(originalRelation);
@@ -319,6 +335,7 @@ public final class DocumentsController {
         //Cria relação de versão no novo objeto
         Relation versionRelation = new Relation();
         versionRelation.setKind(Kind.IS_VERSION_OF);
+        versionRelation.setResource(new Resource());
         versionRelation.getResource().addIdentifier(originalObaa.getGeneral().
                 getIdentifiers().get(0));
         List<Relation> relations2List = new ArrayList<>();

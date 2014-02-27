@@ -25,6 +25,8 @@ import cognitivabrasil.obaa.LifeCycle.Status;
 import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Relation.Kind;
+import cognitivabrasil.obaa.Relation.Relation;
+import cognitivabrasil.obaa.Relation.Resource;
 import cognitivabrasil.obaa.Technical.Name;
 import cognitivabrasil.obaa.Technical.SupportedPlatform;
 import cognitivabrasil.obaa.Technical.Technical;
@@ -509,7 +511,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(docResult.getMetadata().getGeneral().getTitles().get(0), equalTo("title1"));
         assertThat(docResult.getMetadata().getTechnical().getLocation().get(0).toString(), equalTo("5"));
     }
-    
+   
     @Test
     public void testNewVersionOf(){
         String result = controller.newVersionOf(uiModel, 1);
@@ -521,8 +523,6 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         em.flush();
         
         Document dOrg = docService.get(1);
-        
-        System.out.println(dOrg.getMetadata().getGeneral().getTitles().get(0));
         
         assertThat(dOrg.getMetadata().getGeneral().getTitles().get(0), equalTo(dv.getMetadata().getGeneral().getTitles().get(0)));
         assertThat(dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/"+dv.getId()));
