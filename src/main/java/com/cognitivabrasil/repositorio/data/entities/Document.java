@@ -120,11 +120,11 @@ public class Document implements OaiDocument, java.io.Serializable {
         this.deleted = excluido;
     }
 
-    public Boolean isActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

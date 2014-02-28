@@ -391,7 +391,11 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         request.addParameter("obaa.technical.platformSpecificFeatures[0].specificRequirements[0].specificOrComposites[0].specificMaximumVersion", "2.0");
         request.addParameter("obaa.technical.platformSpecificFeatures[0].specificInstallationRemarks", "installationRemarks");
         request.addParameter("obaa.technical.platformSpecificFeatures[0].specificOtherPlatformRequirements", "otherPlatformRequirements");
-
+        request.addParameter("obaa.relations[0].kind", Kind.HAS_VERSION);
+        request.addParameter("obaa.relations[0].resource.identifier[0].catalog", "URI");
+        request.addParameter("obaa.relations[0].resource.identifier[0].entry", "http://marcos.versao.x");
+        
+        
         String result = controller.newDo(request, doc.getId());
         assertThat(result, equalTo("redirect:/documents/"));
 
@@ -465,6 +469,8 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificRequirements().get(0).getSpecificOrComposites().get(0).getSpecificMaximumVersion(), equalTo("2.0"));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificInstallationRemarks(), equalTo("installationRemarks"));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificOtherPlatformRequirements(), equalTo("otherPlatformRequirements"));
+        assertThat(technical.getSize(), equalTo(Long.toString(file.getSizeInBytes())));
+        
         Metametadata meta = docResult.getMetadata().getMetametadata();
         assertThat(meta.getContribute().get(0).getFirstEntity(),equalTo("BEGIN:VCARD\nVERSION:3.0\nN:;marcos;;;\nFN:marcos \nEND:VCARD"));
         assertThat(meta.getContribute().get(0).getRole(),equalTo("author"));
@@ -475,8 +481,12 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(meta.getIdentifier().get(0).getEntry(), equalTo("http://www.w3.org/2001/XMLSchema-instance"));
         assertThat(meta.getSchema(), hasSize(1));
         
-        assertThat(technical.getSize(), equalTo(Long.toString(file.getSizeInBytes())));
-        
+        List<Relation> relations = docResult.getMetadata().getRelations();
+        assertThat(relations.size(), equalTo(1));
+        assertThat(relations.get(0).getKind(), equalTo(Kind.HAS_VERSION));
+        assertThat(relations.get(0).getResource().getIdentifier().get(0).getCatalog(), equalTo("URI"));
+        assertThat(relations.get(0).getResource().getIdentifier().get(0).getEntry(), equalTo("http://marcos.versao.x"));
+                
         assertThat(docResult.isActive(), equalTo(true));
     }
     

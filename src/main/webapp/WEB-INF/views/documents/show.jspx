@@ -53,6 +53,7 @@
                         <h3>Não há metadados cadastrados para esse objeto!</h3>
                     </c:when>
                     <c:otherwise>
+                        -${isversion}-\n -${hasversion}-
 
                         <ul id="tree" class="treeview-famfamfam">
                             <c:if test="${!empty doc.metadata.general}">

@@ -341,13 +341,14 @@ public final class DocumentsController {
         List<Relation> relations2List = new ArrayList<>();
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
-
+        
         docService.save(d);
+        
         dv.setMetadata(versionObaa);
-
+        
         model.addAttribute("doc", dv);
         model.addAttribute("obaa", dv.getMetadata());
-
+        
         return "documents/new";
     }
 
@@ -607,6 +608,7 @@ public final class DocumentsController {
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
         d.setMetadata(obaa);
+        d.setActive(true);
         docService.save(d);
     }
 
