@@ -63,6 +63,26 @@
                             </div>
                         </c:if>
 
+                        <c:if test="${!empty doc.files}">
+                            <div id="files" class="show-files">
+                                <table class="zebra">
+                                    <th width="75%">Arquivos</th><th width="25%">Formato</th>
+                                        <c:forEach var="file" items="${doc.files }" varStatus="status">
+                                        <tr>
+                                            <td>
+                                                <c:url var="location" value="/files/${file.id}" />
+                                                <a class="" href="${location}">${file.name }</a>
+                                                <span class="smallerText">
+                                                    <c:if test="${file.sizeInBytes > 0}"> (${file.sizeFormatted})</c:if>
+                                                    </span>
+                                                </td>
+                                                <td> <c:if test="${!empty file.contentType}"> ${file.contentType}</c:if></td>
+                                            </tr>
+                                    </c:forEach>
+                                </table>
+                            </div>
+                        </c:if>
+
                         <c:if test="${!empty hasversion}">
                             <div class="relation">
                                 <span class="glyphicon glyphicon-link"><jsp:text/></span>
@@ -800,25 +820,6 @@
 
                 </c:choose>
             </div>
-            <c:if test="${!empty doc.files}">
-                <div id="files" class="show-files">
-                    <table class="zebra">
-                        <th width="75%">Arquivos</th><th width="25%">Formato</th>
-                            <c:forEach var="file" items="${doc.files }" varStatus="status">
-                            <tr>
-                                <td>
-                                    <c:url var="location" value="/files/${file.id}" />
-                                    <a class="" href="${location}">${file.name }</a>
-                                    <span class="smallerText">
-                                        <c:if test="${file.sizeInBytes > 0}"> (${file.sizeFormatted})</c:if>
-                                        </span>
-                                    </td>
-                                    <td> <c:if test="${!empty file.contentType}"> ${file.contentType}</c:if></td>
-                                </tr>
-                        </c:forEach>
-                    </table>
-                </div>
-            </c:if>
         </div>
     </div>
 </div>

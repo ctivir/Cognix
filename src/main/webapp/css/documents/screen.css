@@ -32,8 +32,9 @@ a img { border: none; }
 /*Arquivos dos documentos*/
 
 #files{
-    margin-top: 2%;
+    margin-top: 3%;
     margin-bottom: 1%;
+    clear: both;
 }
 #files table{
     border-collapse:collapse;
