@@ -483,7 +483,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         
         List<Relation> relations = docResult.getMetadata().getRelations();
         assertThat(relations.size(), equalTo(1));
-        assertThat(relations.get(0).getKind(), equalTo(Kind.HAS_VERSION));
+        assertThat(relations.get(0).getKind().getText(), equalTo(Kind.HAS_VERSION));
         assertThat(relations.get(0).getResource().getIdentifier().get(0).getCatalog(), equalTo("URI"));
         assertThat(relations.get(0).getResource().getIdentifier().get(0).getEntry(), equalTo("http://marcos.versao.x"));
                 
@@ -538,12 +538,12 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/"+dv.getId()));
         
         assertThat(dOrg.getMetadata().getRelations(), hasSize(1));
-        assertThat(dOrg.getMetadata().getRelations().get(0).getKind(), equalTo(Kind.HAS_VERSION));
+        assertThat(dOrg.getMetadata().getRelations().get(0).getKind().getText(), equalTo(Kind.HAS_VERSION));
         assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier(), hasSize(1));
         String entryVersionOf = dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryVersionOf));
         
-        assertThat(dv.getMetadata().getRelations().get(0).getKind(), equalTo(Kind.IS_VERSION_OF));
+        assertThat(dv.getMetadata().getRelations().get(0).getKind().getText(), equalTo(Kind.IS_VERSION_OF));
         String entryOrg = dOrg.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dv.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryOrg));
     }

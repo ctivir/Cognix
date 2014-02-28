@@ -85,7 +85,7 @@ public final class DocumentsController {
     public DocumentsController() {
         LOG.debug("Loaded DocumentsController");
     }
-    
+
     @RequestMapping(method = RequestMethod.GET)
     public String main(Model model) {
         docService.deleteEmpty();
@@ -94,112 +94,111 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/page/{page}", method = RequestMethod.GET)
     public String mainPage(Model model, @PathVariable Integer page) {
-        
-        Pageable limit = new PageRequest(page,pageSize);
+
+        Pageable limit = new PageRequest(page, pageSize);
         Page pageResult = docService.getPage(limit);
-        
-        int divisor = pagesToPresent/2;
-        
+
+        int divisor = pagesToPresent / 2;
+
         //Criando o array com as páginas a serem apresentadas
         int totalPage = pageResult.getTotalPages();
         int sobraDePaginasDireita = 0;
         int sobraDePaginasEsquerda = 0;
         List<Integer> pagesAvaliable = new ArrayList<>();
         pagesAvaliable.add(page);
-        for(int i=1;i<=divisor;i++){            
+        for (int i = 1; i <= divisor; i++) {
             //Teste de sobras na esquerda
-            if((page-i)>=0){
-                pagesAvaliable.add(page-i);
-            }else{
+            if ((page - i) >= 0) {
+                pagesAvaliable.add(page - i);
+            } else {
                 sobraDePaginasEsquerda++;
             }
             //Teste de sobras na direita
-            if((page+i)<totalPage){
-                pagesAvaliable.add(page+i);
-            }else{
+            if ((page + i) < totalPage) {
+                pagesAvaliable.add(page + i);
+            } else {
                 sobraDePaginasDireita++;
             }
-        }         
-        if(sobraDePaginasEsquerda==0||sobraDePaginasDireita==0){
-            int i;            
-            for(i=1;i<=sobraDePaginasDireita;i++){                
-                if(page-divisor-i>=0){
-                    pagesAvaliable.add(page-divisor-i);
-                }
-            }
-            sobraDePaginasDireita = sobraDePaginasDireita-i+1;
-            for(i=1;i<=sobraDePaginasEsquerda;i++){
-                if(page+divisor+i<totalPage){
-                    pagesAvaliable.add(page+divisor+i);
-                }
-            }
-            sobraDePaginasEsquerda = sobraDePaginasEsquerda-i+1;
         }
-        Collections.sort(pagesAvaliable);      
+        if (sobraDePaginasEsquerda == 0 || sobraDePaginasDireita == 0) {
+            int i;
+            for (i = 1; i <= sobraDePaginasDireita; i++) {
+                if (page - divisor - i >= 0) {
+                    pagesAvaliable.add(page - divisor - i);
+                }
+            }
+            sobraDePaginasDireita = sobraDePaginasDireita - i + 1;
+            for (i = 1; i <= sobraDePaginasEsquerda; i++) {
+                if (page + divisor + i < totalPage) {
+                    pagesAvaliable.add(page + divisor + i);
+                }
+            }
+            sobraDePaginasEsquerda = sobraDePaginasEsquerda - i + 1;
+        }
+        Collections.sort(pagesAvaliable);
 //        LOG.debug("Sobra de paginas esquerda: "+sobraDePaginasEsquerda+" direita: "+sobraDePaginasDireita+" pagina: "+page);
-        
-        model.addAttribute("documents", pageResult);  
-        model.addAttribute("pages", pagesAvaliable);  
+
+        model.addAttribute("documents", pageResult);
+        model.addAttribute("pages", pagesAvaliable);
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("permDocAdmin", User.MANAGE_DOC);
-        model.addAttribute("permCreateDoc", User.CREATE_DOC);      
+        model.addAttribute("permCreateDoc", User.CREATE_DOC);
         return "documents/";
     }
 
     @RequestMapping(value = "/filter/{subject}", method = RequestMethod.GET)
     public String filterDiscipline(@PathVariable String subject, Model model) {
-       return filterDisciplinePage(subject, model, 0);
+        return filterDisciplinePage(subject, model, 0);
     }
-    
+
     @RequestMapping(value = "/filter/{subject}/page/{page}", method = RequestMethod.GET)
     public String filterDisciplinePage(@PathVariable String subject, Model model, @PathVariable Integer page) {
-        
-        Pageable limit = new PageRequest(page,pageSize);
+
+        Pageable limit = new PageRequest(page, pageSize);
         Subject s = subService.getSubjectByName(subject);
         Page pageResult = docService.getPageBySubject(s, limit);
-        
-        LOG.debug("pagina "+page);
-        
-        int divisor = pagesToPresent/2;
-        
+
+        LOG.debug("pagina " + page);
+
+        int divisor = pagesToPresent / 2;
+
         //Criando o array com as páginas a serem apresentadas
         int totalPage = pageResult.getTotalPages();
         int sobraDePaginasDireita = 0;
         int sobraDePaginasEsquerda = 0;
         List<Integer> pagesAvaliable = new ArrayList<>();
         pagesAvaliable.add(page);
-        for(int i=1;i<=divisor;i++){            
+        for (int i = 1; i <= divisor; i++) {
             //Teste de sobras na esquerda
-            if((page-i)>=0){
-                pagesAvaliable.add(page-i);
-            }else{
+            if ((page - i) >= 0) {
+                pagesAvaliable.add(page - i);
+            } else {
                 sobraDePaginasEsquerda++;
             }
             //Teste de sobras na direita
-            if((page+i)<totalPage){
-                pagesAvaliable.add(page+i);
-            }else{
+            if ((page + i) < totalPage) {
+                pagesAvaliable.add(page + i);
+            } else {
                 sobraDePaginasDireita++;
             }
-        }         
-        if(sobraDePaginasEsquerda==0||sobraDePaginasDireita==0){
-            int i;            
-            for(i=1;i<=sobraDePaginasDireita;i++){                
-                if(page-divisor-i>=0){
-                    pagesAvaliable.add(page-divisor-i);
+        }
+        if (sobraDePaginasEsquerda == 0 || sobraDePaginasDireita == 0) {
+            int i;
+            for (i = 1; i <= sobraDePaginasDireita; i++) {
+                if (page - divisor - i >= 0) {
+                    pagesAvaliable.add(page - divisor - i);
                 }
             }
-            sobraDePaginasDireita = sobraDePaginasDireita-i+1;
-            for(i=1;i<=sobraDePaginasEsquerda;i++){
-                if(page+divisor+i<totalPage){
-                    pagesAvaliable.add(page+divisor+i);
+            sobraDePaginasDireita = sobraDePaginasDireita - i + 1;
+            for (i = 1; i <= sobraDePaginasEsquerda; i++) {
+                if (page + divisor + i < totalPage) {
+                    pagesAvaliable.add(page + divisor + i);
                 }
             }
-            sobraDePaginasEsquerda = sobraDePaginasEsquerda-i+1;
+            sobraDePaginasEsquerda = sobraDePaginasEsquerda - i + 1;
         }
         Collections.sort(pagesAvaliable);
-        
-                
+
         model.addAttribute("documents", pageResult);
         model.addAttribute("pages", pagesAvaliable);
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
@@ -226,16 +225,20 @@ public final class DocumentsController {
         }
         d.getMetadata().setLocale("pt-BR");
         model.addAttribute("doc", d);
-        
+
         //mostrar a relação para o usuário
-        if(d.getMetadata() != null && !d.getMetadata().getRelations().isEmpty()){
-            for(Relation rel : d.getMetadata().getRelations()){
-                switch (rel.getKind()) {
+        if (d.getMetadata() != null && !d.getMetadata().getRelations().isEmpty()) {
+            for (Relation rel : d.getMetadata().getRelations()) {
+                switch (rel.getKind().getText()) {
                     case Kind.IS_VERSION_OF:
-                        model.addAttribute("isversion", rel.getResource());
+                        if (!rel.getResource().getIdentifier().isEmpty()) {
+                            model.addAttribute("isversion", rel.getResource().getIdentifier().get(0).getEntry());
+                        }
                         break;
                     case Kind.HAS_VERSION:
-                        model.addAttribute("hasversion", rel.getResource());
+                        if (!rel.getResource().getIdentifier().isEmpty()) {
+                            model.addAttribute("hasversion", rel.getResource().getIdentifier().get(0).getEntry());
+                        }
                         break;
                 }
             }
@@ -341,14 +344,14 @@ public final class DocumentsController {
         List<Relation> relations2List = new ArrayList<>();
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
-        
+
         docService.save(d);
-        
+
         dv.setMetadata(versionObaa);
-        
+
         model.addAttribute("doc", dv);
         model.addAttribute("obaa", dv.getMetadata());
-        
+
         return "documents/new";
     }
 
@@ -412,7 +415,7 @@ public final class DocumentsController {
         contribute = new cognitivabrasil.obaa.LifeCycle.Contribute();
 
         Entity e = new Entity();
-        
+
         e.setName("Ministério da Educação", "do Brasil");
 
         contribute.addEntity(e);
@@ -546,7 +549,6 @@ public final class DocumentsController {
 
         Technical t = obaa.getTechnical();
 
-
         Long size;
 
         size = 0L;
@@ -564,11 +566,11 @@ public final class DocumentsController {
             obaa.setTechnical(new Technical());
         }
         List<Location> l = obaa.getTechnical().getLocation();
-        
+
         //if doesn't have location, an entry based is created
         if (l == null || l.isEmpty()) {
-            obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());            
-        } 
+            obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());
+        }
 
         // Preenchimento dos metametadados
         Metametadata meta = new Metametadata();
@@ -583,7 +585,7 @@ public final class DocumentsController {
         // Quando fizer o cadastro dos usuários do sistema cuidar para que possa por os dados do vcard        
         Entity e = new Entity();
         e.setName(userName, "");
-        
+
         c.addEntity(e);
         c.setRole(Role.AUTHOR);
 
@@ -739,7 +741,7 @@ public final class DocumentsController {
     public String recallFiles()
             throws IOException {
         String location = Config.FILE_PATH + "old/";
-        
+
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
