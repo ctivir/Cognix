@@ -138,3 +138,11 @@ a.link-interno{
     text-align: center;
     clear:both;
 }
+
+.remove{
+    color:#39829f;
+    float:right;    
+    height: auto !important;
+    width: auto !important;
+    margin-bottom: 10px;   
+}
