@@ -195,6 +195,7 @@ public final class DocumentsController {
                     pagesAvaliable.add(page + divisor + i);
                 }
             }
+            //TODO: ISSO AQUI ESTÁ FORA DO FOR E NO FIM DO IF E NÃO É USADO PARA NADA (MARCOS).
             sobraDePaginasEsquerda = sobraDePaginasEsquerda - i + 1;
         }
         Collections.sort(pagesAvaliable);
@@ -608,6 +609,29 @@ public final class DocumentsController {
 
         //Parsing do duration
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
+
+        //set relation
+        for (Identifier id : obaa.getRelationsWithKind(Kind.IS_VERSION_OF)) {
+            if (id.getCatalog().equalsIgnoreCase("URI")) {
+                Document docVersion = docService.get(id.getEntry());
+                if (docVersion.getMetadata() != null) {
+                    //testa se o documento ja tem tem a versao cadastrada
+                    if (!docVersion.getMetadata().hasRelationWith(Kind.HAS_VERSION, d.getObaaEntry())) {
+                        //Cria relação de versão no orginial
+                        Relation originalRelation = new Relation();
+                        originalRelation.setKind(Kind.HAS_VERSION);
+                        originalRelation.setResource(new Resource());
+                        originalRelation.getResource().addIdentifier(new Identifier("URI", d.getObaaEntry()));
+                        List<Relation> relationsList = new ArrayList<>();
+                        relationsList.add(originalRelation);
+                        docVersion.getMetadata().setRelations(relationsList);
+                        //salva o documento com a nova relaçao
+                        docService.save(docVersion);
+                    }
+
+                }
+            }
+        }
 
         d.setMetadata(obaa);
         d.setActive(true);
