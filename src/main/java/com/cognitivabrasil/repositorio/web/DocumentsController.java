@@ -327,15 +327,6 @@ public final class DocumentsController {
         //seta o identifier na versao
         versionObaa.getGeneral().addIdentifier(versionId);
 
-        //Cria relação de versão no orginial
-        Relation originalRelation = new Relation();
-        originalRelation.setKind(Kind.HAS_VERSION);
-        originalRelation.setResource(new Resource());
-        originalRelation.getResource().addIdentifier(versionId);
-        List<Relation> relationsList = new ArrayList<>();
-        relationsList.add(originalRelation);
-        originalObaa.setRelations(relationsList);
-
         //Cria relação de versão no novo objeto
         Relation versionRelation = new Relation();
         versionRelation.setKind(Kind.IS_VERSION_OF);
@@ -610,7 +601,8 @@ public final class DocumentsController {
         //Parsing do duration
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
-        //set relation
+        //Se o documento tem uma relação is_version_of, é testado se o outro 
+        //documento tem o Has_version, se não tiver a relação é criada.
         for (Identifier id : obaa.getRelationsWithKind(Kind.IS_VERSION_OF)) {
             if (id.getCatalog().equalsIgnoreCase("URI")) {
                 Document docVersion = docService.get(id.getEntry());
@@ -628,7 +620,6 @@ public final class DocumentsController {
                         //salva o documento com a nova relaçao
                         docService.save(docVersion);
                     }
-
                 }
             }
         }
