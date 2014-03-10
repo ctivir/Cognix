@@ -37,7 +37,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UsersController {
 
-    private static final Logger LOG = Logger.getLogger(UsersController.class);
+    private static final Logger log = Logger.getLogger(UsersController.class);
     @Autowired
     private UserService userService;
 
@@ -169,10 +169,10 @@ public class UsersController {
             msg = new Message(Message.SUCCESS, "Usuário excluido com sucesso");
         } catch (DataAccessException e) {
             msg = new Message(Message.ERROR, "Erro ao excluir o usuário");
-            LOG.error("Erro ao excluir um usuário.", e);
+            log.error("Erro ao excluir um usuário.", e);
         } catch (IllegalStateException i){
             msg = new Message(Message.ERROR, i.getMessage());
-            LOG.error("Erro ao excluir um usuário.", i);
+            log.error("Erro ao excluir um usuário.", i);
         }
         return msg;
     }
@@ -194,7 +194,7 @@ public class UsersController {
             msg = new Message(Message.SUCCESS, "Usuário ativado com sucesso");
         } catch (DataAccessException e) {
             msg = new Message(Message.ERROR, "Erro ao reativar o usuário");
-            LOG.error("Erro ao ativar um usuário.", e);
+            log.error("Erro ao ativar um usuário.", e);
         }
         return msg;
     }
@@ -204,7 +204,7 @@ public class UsersController {
         try {
             currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (NullPointerException e) {
-            LOG.error("Não foi possível recuperar o usuário que está utilizando o sistema.", e);
+            log.error("Não foi possível recuperar o usuário que está utilizando o sistema.", e);
             currentUser = null;
         }
         return currentUser;

@@ -1,0 +1,37 @@
+<!-- List Professores -->
+<div id="content" xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:cgbr="urn:jsptagdir:/WEB-INF/tags"
+     version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+
+    <cgbr:tabs tabNumber="3" />
+    <div id="tab-content">
+
+
+        <c:if test="${not empty message}">
+            <div id="message" class="${message.type}">${message.message}</div>
+        </c:if>
+
+
+        <div id="entities-list" class="ui-widget">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Informações do Sistema</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${info}" var="entry">
+                        <tr>
+                            <td>${entry.title}:</td>
+                            <td>${entry.value}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

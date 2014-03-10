@@ -172,5 +172,10 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
     private DateTime add1Second(DateTime dateTime) {
         return dateTime.plusSeconds(1);
     }
+    
+    @Override
+    public long count(){
+        return docRep.countActiveTrueDeletedFalse();
+    }
 
 }

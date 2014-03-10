@@ -75,4 +75,7 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     @Query("SELECT count(*) FROM Document d WHERE active is true")
     public Integer countActiveTrue();
+    
+    @Query("SELECT count(*) FROM Document d WHERE active is true and deleted is false")
+    public long countActiveTrueDeletedFalse();
 }

@@ -15,10 +15,9 @@ import org.springframework.data.domain.Pageable;
 /**
  * Interface for documents.
  *
- * This will be injected by Spring, and can be used to do operations on FEB
- * documents.
  *
  * @author Paulo Schreiner <paulo@cognitivabrasil.com.br>
+ * @author Marcos Nunes <marcos@cognitivabrasil.com.br>
  */
 public interface DocumentService {
 
@@ -102,4 +101,8 @@ public interface DocumentService {
      */
     void deleteEmpty();
     
+    /**
+     * Count number of active documents and not deleted.
+     */
+    long count();    
 }
