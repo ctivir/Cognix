@@ -50,7 +50,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         
         <intercept-url  pattern="/" method="GET"
                         access="permitAll" />
-        
+                
         <intercept-url pattern="/documents/new"
                        access="hasRole('PERM_CREATE_DOC')" />
         
@@ -94,7 +94,6 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         <!--        <intercept-url pattern="/files/.*" access="denyAll" />-->
 
 
-        
         <intercept-url pattern=".*" method="GET"
                        access="isAuthenticated()" />
         <!-- deny all access not explicitly given -->

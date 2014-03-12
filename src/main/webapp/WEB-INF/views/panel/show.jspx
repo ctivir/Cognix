@@ -16,21 +16,13 @@
 
 
         <div id="entities-list" class="ui-widget">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">Informações do Sistema</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <h1>Informações do Sistema</h1>
                     <c:forEach items="${info}" var="entry">
-                        <tr>
-                            <td>${entry.title}:</td>
-                            <td>${entry.value}</td>
-                        </tr>
+                        <div class="row">
+                            <span class="col-md-3 col-xs-10" style="font-weight: bold;">${entry.title}:</span>
+                            <span class="col-md-3 col-xs-10">${entry.value}</span>
+                        </div>
                     </c:forEach>
-                </tbody>
-            </table>
 
         </div>
     </div>

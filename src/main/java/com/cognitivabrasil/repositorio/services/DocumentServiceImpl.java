@@ -40,9 +40,6 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
     @Autowired
     private DocumentRepository docRep;
 
-    @Autowired
-    private FileService filesService;
-
     private static final Logger LOG = Logger.getLogger(DocumentServiceImpl.class);
 
     @Override
