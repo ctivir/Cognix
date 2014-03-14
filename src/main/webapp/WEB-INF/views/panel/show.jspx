@@ -6,24 +6,21 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
 
+    <c:url value="/css/infoPanel.css" var="panel_css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${panel_css}" />
+
     <cgbr:tabs tabNumber="3" />
     <div id="tab-content">
-
-
-        <c:if test="${not empty message}">
-            <div id="message" class="${message.type}">${message.message}</div>
-        </c:if>
-
-
         <div id="entities-list" class="ui-widget">
-            <h1>Informações do Sistema</h1>
-                    <c:forEach items="${info}" var="entry">
-                        <div class="row">
-                            <span class="col-md-3 col-xs-10" style="font-weight: bold;">${entry.title}:</span>
-                            <span class="col-md-3 col-xs-10">${entry.value}</span>
-                        </div>
-                    </c:forEach>
-
+            <h4>Informações do Sistema</h4>
+            <c:forEach items="${info}" var="entry">
+                <div class="row informationRow" data-toggle="tooltip" data-placement="top" title="${entry.msg}">
+                    <span class="col-md-3 col-xs-10"><strong>${entry.title}:</strong></span>
+                    <span class="col-md-3 col-xs-10" >
+                        ${entry.value}
+                    </span>                            
+                </div>
+            </c:forEach>
         </div>
     </div>
 </div>

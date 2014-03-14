@@ -7,13 +7,16 @@ package com.cognitivabrasil.repositorio.web;
 
 import com.cognitivabrasil.repositorio.data.entities.Informations;
 import com.cognitivabrasil.repositorio.services.DocumentService;
+import com.cognitivabrasil.repositorio.util.Config;
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +36,9 @@ public class InformationPaneController {
     @Qualifier("serverConfig")
     private Properties config;
     @Autowired
-    private BasicDataSource dataSource;
+    private DataSource dataSource;
+    
+    private static final Logger log = Logger.getLogger(InformationPaneController.class);
 
     @RequestMapping(method = RequestMethod.GET)
     public String showInformations(Model model) {
@@ -41,12 +46,23 @@ public class InformationPaneController {
         info.add(new Informations("Versão", "implementar!"));
         info.add(new Informations("Número de documentos", Long.toString(docService.count())));
         
-        info.add(new Informations("Domínio", config.getProperty("Repositorio.hostname"), "Este dominio será utilizado para criar a localização dos documentos. É muito imporante que esteja correto."));
+        info.add(new Informations("Domínio", config.getProperty("Repositorio.hostname"), "Este dominio será utilizado para criar a localização dos documentos. Editar no arquivo: 'config.properties'."));
         info.add(new Informations("Raiz do projeto", config.getProperty("Repositorio.rootPath", "/repositorio")));
-        info.add(new Informations("Porta", config.getProperty("Repositorio.port", "8080")));
-        info.add(new Informations("JDBC Driver", dataSource.getDriverClassName()));
-        info.add(new Informations("Base de dados", dataSource.getUrl()));
-        info.add(new Informations("Usuário da base de dados", dataSource.getUsername()));
+        info.add(new Informations("Porta", config.getProperty("Repositorio.port", "8080"),"Porta informada no arquivo '/WEB-INF/classes/config.properties'"));
+        info.add(new Informations("URL dos objetos", Config.getUrl(config)+"{id}", "URL que será utilizada para criar o location dos objetos. Pode ser editada em: '/WEB-INF/classes/config.properties'"));
+        try{
+        DatabaseMetaData databaseInfo = dataSource.getConnection().getMetaData();
+        info.add(new Informations("Base de dados utilizada", databaseInfo.getDatabaseProductName()));
+        info.add(new Informations("Versão da base de dados", databaseInfo.getDatabaseProductVersion()));
+        info.add(new Informations("JDBC driver", databaseInfo.getDriverName()));
+        info.add(new Informations("Versão do JDBC driver", databaseInfo.getDriverVersion()));
+        info.add(new Informations("URL da base de dados", databaseInfo.getURL()));
+        info.add(new Informations("Usuário da base de dados", databaseInfo.getUserName()));
+               
+        }catch(SQLException s){
+            log.error("Error getting information about database.");
+            info.add(new Informations("Erro","Não foi possível carregar os dados da base de dados"));
+        }
         model.addAttribute("info", info);
         return "panel/show";
     }

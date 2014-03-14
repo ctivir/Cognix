@@ -71,7 +71,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/documents")
 public final class DocumentsController {
 
-    private static final Logger LOG = Logger.getLogger(DocumentsController.class);
+    private static final Logger log = Logger.getLogger(DocumentsController.class);
     private static final int pageSize = 9;
     private static final int pagesToPresent = 5;
     @Autowired
@@ -83,7 +83,7 @@ public final class DocumentsController {
     private Properties config;
 
     public DocumentsController() {
-        LOG.debug("Loaded DocumentsController");
+        log.debug("Loaded DocumentsController");
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -158,7 +158,7 @@ public final class DocumentsController {
         Subject s = subService.getSubjectByName(subject);
         Page pageResult = docService.getPageBySubject(s, limit);
 
-        LOG.debug("pagina " + page);
+        log.debug("pagina " + page);
 
         int divisor = pagesToPresent / 2;
 
@@ -252,7 +252,7 @@ public final class DocumentsController {
     public Message delete(@PathVariable("id") int id, HttpServletRequest request) {
         Message msg;
 
-        LOG.info("Deletando o objeto: " + id);
+        log.info("Deletando o objeto: " + id);
         try {
             Document d = docService.get(id);
             if (d == null) {
@@ -269,7 +269,7 @@ public final class DocumentsController {
         } catch (IOException io) {
             msg = new Message(Message.SUCCESS, "Documento excluido com sucesso, mas os seus arquivos não foram encontrados", "");
         } catch (DataAccessException e) {
-            LOG.error("Não foi possivel excluir o documento.", e);
+            log.error("Não foi possivel excluir o documento.", e);
             msg = new Message(Message.ERROR, "Erro ao excluir o documento.", "");
         }
         return msg;
@@ -501,7 +501,7 @@ public final class DocumentsController {
     }
 
     private void setOBAAFiles(Document d, final HttpServletRequest request) {
-        LOG.debug("Trying to save");
+        log.debug("Trying to save");
 
         Subject s;
 
@@ -514,7 +514,7 @@ public final class DocumentsController {
                     nameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            LOG.trace("Assunto do OA: " + nameSubject);
+            log.trace("Assunto do OA: " + nameSubject);
             if (!nameSubject.equals("")) {
                 s = subService.getSubjectByName(nameSubject);
                 d.setSubject(s);
@@ -537,7 +537,7 @@ public final class DocumentsController {
             obaa.getGeneral().setKeywords(splittedKeywords);
         }
 
-        LOG.debug("Title: " + obaa.getGeneral().getTitles());
+        log.debug("Title: " + obaa.getGeneral().getTitles());
 
         Technical t = obaa.getTechnical();
 
@@ -554,7 +554,7 @@ public final class DocumentsController {
         d.setMetadata(obaa);
 
         if (obaa.getTechnical() == null) {
-            LOG.warn("Technical was null");
+            log.warn("Technical was null");
             obaa.setTechnical(new Technical());
         }
         List<Location> l = obaa.getTechnical().getLocation();
@@ -630,14 +630,7 @@ public final class DocumentsController {
     }
 
     private String createUri(Document d) {
-
-        String port = config.getProperty("Repositorio.port", "8080");
-        return ("http://"
-                + config.getProperty("Repositorio.hostname")
-                + (port.equals("80") ? "" : (":" + port))
-                // if port 80, dont put anything
-                + config.getProperty("Repositorio.rootPath", "/repositorio")
-                + "/documents/" + d.getId());
+        return Config.getUrl(config)+d.getId();
     }
 
     private boolean isManagerForThisDocument(Document d, HttpServletRequest request) {
@@ -684,7 +677,7 @@ public final class DocumentsController {
         for (Files file : files) {
 
             mime = file.getContentType();
-            LOG.debug("MIME Type: " + mime);
+            log.debug("MIME Type: " + mime);
 
             if (!mime.startsWith(IMAGE)) {
                 allImg = false;
@@ -760,7 +753,7 @@ public final class DocumentsController {
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
-            LOG.trace("\n doc " + doc.getId());
+            log.trace("\n doc " + doc.getId());
 
             String destinationPath = Config.FILE_PATH + doc.getId();
             File destinationDocFiles = new File(destinationPath);
@@ -792,7 +785,7 @@ public final class DocumentsController {
     private ObaaDto allImg(String mime) {
         ObaaDto imgObj = new ObaaDto();
 
-        LOG.debug("All Image");
+        log.debug("All Image");
 
         //General
         imgObj.setStructure(Structure.ATOMIC);
@@ -828,7 +821,7 @@ public final class DocumentsController {
     private ObaaDto allPdf() {
         ObaaDto pdfObj = new ObaaDto();
 
-        LOG.debug("All PDF");
+        log.debug("All PDF");
 
         //General
         pdfObj.setStructure(Structure.ATOMIC);
@@ -862,7 +855,7 @@ public final class DocumentsController {
     private ObaaDto allDoc() {
         ObaaDto docObj = new ObaaDto();
 
-        LOG.debug("All Doc");
+        log.debug("All Doc");
 
         //General
         docObj.setStructure(Structure.ATOMIC);

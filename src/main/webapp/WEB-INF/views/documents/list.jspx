@@ -94,7 +94,8 @@
                             <ul class="documentData">
 
                                 <li class="obaaEntry">
-                                    <a href="${doc.metadata.technical.firstHttpLocation}"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
+                                    <c:url var="imgThumbnail" value="/files/${doc.id}/thumbnail"/>
+                                    <a href="${doc.metadata.technical.firstHttpLocation}"><img src="${imgThumbnail}" class="img-capa-lista img-responsive" /></a>
                                 </li>                            
 
                                 <!--<c:if test="${!empty doc.files}">
