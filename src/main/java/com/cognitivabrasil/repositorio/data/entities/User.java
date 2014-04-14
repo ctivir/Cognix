@@ -37,7 +37,7 @@ public class User implements UserDetails {
     public static final String ROLE_AUTHOR = "author";
     public static final String ROLE_VIEW = "view";
     public static final String ROLE_ROOT = "root";
-    
+
     private static PasswordEncoder passEncoder;
     private Integer id;
     private String login;
@@ -66,7 +66,7 @@ public class User implements UserDetails {
         role = "";
         deleted = false;
     }
-    
+
     /**
      * @return the passwordEncoder
      */
@@ -94,9 +94,9 @@ public class User implements UserDetails {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     @Override
-    @Column(name="login")
+    @Column(name = "login")
     public String getUsername() {
         return login;
     }
@@ -208,7 +208,6 @@ public class User implements UserDetails {
         return new HashSet<>(Arrays.asList(StringUtils.split(getPermissionsInternal(), ',')));
     }
 
-
     /**
      * @return the permissionsInternal
      */
@@ -238,7 +237,7 @@ public class User implements UserDetails {
         this.role = role;
         setPermissionsInternal(getPermissions(role));
     }
-    
+
     public boolean isDeleted() {
         return deleted;
     }
@@ -268,13 +267,14 @@ public class User implements UserDetails {
         return roles.get(role);
 
     }
-    
+
     /**
      * Checks if the user is root.
+     *
      * @return Return true if the user is root and false otherwise
      */
     @Transient
-    public boolean isRoot(){
+    public boolean isRoot() {
         return role.equalsIgnoreCase(ROLE_ROOT);
     }
 
@@ -338,15 +338,15 @@ public class User implements UserDetails {
         hash = 11 * hash + (this.role != null ? this.role.hashCode() : 0);
         return hash;
     }
-    
+
     /*
      * Implemented to satisfy SpringSecurity
      */
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities =
-                new HashSet<>();
+        Set<GrantedAuthority> authorities
+                = new HashSet<>();
         for (String s : getPermissions()) {
             authorities.add(new SimpleGrantedAuthority(s));
         }

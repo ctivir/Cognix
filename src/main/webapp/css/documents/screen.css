@@ -57,8 +57,8 @@ a img { border: none; }
 }
 
 /*tree*/
-#tree{margin-top: 1%;}
-#tree .nome{font-weight: bold; margin-right: 1%;}
+#obaaTree{margin-top: 1%;}
+#obaaTree .name{font-weight: bold;}
 input[readonly="readonly"] {background-color: transparent}
 
 .relation{margin: 20px 0 15px 10px; font-weight: bold}

@@ -246,6 +246,14 @@ public final class DocumentsController {
         }
         return "documents/show";
     }
+    
+    @RequestMapping("/{id}/json")
+    public @ResponseBody
+    String getJson(@PathVariable Integer id){
+        Document d = docService.get(id);
+        d.getMetadata().setLocale("pt-BR");
+        return d.getMetadata().getJson();
+    }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     @ResponseBody

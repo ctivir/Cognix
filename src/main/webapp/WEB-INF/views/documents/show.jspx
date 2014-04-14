@@ -26,6 +26,7 @@
             <c:url var="cssScreen" value="/css/documents/screen.css" />
             <c:url var="treeview" value="/scripts/documents/jquery.treeview.js" />
             <c:url var="showDoc" value="/scripts/showDocument.js" />
+            <c:url var="show" value="/scripts/documents/show.js" />
             <c:url var="home" value="/" />
             <c:url var="docs" value="/documents/" />
 
@@ -34,6 +35,7 @@
 
             <script type="text/javascript" src="${treeview}"><jsp:text/></script>
             <script type="text/javascript" src="${showDoc}"><jsp:text/></script>
+            <script type="text/javascript" src="${show}"><jsp:text/></script>
 
             <div id="breadCrumb"> <a href="${home}">Página inicial</a> >  <a href="${docs}">Lista de documentos</a> > <strong>Visualizar item </strong> </div>
             <div id="sidetree">
@@ -62,12 +64,23 @@
                                 </span>
                             </div>
                         </c:if>
+                        <c:if test="${!empty hasversion}">
+                            <div class="relation">
+                                <span class="glyphicon glyphicon-link"><jsp:text/></span>
+                                <span class='gliphycon-text'>
+                                    Este documento tem uma versão em: <a href="${hasversion}">${hasversion}</a>
 
+
+                                    <!--colocar aqui: Este objeto pode ser encontrado em: locations-->
+
+                                </span>
+                            </div>
+                        </c:if>
                         <c:if test="${!empty doc.files}">
                             <div id="files" class="show-files">
                                 <table class="zebra">
                                     <th width="75%">Arquivos</th><th width="25%">Formato</th>
-                                        <c:forEach var="file" items="${doc.files }" varStatus="status">
+                                   Localização     <c:forEach var="file" items="${doc.files }" varStatus="status">
                                         <tr>
                                             <td>
                                                 <c:url var="location" value="/files/${file.id}" />
@@ -83,15 +96,12 @@
                             </div>
                         </c:if>
 
-                        <c:if test="${!empty hasversion}">
-                            <div class="relation">
-                                <span class="glyphicon glyphicon-link"><jsp:text/></span>
-                                <span class='gliphycon-text'>
-                                    Este documento tem uma versão em: <a href="${hasversion}">${hasversion}</a>
-                                </span>
-                            </div>
-                        </c:if>
+                        <div id="obaaTree" class="col-md-12 treeview-famfamfam" src="${docs}${doc.id}/json">
+                            <c:url var="imgLoader" value="/images/ajax-loader.gif"/>
+                            <div class="text-center"><img src='${imgLoader}' border='0' alt='Carregando' align='middle'/> Aguarde, carregando...</div>
+                        </div>
 
+                        <p>sds</p>
                         <ul id="tree" class="treeview-famfamfam">
                             <c:if test="${!empty doc.metadata.general}">
                                 <li>
