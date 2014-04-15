@@ -59,3 +59,4 @@ input[readonly="readonly"] {background-color: transparent}
 
 .relation{margin: 20px 0 15px 10px; font-weight: bold}
 .relation a{font-weight: normal; color:#38829f}
+.value{word-wrap:break-word;} 

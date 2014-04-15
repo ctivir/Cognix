@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @RequestMapping("/panel")
 @Controller
-public class InformationPaneController {
+public class InformationPanelController {
 
     @Autowired
     private DocumentService docService;
@@ -38,7 +38,7 @@ public class InformationPaneController {
     @Autowired
     private DataSource dataSource;
     
-    private static final Logger log = Logger.getLogger(InformationPaneController.class);
+    private static final Logger log = Logger.getLogger(InformationPanelController.class);
 
     @RequestMapping(method = RequestMethod.GET)
     public String showInformations(Model model) {
