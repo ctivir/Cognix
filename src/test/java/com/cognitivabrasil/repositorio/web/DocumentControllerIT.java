@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cognitivabrasil.repositorio.web;
 
 import cognitivabrasil.obaa.Accessibility.Accessibility;
@@ -445,7 +440,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(accessibility.getResourceDescription().getPrimary().getHasText(), equalTo("true"));
         assertThat(accessibility.getResourceDescription().getPrimary().getHasTactile(), equalTo("true"));
         Technical technical = docResult.getMetadata().getTechnical();
-        assertThat(technical.getFormat().get(0).toString(), equalTo("pdf"));
+        assertThat(technical.getFormats().get(0).toString(), equalTo("application/pdf"));
         assertThat(technical.getLocation().get(0).toString(), equalTo("www.marcosnunes.com/5"));
         assertThat(technical.getRequirement().get(0).getOrComposite().get(0).getType(), equalTo("operatingSystem"));
         assertThat(technical.getRequirement().get(0).getOrComposite().get(0).getName(), equalTo("IOS"));
@@ -528,12 +523,12 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/"+dv.getId()));
         
         assertThat(dOrg.getMetadata().getRelations(), hasSize(1));
-        assertThat(dOrg.getMetadata().getRelations().get(0).getKind(), equalTo(Kind.HAS_VERSION));
+        assertThat(dOrg.getMetadata().getRelations().get(0).getKind().toString(), equalTo(Kind.HAS_VERSION));
         assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier(), hasSize(1));
         String entryVersionOf = dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryVersionOf));
         
-        assertThat(dv.getMetadata().getRelations().get(0).getKind(), equalTo(Kind.IS_VERSION_OF));
+        assertThat(dv.getMetadata().getRelations().get(0).getKind().toString(), equalTo(Kind.IS_VERSION_OF));
         String entryOrg = dOrg.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dv.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryOrg));
     }

@@ -28,6 +28,7 @@ import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Relation.Kind;
 import cognitivabrasil.obaa.Relation.Relation;
+import cognitivabrasil.obaa.Relation.Resource;
 import cognitivabrasil.obaa.Rights.Rights;
 import cognitivabrasil.obaa.Technical.*;
 import com.cognitivabrasil.repositorio.data.entities.Document;
@@ -311,16 +312,21 @@ public final class DocumentsController {
         //Cria relação de versão no orginial
         Relation originalRelation = new Relation();
         originalRelation.setKind(Kind.HAS_VERSION);
-        originalRelation.getResource().addIdentifier(versionId);
+        Resource r = new Resource();
+        r.addIdentifier(versionId);
+        originalRelation.setResource(r);
         List<Relation> relationsList = new ArrayList<>();
         relationsList.add(originalRelation);
         originalObaa.setRelations(relationsList);
 
         //Cria relação de versão no novo objeto
         Relation versionRelation = new Relation();
+                
         versionRelation.setKind(Kind.IS_VERSION_OF);
-        versionRelation.getResource().addIdentifier(originalObaa.getGeneral().
-                getIdentifiers().get(0));
+        Identifier id = originalObaa.getGeneral().getIdentifiers().get(0);
+        Resource r2 = new Resource();
+        r2.addIdentifier(id);
+        versionRelation.setResource(r2);
         List<Relation> relations2List = new ArrayList<>();
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
