@@ -71,7 +71,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/documents")
 public final class DocumentsController {
 
-    private static final Logger LOG = Logger.getLogger(DocumentsController.class);
+    private static final Logger log = Logger.getLogger(DocumentsController.class);
     private static final int pageSize = 9;
     private static final int pagesToPresent = 5;
     @Autowired
@@ -83,9 +83,9 @@ public final class DocumentsController {
     private Properties config;
 
     public DocumentsController() {
-        LOG.debug("Loaded DocumentsController");
+        log.debug("Loaded DocumentsController");
     }
-    
+
     @RequestMapping(method = RequestMethod.GET)
     public String main(Model model) {
         docService.deleteEmpty();
@@ -94,112 +94,112 @@ public final class DocumentsController {
 
     @RequestMapping(value = "/page/{page}", method = RequestMethod.GET)
     public String mainPage(Model model, @PathVariable Integer page) {
-        
-        Pageable limit = new PageRequest(page,pageSize);
+
+        Pageable limit = new PageRequest(page, pageSize);
         Page pageResult = docService.getPage(limit);
-        
-        int divisor = pagesToPresent/2;
-        
+
+        int divisor = pagesToPresent / 2;
+
         //Criando o array com as páginas a serem apresentadas
         int totalPage = pageResult.getTotalPages();
         int sobraDePaginasDireita = 0;
         int sobraDePaginasEsquerda = 0;
         List<Integer> pagesAvaliable = new ArrayList<>();
         pagesAvaliable.add(page);
-        for(int i=1;i<=divisor;i++){            
+        for (int i = 1; i <= divisor; i++) {
             //Teste de sobras na esquerda
-            if((page-i)>=0){
-                pagesAvaliable.add(page-i);
-            }else{
+            if ((page - i) >= 0) {
+                pagesAvaliable.add(page - i);
+            } else {
                 sobraDePaginasEsquerda++;
             }
             //Teste de sobras na direita
-            if((page+i)<totalPage){
-                pagesAvaliable.add(page+i);
-            }else{
+            if ((page + i) < totalPage) {
+                pagesAvaliable.add(page + i);
+            } else {
                 sobraDePaginasDireita++;
             }
-        }         
-        if(sobraDePaginasEsquerda==0||sobraDePaginasDireita==0){
-            int i;            
-            for(i=1;i<=sobraDePaginasDireita;i++){                
-                if(page-divisor-i>=0){
-                    pagesAvaliable.add(page-divisor-i);
-                }
-            }
-            sobraDePaginasDireita = sobraDePaginasDireita-i+1;
-            for(i=1;i<=sobraDePaginasEsquerda;i++){
-                if(page+divisor+i<totalPage){
-                    pagesAvaliable.add(page+divisor+i);
-                }
-            }
-            sobraDePaginasEsquerda = sobraDePaginasEsquerda-i+1;
         }
-        Collections.sort(pagesAvaliable);      
+        if (sobraDePaginasEsquerda == 0 || sobraDePaginasDireita == 0) {
+            int i;
+            for (i = 1; i <= sobraDePaginasDireita; i++) {
+                if (page - divisor - i >= 0) {
+                    pagesAvaliable.add(page - divisor - i);
+                }
+            }
+            sobraDePaginasDireita = sobraDePaginasDireita - i + 1;
+            for (i = 1; i <= sobraDePaginasEsquerda; i++) {
+                if (page + divisor + i < totalPage) {
+                    pagesAvaliable.add(page + divisor + i);
+                }
+            }
+            sobraDePaginasEsquerda = sobraDePaginasEsquerda - i + 1;
+        }
+        Collections.sort(pagesAvaliable);
 //        LOG.debug("Sobra de paginas esquerda: "+sobraDePaginasEsquerda+" direita: "+sobraDePaginasDireita+" pagina: "+page);
-        
-        model.addAttribute("documents", pageResult);  
-        model.addAttribute("pages", pagesAvaliable);  
+
+        model.addAttribute("documents", pageResult);
+        model.addAttribute("pages", pagesAvaliable);
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("permDocAdmin", User.MANAGE_DOC);
-        model.addAttribute("permCreateDoc", User.CREATE_DOC);      
+        model.addAttribute("permCreateDoc", User.CREATE_DOC);
         return "documents/";
     }
 
     @RequestMapping(value = "/filter/{subject}", method = RequestMethod.GET)
     public String filterDiscipline(@PathVariable String subject, Model model) {
-       return filterDisciplinePage(subject, model, 0);
+        return filterDisciplinePage(subject, model, 0);
     }
-    
+
     @RequestMapping(value = "/filter/{subject}/page/{page}", method = RequestMethod.GET)
     public String filterDisciplinePage(@PathVariable String subject, Model model, @PathVariable Integer page) {
-        
-        Pageable limit = new PageRequest(page,pageSize);
+
+        Pageable limit = new PageRequest(page, pageSize);
         Subject s = subService.getSubjectByName(subject);
         Page pageResult = docService.getPageBySubject(s, limit);
-        
-        LOG.debug("pagina "+page);
-        
-        int divisor = pagesToPresent/2;
-        
+
+        log.debug("pagina " + page);
+
+        int divisor = pagesToPresent / 2;
+
         //Criando o array com as páginas a serem apresentadas
         int totalPage = pageResult.getTotalPages();
         int sobraDePaginasDireita = 0;
         int sobraDePaginasEsquerda = 0;
         List<Integer> pagesAvaliable = new ArrayList<>();
         pagesAvaliable.add(page);
-        for(int i=1;i<=divisor;i++){            
+        for (int i = 1; i <= divisor; i++) {
             //Teste de sobras na esquerda
-            if((page-i)>=0){
-                pagesAvaliable.add(page-i);
-            }else{
+            if ((page - i) >= 0) {
+                pagesAvaliable.add(page - i);
+            } else {
                 sobraDePaginasEsquerda++;
             }
             //Teste de sobras na direita
-            if((page+i)<totalPage){
-                pagesAvaliable.add(page+i);
-            }else{
+            if ((page + i) < totalPage) {
+                pagesAvaliable.add(page + i);
+            } else {
                 sobraDePaginasDireita++;
             }
-        }         
-        if(sobraDePaginasEsquerda==0||sobraDePaginasDireita==0){
-            int i;            
-            for(i=1;i<=sobraDePaginasDireita;i++){                
-                if(page-divisor-i>=0){
-                    pagesAvaliable.add(page-divisor-i);
+        }
+        if (sobraDePaginasEsquerda == 0 || sobraDePaginasDireita == 0) {
+            int i;
+            for (i = 1; i <= sobraDePaginasDireita; i++) {
+                if (page - divisor - i >= 0) {
+                    pagesAvaliable.add(page - divisor - i);
                 }
             }
-            sobraDePaginasDireita = sobraDePaginasDireita-i+1;
-            for(i=1;i<=sobraDePaginasEsquerda;i++){
-                if(page+divisor+i<totalPage){
-                    pagesAvaliable.add(page+divisor+i);
+            sobraDePaginasDireita = sobraDePaginasDireita - i + 1;
+            for (i = 1; i <= sobraDePaginasEsquerda; i++) {
+                if (page + divisor + i < totalPage) {
+                    pagesAvaliable.add(page + divisor + i);
                 }
             }
-            sobraDePaginasEsquerda = sobraDePaginasEsquerda-i+1;
+            //TODO: ISSO AQUI ESTÁ FORA DO FOR E NO FIM DO IF E NÃO É USADO PARA NADA (MARCOS).
+            sobraDePaginasEsquerda = sobraDePaginasEsquerda - i + 1;
         }
         Collections.sort(pagesAvaliable);
-        
-                
+
         model.addAttribute("documents", pageResult);
         model.addAttribute("pages", pagesAvaliable);
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
@@ -226,7 +226,33 @@ public final class DocumentsController {
         }
         d.getMetadata().setLocale("pt-BR");
         model.addAttribute("doc", d);
+
+        //mostrar a relação para o usuário
+        if (d.getMetadata() != null && !d.getMetadata().getRelations().isEmpty()) {
+            for (Relation rel : d.getMetadata().getRelations()) {
+                switch (rel.getKind().getText()) {
+                    case Kind.IS_VERSION_OF:
+                        if (!rel.getResource().getIdentifier().isEmpty()) {
+                            model.addAttribute("isversion", rel.getResource().getIdentifier().get(0).getEntry());
+                        }
+                        break;
+                    case Kind.HAS_VERSION:
+                        if (!rel.getResource().getIdentifier().isEmpty()) {
+                            model.addAttribute("hasversion", rel.getResource().getIdentifier().get(0).getEntry());
+                        }
+                        break;
+                }
+            }
+        }
         return "documents/show";
+    }
+    
+    @RequestMapping("/{id}/json")
+    public @ResponseBody
+    String getJson(@PathVariable Integer id){
+        Document d = docService.get(id);
+        d.getMetadata().setLocale("pt-BR");
+        return d.getMetadata().getJson();
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
@@ -234,7 +260,7 @@ public final class DocumentsController {
     public Message delete(@PathVariable("id") int id, HttpServletRequest request) {
         Message msg;
 
-        LOG.info("Deletando o objeto: " + id);
+        log.info("Deletando o objeto: " + id);
         try {
             Document d = docService.get(id);
             if (d == null) {
@@ -251,7 +277,7 @@ public final class DocumentsController {
         } catch (IOException io) {
             msg = new Message(Message.SUCCESS, "Documento excluido com sucesso, mas os seus arquivos não foram encontrados", "");
         } catch (DataAccessException e) {
-            LOG.error("Não foi possivel excluir o documento.", e);
+            log.error("Não foi possivel excluir o documento.", e);
             msg = new Message(Message.ERROR, "Erro ao excluir o documento.", "");
         }
         return msg;
@@ -400,7 +426,7 @@ public final class DocumentsController {
         contribute = new cognitivabrasil.obaa.LifeCycle.Contribute();
 
         Entity e = new Entity();
-        
+
         e.setName("Ministério da Educação", "do Brasil");
 
         contribute.addEntity(e);
@@ -494,7 +520,7 @@ public final class DocumentsController {
     }
 
     private void setOBAAFiles(Document d, final HttpServletRequest request) {
-        LOG.debug("Trying to save");
+        log.debug("Trying to save");
 
         Subject s;
 
@@ -507,7 +533,7 @@ public final class DocumentsController {
                     nameSubject = retiraAcentos(key).toLowerCase();
                 }
             }
-            LOG.trace("Assunto do OA: " + nameSubject);
+            log.trace("Assunto do OA: " + nameSubject);
             if (!nameSubject.equals("")) {
                 s = subService.getSubjectByName(nameSubject);
                 d.setSubject(s);
@@ -530,10 +556,9 @@ public final class DocumentsController {
             obaa.getGeneral().setKeywords(splittedKeywords);
         }
 
-        LOG.debug("Title: " + obaa.getGeneral().getTitles());
+        log.debug("Title: " + obaa.getGeneral().getTitles());
 
         Technical t = obaa.getTechnical();
-
 
         Long size;
 
@@ -548,15 +573,15 @@ public final class DocumentsController {
         d.setMetadata(obaa);
 
         if (obaa.getTechnical() == null) {
-            LOG.warn("Technical was null");
+            log.warn("Technical was null");
             obaa.setTechnical(new Technical());
         }
         List<Location> l = obaa.getTechnical().getLocation();
-        
+
         //if doesn't have location, an entry based is created
         if (l == null || l.isEmpty()) {
-            obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());            
-        } 
+            obaa.getTechnical().addLocation(obaa.getGeneral().getIdentifiers().get(0).getEntry());
+        }
 
         // Preenchimento dos metametadados
         Metametadata meta = new Metametadata();
@@ -571,7 +596,7 @@ public final class DocumentsController {
         // Quando fizer o cadastro dos usuários do sistema cuidar para que possa por os dados do vcard        
         Entity e = new Entity();
         e.setName(userName, "");
-        
+
         c.addEntity(e);
         c.setRole(Role.AUTHOR);
 
@@ -595,19 +620,36 @@ public final class DocumentsController {
         //Parsing do duration
         d.setObaaEntry(obaa.getGeneral().getIdentifiers().get(0).getEntry());
 
+        //Se o documento tem uma relação is_version_of, é testado se o outro 
+        //documento tem o Has_version, se não tiver a relação é criada.
+        for (Identifier id : obaa.getRelationsWithKind(Kind.IS_VERSION_OF)) {
+            if (id.getCatalog().equalsIgnoreCase("URI")) {
+                Document docVersion = docService.get(id.getEntry());
+                if (docVersion.getMetadata() != null) {
+                    //testa se o documento ja tem tem a versao cadastrada
+                    if (!docVersion.getMetadata().hasRelationWith(Kind.HAS_VERSION, d.getObaaEntry())) {
+                        //Cria relação de versão no orginial
+                        Relation originalRelation = new Relation();
+                        originalRelation.setKind(Kind.HAS_VERSION);
+                        originalRelation.setResource(new Resource());
+                        originalRelation.getResource().addIdentifier(new Identifier("URI", d.getObaaEntry()));
+                        List<Relation> relationsList = new ArrayList<>();
+                        relationsList.add(originalRelation);
+                        docVersion.getMetadata().setRelations(relationsList);
+                        //salva o documento com a nova relaçao
+                        docService.save(docVersion);
+                    }
+                }
+            }
+        }
+
         d.setMetadata(obaa);
+        d.setActive(true);
         docService.save(d);
     }
 
     private String createUri(Document d) {
-
-        String port = config.getProperty("Repositorio.port", "8080");
-        return ("http://"
-                + config.getProperty("Repositorio.hostname")
-                + (port.equals("80") ? "" : (":" + port))
-                // if port 80, dont put anything
-                + config.getProperty("Repositorio.rootPath", "/repositorio")
-                + "/documents/" + d.getId());
+        return Config.getUrl(config)+d.getId();
     }
 
     private boolean isManagerForThisDocument(Document d, HttpServletRequest request) {
@@ -654,7 +696,7 @@ public final class DocumentsController {
         for (Files file : files) {
 
             mime = file.getContentType();
-            LOG.debug("MIME Type: " + mime);
+            log.debug("MIME Type: " + mime);
 
             if (!mime.startsWith(IMAGE)) {
                 allImg = false;
@@ -726,11 +768,11 @@ public final class DocumentsController {
     public String recallFiles()
             throws IOException {
         String location = Config.FILE_PATH + "old/";
-        
+
         List<Document> docs = docService.getAll();
 
         for (Document doc : docs) {
-            LOG.trace("\n doc " + doc.getId());
+            log.trace("\n doc " + doc.getId());
 
             String destinationPath = Config.FILE_PATH + doc.getId();
             File destinationDocFiles = new File(destinationPath);
@@ -762,7 +804,7 @@ public final class DocumentsController {
     private ObaaDto allImg(String mime) {
         ObaaDto imgObj = new ObaaDto();
 
-        LOG.debug("All Image");
+        log.debug("All Image");
 
         //General
         imgObj.setStructure(Structure.ATOMIC);
@@ -798,7 +840,7 @@ public final class DocumentsController {
     private ObaaDto allPdf() {
         ObaaDto pdfObj = new ObaaDto();
 
-        LOG.debug("All PDF");
+        log.debug("All PDF");
 
         //General
         pdfObj.setStructure(Structure.ATOMIC);
@@ -832,7 +874,7 @@ public final class DocumentsController {
     private ObaaDto allDoc() {
         ObaaDto docObj = new ObaaDto();
 
-        LOG.debug("All Doc");
+        log.debug("All Doc");
 
         //General
         docObj.setStructure(Structure.ATOMIC);

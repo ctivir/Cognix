@@ -21,8 +21,6 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
         <!-- allow any user to view (GET) the pages. Changes should only be effected
      			with POST requests -->
-        <intercept-url  pattern="/documents/[0-9]+" method="GET"
-                        access="permitAll" />
         
         <intercept-url  pattern="/oai.*" method="GET"
                         access="permitAll" />
@@ -32,7 +30,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         
         <intercept-url  pattern="/files/[0-9]+/thumbnail" method="GET"
                         access="permitAll" />
-
+        
         <intercept-url  pattern="/login.*" method="GET"
                         access="permitAll" />
         
@@ -48,19 +46,25 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         <intercept-url  pattern="/documents/filter/.*" method="GET"
                         access="permitAll" />
         
-        <intercept-url  pattern="/" method="GET"
+         <intercept-url  pattern="/documents/[0-9]+" method="GET"
+                        access="permitAll" />
+        
+        <intercept-url  pattern="/documents/[0-9]+/json" method="GET"
                         access="permitAll" />
         
         <intercept-url pattern="/documents/new"
                        access="hasRole('PERM_CREATE_DOC')" />
         
-        <intercept-url pattern="/.*" method="GET"
-                       access="isAuthenticated()" />
-        
         <!--controle de quem pode remover é feito no controller, para permitir que o autor possa deletar e editar-->
         <intercept-url pattern="/documents/[0-9]+/delete" method="POST"
                        access="isAuthenticated()" />        
         <intercept-url pattern="/documents/[0-9]+/edit" method="POST"
+                       access="isAuthenticated()" />
+        
+        <intercept-url  pattern="/" method="GET"
+                        access="permitAll" />
+                
+        <intercept-url pattern="/.*" method="GET"
                        access="isAuthenticated()" />
 
         <intercept-url pattern="/files/.*" method="DELETE"
@@ -73,6 +77,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
                        access="hasAnyRole('PERM_MANAGE_DOC')" />
         
         <intercept-url pattern="/documents/.*" method="POST"
+                       access="hasRole('PERM_MANAGE_DOC')" />
+        
+        <intercept-url pattern="/panel*" method="GET"
                        access="hasRole('PERM_MANAGE_DOC')" />
                 
         <intercept-url pattern="/users/[0-9]+/editPass" method="POST"
@@ -91,7 +98,6 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         <!--        <intercept-url pattern="/files/.*" access="denyAll" />-->
 
 
-        
         <intercept-url pattern=".*" method="GET"
                        access="isAuthenticated()" />
         <!-- deny all access not explicitly given -->

@@ -40,9 +40,6 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
     @Autowired
     private DocumentRepository docRep;
 
-    @Autowired
-    private FileService filesService;
-
     private static final Logger LOG = Logger.getLogger(DocumentServiceImpl.class);
 
     @Override
@@ -122,9 +119,9 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
      */
     @Override
     public void save(Document d) throws IllegalStateException {
-        //if the document has xml then set active
-        if (!(d.getObaaXml() == null || d.getObaaXml().isEmpty())) {
-            d.setActive(true);
+        //para garantir que todas alterações feitas no obaa serão salvar no xml.
+        if(!d.getMetadata().isEmpty()){
+            d.setObaaXml(d.getMetadata().toXml());
         }
         docRep.save(d);
     }
@@ -171,6 +168,11 @@ public class DocumentServiceImpl implements DocumentService, OaiDocumentService 
 
     private DateTime add1Second(DateTime dateTime) {
         return dateTime.plusSeconds(1);
+    }
+    
+    @Override
+    public long count(){
+        return docRep.countActiveTrueDeletedFalse();
     }
 
 }

@@ -19,10 +19,7 @@
         </c:if>
 
         <div id="entities-list">
-            <c:url var="logoutUrl" value="/j_spring_security_logout" />
-            <c:url var="imgSair" value="/images/sair100x120.png" />
-            <c:url var="imgNewDoc" value="/images/document-new.png" />
-            <c:url var="imgUsers" value="/images/users.png" />            
+            <c:url var="logoutUrl" value="/j_spring_security_logout" />      
             <c:url var="users" value="/users/"/>
             <c:url var="docUrl" value="/documents"/>
 
@@ -95,29 +92,10 @@
 
 
                             <ul class="documentData">
-
                                 <li class="obaaEntry">
-                                    <a href="${doc.metadata.technical.firstHttpLocation}"><img src="/repositorio/files/${doc.id}/thumbnail" class="img-capa-lista img-responsive" /></a>
+                                    <c:url var="imgThumbnail" value="/files/${doc.id}/thumbnail"/>
+                                    <a href="${doc.metadata.technical.firstHttpLocation}"><img src="${imgThumbnail}" class="img-capa-lista img-responsive" /></a>
                                 </li>                            
-
-                                <!--<c:if test="${!empty doc.files}">
-                                    <li>
-                                        <label>Arquivo<c:if test="${doc.files.size() > 1}">s</c:if></label>
-                                            <div class="files ">
-                                    <c:forEach var="file" items="${doc.files }">
-                                        <c:url var="location" value="/files/${file.id}" />
-                                        <div>                                            
-                                            <a class="" href="${location}">${file.name}</a> 
-                                            <span class="smallerText">
-                                        <c:if test="${!empty file.contentType}"> (${file.contentType})</c:if>
-                                        <c:if test="${file.sizeInBytes > 0}"> ${file.sizeFormatted}</c:if>
-                                        </span>
-                                    </div>
-
-                                    </c:forEach>
-                                </div>
-                            </li>
-                                </c:if> -->
                             </ul>
                         </div>
                     </c:if>                    

@@ -20,6 +20,13 @@
                         <a href="${root}users" class="ui-tabs-anchor">Usuários</a>
                 </li>
             </security:authorize>
+                <security:authorize access="hasRole('PERM_MANAGE_DOC')">
+                <li class="ui-state-default ui-corner-top 
+                    <c:if test="${tabNumber == 3}"> ui-tabs-active ui-state-active</c:if>
+                        " >
+                        <a href="${root}panel" class="ui-tabs-anchor">Informações</a>
+                </li>
+            </security:authorize>
         </ul>
     </div>
 </div>

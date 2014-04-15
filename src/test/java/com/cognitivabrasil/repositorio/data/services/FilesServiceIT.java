@@ -87,7 +87,7 @@ public class FilesServiceIT extends AbstractTransactionalJUnit4SpringContextTest
         try {
             fileService.deleteFile(f);
         } catch (IOException io) {
-            System.out.println("erro esperado");
+            //erro esperado
         } finally {
             
             

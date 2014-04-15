@@ -291,6 +291,7 @@
                         <legend>Ciclo de Vida</legend>
 
 
+
                         <li class="version marcador single" id="version">
                             <span class="file">Versão</span>
                             <input id="impVersion" name="lifeCycle.version" type="text" value="${obaa.lifeCycle.version}" />
@@ -618,7 +619,7 @@
                                 </li>
                             </ul>
                         </li>
-
+                        <input type="hidden" value="marcos" id="obaa.marcos.nunes"/>
                     </fieldset>
 
                     <fieldset class="sectionwrap marcador single" id="technical">
@@ -835,9 +836,6 @@
                         <li><a class ="add" id="platformSpecificFeatures">+ Característica específica da plataforma</a></li>
 
 
-
-
-
                         <c:if test="${!empty doc.files}">
                             <div id="files">
                                 <table class="zebra">
@@ -847,9 +845,9 @@
                                             <td>
                                                 <c:url var="location" value="/files/${file.id}" />
                                                 <a class="" href="${location}">${file.name }</a>
-                                                <span class="smallerText">
+                                                <small>
                                                     <c:if test="${file.sizeInBytes > 0}"> (${file.sizeFormatted})</c:if>
-                                                    </span>
+                                                    </small>
                                                 </td>
                                                 <td> <c:if test="${!empty file.contentType}">${file.contentType}</c:if></td>
                                                 <td>
@@ -864,7 +862,20 @@
                                     </c:forEach>
                                 </table>
                             </div>
-                        </c:if>                        
+                        </c:if>   
+
+                        <!-- Relation -->
+                        <c:forEach var="relation" items="${obaa.relations}" varStatus="status">
+                            <input type="hidden" name="obaa.relations[${status.index}].kind" value="${relation.kind}"/>
+                            <c:forEach var="resourceId" items="${relation.resource.identifier}" varStatus="stId">
+                                <input type="hidden" name="obaa.relations[${status.index}].resource.identifier[${stId.index}].catalog" value="${resourceId.catalog}"/>
+                                <input type="hidden" name="obaa.relations[${status.index}].resource.identifier[${stId.index}].entry" value="${resourceId.entry}"/>
+                            </c:forEach>
+                            <c:forEach var="resourceDesc" items="${relation.resource.description}" varStatus="stDesc">
+                                <input type="hidden" name="obaa.relations[${status.index}].resource.description[${stDesc.index}]" value="${resourceDesc}"/>
+                            </c:forEach>
+                        </c:forEach>
+
 
                         <button class="next btn btn-default" id="submitButton" type="submit" >
                             <span class="glyphicon glyphicon-floppy-disk"></span>

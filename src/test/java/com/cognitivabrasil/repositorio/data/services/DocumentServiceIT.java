@@ -247,4 +247,18 @@ public class DocumentServiceIT extends AbstractTransactionalJUnit4SpringContextT
         docs = pageDoc.getContent();
         assertThat(docs, hasSize(0));
     }
+    
+    @Test
+    public void testEditMetadata(){
+        Document d = docService.get(1);
+        d.getMetadata().getGeneral().addKeyword("editTest");
+        docService.save(d);
+        
+        em.flush();
+        em.clear();
+        
+        Document d1 = docService.get(1);
+        assertThat(d1.getMetadata().getGeneral().getKeywords().contains("editTest"), equalTo(true));
+        
+    }
 }

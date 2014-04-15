@@ -20,6 +20,8 @@ import cognitivabrasil.obaa.LifeCycle.Status;
 import cognitivabrasil.obaa.Metametadata.Metametadata;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Relation.Kind;
+import cognitivabrasil.obaa.Relation.Relation;
+import cognitivabrasil.obaa.Relation.Resource;
 import cognitivabrasil.obaa.Technical.Name;
 import cognitivabrasil.obaa.Technical.SupportedPlatform;
 import cognitivabrasil.obaa.Technical.Technical;
@@ -94,13 +96,24 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         uiModel = new ExtendedModelMap();
         response = new MockHttpServletResponse();
     }
+
+    private void createUserAuthentication() {
+        User loggerUser = new User();
+        loggerUser.setName("marcos");
+        loggerUser.setUsername("marcos");
+        createUserAuthentication(loggerUser);
+    }
     
-    @Test
-    public void testMainDeleteEmpty() {        
-        Authentication auth = new UsernamePasswordAuthenticationToken(new User(), "nada");
+    private void createUserAuthentication(User loggerUser) {
+        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
-        
+    }
+
+    @Test
+    public void testMainDeleteEmpty() {
+        createUserAuthentication(new User());
+
         int before = docRep.findAll().size(); //tem que ser com rep pq o service retorna apenas os que não foram deletados
         controller.main(uiModel);
         assertThat(docRep.findAll().size(), equalTo(before - 1));
@@ -110,9 +123,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         User loggerUser = new User();
         loggerUser.setName("marcos");
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(auth);
+        createUserAuthentication();
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.isUserInRole(User.MANAGE_DOC)).thenReturn(docEditor);
         return request;
@@ -150,7 +161,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     }
 
     @Test
-    public void testDelete(){
+    public void testDelete() {
         HttpServletRequest request = logUserAndPermission(true);
 
         int docsBefore = docService.getAll().size();
@@ -163,10 +174,10 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         em.clear();
 
         assertThat(docService.getAll().size(), equalTo(docsBefore - 1));
-        
+
         msg = controller.delete(1, request);
         assertThat(msg.getType(), equalTo(Message.ERROR));
-        assertThat(msg.getMessage(), equalTo("O documento solicitado já foi deletado."));        
+        assertThat(msg.getMessage(), equalTo("O documento solicitado já foi deletado."));
     }
 
     @Test
@@ -194,7 +205,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
 
         assertThat(docService.getAll().size(), equalTo(docsBefore));
     }
-    
+
     @Test
     public void testNewDocument() {
         DateTime before = new DateTime();
@@ -221,7 +232,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(d.isActive(), equalTo(false));
 
     }
-    
+
     @Test
     public void testNewClassPlan() {
         DateTime before = new DateTime();
@@ -246,18 +257,18 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         Identifier uri = idList.get(0);
         assertThat(uri.getCatalog(), equalTo("URI"));
         assertThat(uri.getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/" + id));
-        
+
         //testes para classPlan realmente
         assertThat(obaa.getGeneral().getStructure().toString(), equalTo(Structure.COLLECTION));
         assertThat(obaa.getGeneral().getAggregationLevel().toString(), equalTo("3"));
         assertThat(obaa.getGeneral().getKeywords(), hasSize(2));
         assertThat(obaa.getGeneral().getKeywords(), hasItem("Plano de Aula"));
-        
+
         assertThat(obaa.getLifeCycle().getVersion(), equalTo("1"));
         assertThat(obaa.getLifeCycle().getStatus(), equalTo(Status.FINALIZED));
-        assertThat(obaa.getLifeCycle().getContribute().get(0).getRole().toString(), equalTo(Role.PUBLISHER));        
+        assertThat(obaa.getLifeCycle().getContribute().get(0).getRole().toString(), equalTo(Role.PUBLISHER));
         assertThat(obaa.getLifeCycle().getContribute().get(0).getFirstEntity(), equalTo("BEGIN:VCARD\nVERSION:3.0\nN:do Brasil;Ministério da Educação;;;\nFN:Ministério da Educação do Brasil\nEND:VCARD"));
-        
+
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         assertThat(obaa.getLifeCycle().getContribute().get(0).getDate(), equalTo(dateFormat.format(date)));
@@ -266,10 +277,10 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(technical.getRequirement().get(0).getOrComposite().get(0).getName(), equalTo(Name.MULTI_OS));
         assertThat(technical.getRequirement().get(0).getOrComposite().get(1).getType(), equalTo(Type.BROWSER));
         assertThat(technical.getRequirement().get(0).getOrComposite().get(1).getName(), equalTo(Name.ANY));
-        
+
         assertThat(technical.getOtherPlatformRequirements(), equalTo("É necessário um programa como o acrobat reader que permite a leitura de arquivos no formato PDF."));
         assertThat(technical.getSupportedPlatforms().get(0), equalTo(SupportedPlatform.WEB));
-        
+
         Educational educational = obaa.getEducational();
         assertThat(educational.getInteractivityType(), equalTo(InteractivityType.EXPOSITIVE));
         assertThat(educational.getLearningResourceTypesString(), hasItem(LearningResourceType.LECTURE));
@@ -279,41 +290,35 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(educational.getLearningContentType(), equalTo(LearningContentType.PROCEDIMENTAL));
         assertThat(educational.getContexts().get(0), equalTo(Context.SCHOOL));
         assertThat(educational.getIntendedEndUserRoles().get(0), equalTo(IntendedEndUserRole.TEACHER));
-        
+
         Interaction interaction = obaa.getEducational().getInteraction();
         assertThat(interaction.getInteractionType().toString(), equalTo(InteractionType.OBJECT_INDIVIDUAL));
         assertThat(interaction.getCoPresence().getBoolean(), equalTo(false));
         assertThat(interaction.getSynchronism().getBoolean(), equalTo(false));
         assertThat(interaction.getPerception().toString(), equalTo(Perception.VISUAL));
         assertThat(interaction.getReciprocity().toString(), equalTo(Reciprocity.ONE_N));
-        
+
         assertThat(obaa.getRights().getCost().getBoolean(), equalTo(false));
-        
+
         Primary primary = obaa.getAccessibility().getResourceDescription().getPrimary();
         assertThat(primary.isVisual(), equalTo(true));
         assertThat(primary.isAuditory(), equalTo(false));
         assertThat(primary.isText(), equalTo(true));
         assertThat(primary.isTactile(), equalTo(false));
-        
+
         assertThat(d.isActive(), equalTo(false));
     }
 
-    
     @Test
     public void testNewDo() throws IOException {
         DateTime before = new DateTime();
-        User loggerUser = new User();
-        loggerUser.setName("marcos");
-        loggerUser.setUsername("marcos");
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(auth);
-        
+        createUserAuthentication();
+
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         Document doc = new Document();
-        
+
         Files file = new Files();
         file.setName("001.jpg");
         file.setLocation("./src/test/resources/files/001.jpg");
@@ -384,17 +389,19 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         request.addParameter("obaa.technical.platformSpecificFeatures[0].specificRequirements[0].specificOrComposites[0].specificMaximumVersion", "2.0");
         request.addParameter("obaa.technical.platformSpecificFeatures[0].specificInstallationRemarks", "installationRemarks");
         request.addParameter("obaa.technical.platformSpecificFeatures[0].specificOtherPlatformRequirements", "otherPlatformRequirements");
+        request.addParameter("obaa.relations[0].kind", Kind.HAS_VERSION);
+        request.addParameter("obaa.relations[0].resource.identifier[0].catalog", "URI");
+        request.addParameter("obaa.relations[0].resource.identifier[0].entry", "http://marcos.versao.x");
 
         String result = controller.newDo(request, doc.getId());
         assertThat(result, equalTo("redirect:/documents/"));
 
         int id = doc.getId();
 
-
         Document docResult = docService.get(id);
         assertThat(docResult.getCreated().isAfter(before.minusMillis(10)), equalTo(true));
         assertThat(docResult.getCreated().isBefore(new DateTime()), equalTo(true));
-        
+
         assertThat(docResult.getMetadata().getGeneral().getTitles(), hasSize(2));
         assertThat(docResult.getMetadata().getGeneral().getKeywords(), hasSize(2));
         assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog(), equalTo("URI"));
@@ -458,68 +465,68 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificRequirements().get(0).getSpecificOrComposites().get(0).getSpecificMaximumVersion(), equalTo("2.0"));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificInstallationRemarks(), equalTo("installationRemarks"));
         assertThat(technical.getPlatformSpecificFeatures().get(0).getSpecificOtherPlatformRequirements(), equalTo("otherPlatformRequirements"));
+        assertThat(technical.getSize(), equalTo(Long.toString(file.getSizeInBytes())));
+
         Metametadata meta = docResult.getMetadata().getMetametadata();
-        assertThat(meta.getContribute().get(0).getFirstEntity(),equalTo("BEGIN:VCARD\nVERSION:3.0\nN:;marcos;;;\nFN:marcos \nEND:VCARD"));
-        assertThat(meta.getContribute().get(0).getRole(),equalTo("author"));
+        assertThat(meta.getContribute().get(0).getFirstEntity(), equalTo("BEGIN:VCARD\nVERSION:3.0\nN:;marcos;;;\nFN:marcos \nEND:VCARD"));
+        assertThat(meta.getContribute().get(0).getRole(), equalTo("author"));
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         assertThat(meta.getContribute().get(0).getDate(), equalTo(dateFormat.format(date)));
         assertThat(meta.getIdentifier().get(0).getCatalog(), equalTo("URI"));
         assertThat(meta.getIdentifier().get(0).getEntry(), equalTo("http://www.w3.org/2001/XMLSchema-instance"));
         assertThat(meta.getSchema(), hasSize(1));
-        
-        assertThat(technical.getSize(), equalTo(Long.toString(file.getSizeInBytes())));
-        
+
+        List<Relation> relations = docResult.getMetadata().getRelations();
+        assertThat(relations.size(), equalTo(1));
+        assertThat(relations.get(0).getKind().getText(), equalTo(Kind.HAS_VERSION));
+        assertThat(relations.get(0).getResource().getIdentifier().get(0).getCatalog(), equalTo("URI"));
+        assertThat(relations.get(0).getResource().getIdentifier().get(0).getEntry(), equalTo("http://marcos.versao.x"));
+
         assertThat(docResult.isActive(), equalTo(true));
     }
-    
+
     @Test
     public void testNewDoSizeExisting() throws IOException {
-        User loggerUser = new User();
-        loggerUser.setName("marcos");
-        loggerUser.setUsername("marcos");
+        createUserAuthentication();
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(auth);
-        
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         Document doc = new Document();
         doc.setFiles(new ArrayList<Files>());
         docService.save(doc);
-        
+
         request.addParameter("obaa.general.identifiers[0].catalog", "URI");
         request.addParameter("obaa.general.identifiers[0].entry", "5");
         request.addParameter("obaa.general.titles[0]", "title1");
-        
+
         String result = controller.newDo(request, doc.getId());
         assertThat(result, equalTo("redirect:/documents/"));
 
         int id = doc.getId();
-
 
         Document docResult = docService.get(id);
         assertThat(docResult.getMetadata().getGeneral().getTitles(), hasSize(1));
         assertThat(docResult.getMetadata().getGeneral().getTitles().get(0), equalTo("title1"));
         assertThat(docResult.getMetadata().getTechnical().getLocation().get(0).toString(), equalTo("5"));
     }
-    
+
     @Test
-    public void testNewVersionOf(){
+    public void testNewVersionOf() {
         String result = controller.newVersionOf(uiModel, 1);
         assertThat(result, equalTo("documents/new"));
 
         Document dv = (Document) uiModel.get("doc");
         assertThat(dv, notNullValue());
-        
+
+        int idVersion = dv.getId();
+
         em.flush();
-        
+
         Document dOrg = docService.get(1);
-        
-        System.out.println(dOrg.getMetadata().getGeneral().getTitles().get(0));
-        
+
         assertThat(dOrg.getMetadata().getGeneral().getTitles().get(0), equalTo(dv.getMetadata().getGeneral().getTitles().get(0)));
+
         assertThat(dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/"+dv.getId()));
         
         assertThat(dOrg.getMetadata().getRelations(), hasSize(1));
@@ -528,11 +535,38 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         String entryVersionOf = dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dOrg.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryVersionOf));
         
-        assertThat(dv.getMetadata().getRelations().get(0).getKind().toString(), equalTo(Kind.IS_VERSION_OF));
+        
+        assertThat(dv.getMetadata().getRelations().get(0).getKind().getText(), equalTo(Kind.IS_VERSION_OF));
+
         String entryOrg = dOrg.getMetadata().getGeneral().getIdentifiers().get(0).getEntry();
         assertThat(dv.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryOrg));
+
+        //daqui pra baixo será testado se será criada a relaçao no documento original após gravar o documento criado como versão
+        assertThat(dOrg.getMetadata().getRelations().isEmpty(), equalTo(true));
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addParameter("obaa.relations[0].kind", Kind.IS_VERSION_OF);
+        request.addParameter("obaa.relations[0].resource.identifier[0].catalog", "URI");
+        request.addParameter("obaa.relations[0].resource.identifier[0].entry", dOrg.getObaaEntry());
+        request.addParameter("obaa.general.identifiers[0].catalog", dv.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog());
+        request.addParameter("obaa.general.identifiers[0].entry", dv.getMetadata().getGeneral().getIdentifiers().get(0).getEntry());
+
+        createUserAuthentication(dOrg.getOwner());
+        
+        em.flush();
+        em.clear();
+        
+        controller.newDo(request, idVersion);
+
+        Document docHasVersion = docService.get(1);
+
+        assertThat(docHasVersion.getMetadata().getRelations(), hasSize(1));
+        assertThat(docHasVersion.getMetadata().getRelations().get(0).getKind().getText(), equalTo(Kind.HAS_VERSION));
+        assertThat(docHasVersion.getMetadata().getRelations().get(0).getResource().getIdentifier(), hasSize(1));
+        assertThat(docHasVersion.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryVersionOf));
+
     }
-    
+
     @Test
     public void testEditErrorPermission() throws IOException {
         HttpServletRequest request = logUserAndPermission(false);
@@ -540,7 +574,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(result, equalTo("ajax"));
         assertThat(response.getStatus(), equalTo(HttpServletResponse.SC_FORBIDDEN));
     }
-    
+
     @Test
     public void testManagerEditing() throws IOException {
         HttpServletRequest request = logUserAndPermission(true);
@@ -565,9 +599,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
     public void testAuthorEditing() throws IOException {
         User loggerUser = userService.get(3);
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(auth);
+        createUserAuthentication(loggerUser);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
 
@@ -575,7 +607,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(result, equalTo("documents/new"));
 
     }
-    
+
     @Test
     public void testEditDoErrorPermission() throws IOException {
         HttpServletRequest request = logUserAndPermission(false);
@@ -583,15 +615,13 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(result, equalTo("ajax"));
         assertThat(response.getStatus(), equalTo(HttpServletResponse.SC_FORBIDDEN));
     }
-    
+
     @Test
     public void testEditDo() throws IOException {
         User loggerUser = userService.get(2);
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(loggerUser, "nada");
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(auth);
-        
+        createUserAuthentication(loggerUser);
+
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         Document doc = docService.get(1);
@@ -602,17 +632,17 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         request.addParameter("obaa.general.keywords[1]", "keyword2");
         request.addParameter("obaa.general.identifiers[0].catalog", doc.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog());
         request.addParameter("obaa.general.identifiers[0].entry", doc.getMetadata().getGeneral().getIdentifiers().get(0).getEntry());
-        
+
         String result = controller.editDo(uiModel, doc.getId(), request, response);
         assertThat(result, equalTo("redirect:/documents/"));
 
         Document docResult = docService.get(1);
-        
+
         assertThat(docResult.getMetadata().getGeneral().getTitles(), hasSize(1));
         assertThat(docResult.getMetadata().getGeneral().getKeywords(), hasSize(2));
         assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getCatalog(), equalTo("URI"));
         assertThat(docResult.getMetadata().getGeneral().getIdentifiers().get(0).getEntry(), equalTo("http://cognitivabrasil.com.br/repositorio/documents/1"));
         assertThat(docResult.isActive(), equalTo(true));
     }
-    
+
 }

@@ -66,10 +66,12 @@
 
     <body>
 
-        <tiles:insertAttribute name="header" ignore="true" />                
+                        
 
 
-        <div id="headerWrapper"></div>
+        <div id="headerWrapper">
+            <tiles:insertAttribute name="header" ignore="true" />
+        </div>
         <c:if test="${param.error == true }">
             <div class="alert error-login alert-danger">Login ou senha inválidos</div>
         </c:if>

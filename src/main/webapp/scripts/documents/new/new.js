@@ -80,7 +80,7 @@ $(function() {
 
     $(".add, .addInParent").each(function() {
         templates[this.id] = $('li.' + this.id).filter(':first').clone().
-                append("<a class='remove'/>");
+                prepend("<a class='remove btn btn-default btn-sm'><span class='glyphicon glyphicon-star'></span>  remover</a>");
         templates[this.id].find("input").val("");
         templates[this.id].find("option").attr('selected', false);
         templates[this.id].find("option :first").attr('selected', true);
@@ -88,7 +88,7 @@ $(function() {
         templates[this.id].find("textarea").text("");
         if (this.id == 'identifier') {
             templates[this.id] = $('li.' + this.id).filter(':first').clone().
-                    append("<a class='remove'/>");
+                    prepend("<a class='remove btn btn-default btn-sm'><span class='glyphicon glyphicon-star'></span>  remover</a>");
             templates[this.id].find("input").val("").attr("disabled", false);
         }
     });
