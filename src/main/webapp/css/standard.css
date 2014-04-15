@@ -19,7 +19,6 @@ th {text-align: left}
 .floatLeft{float:left}
 .center{text-align: center;}
 .txtLeft{text-align: left}
-.smallerText {font-size: 80%;color: #444444}
 
 li {list-style-type: none;}
 
@@ -53,6 +52,9 @@ h1 { font-size: 1.2em; margin: 0 0 .4em .8em; clear: both; padding-top: .8em}
 .showClick{cursor: pointer}
 
 /*mainframe*/
+#headerWrapper{
+    
+}
 #headerWrapper, #wrapper, #footterWrapper {
     max-width: 950px;
     margin-right: auto;

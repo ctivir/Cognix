@@ -48,14 +48,14 @@
                         </a>
                     </div>
                 </security:authorize>
-                <div id="sidetreecontrol"><a href="?#">Contrair Todos</a> | <a href="?#">Expandir Todos</a></div>
+                
 
                 <c:choose>
                     <c:when test="${empty doc.metadata.general.identifiers}">
                         <h3>Não há metadados cadastrados para esse objeto!</h3>
                     </c:when>
                     <c:otherwise>
-
+                        
                         <c:if test="${!empty isversion}">
                             <div class="relation">
                                 <span class="glyphicon glyphicon-link"><jsp:text/></span>
@@ -77,17 +77,17 @@
                             </div>
                         </c:if>
                         <c:if test="${!empty doc.files}">
-                            <div id="files" class="show-files">
+                            <div id="files" class="show-files table-responsive">
                                 <table class="zebra">
                                     <th width="75%">Arquivos</th><th width="25%">Formato</th>
-                                   Localização     <c:forEach var="file" items="${doc.files }" varStatus="status">
+                                    <c:forEach var="file" items="${doc.files }" varStatus="status">
                                         <tr>
                                             <td>
                                                 <c:url var="location" value="/files/${file.id}" />
                                                 <a class="" href="${location}">${file.name }</a>
-                                                <span class="smallerText">
+                                                <small>
                                                     <c:if test="${file.sizeInBytes > 0}"> (${file.sizeFormatted})</c:if>
-                                                    </span>
+                                                    </small>
                                                 </td>
                                                 <td> <c:if test="${!empty file.contentType}"> ${file.contentType}</c:if></td>
                                             </tr>
@@ -95,7 +95,7 @@
                                 </table>
                             </div>
                         </c:if>
-
+                        <div id="sidetreecontrol"><a href="?#">Contrair Todos</a> | <a href="?#">Expandir Todos</a></div>
                         <div id="obaaTree" class="col-md-12 treeview-famfamfam" src="${docs}${doc.id}/json">
                             <c:url var="imgLoader" value="/images/ajax-loader.gif"/>
                             <div class="text-center"><img src='${imgLoader}' border='0' alt='Carregando' align='middle'/> Aguarde, carregando...</div>

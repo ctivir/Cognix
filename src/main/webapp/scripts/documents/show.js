@@ -47,14 +47,11 @@ function buildList(json) {
         } else {
             if (json[i].value && json[i].value !== "NULL") {
                 html += '<li class="row">';
-                html += '<span class="name col-md-2 col-xs-12">' + json[i].label + '</span><span class="value col-md-10 col-xs-12">';
-                console.log(json[i].value);
+                html += '<span class="name col-md-3 col-xs-11">' + json[i].label + '</span><span class="value col-md-9 col-xs-12">';
                 if (json[i].value.match("^http[s]?://")) {
-                    console.log("true");
                     html += '<a class="link-interno" href="' + json[i].value + '">' + json[i].value + '</a>';
                 }
                 else {
-                    console.log("false");
                     html += json[i].value;
                 }
 
