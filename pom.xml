@@ -425,6 +425,15 @@
     </dependencies>
     
     <build>
+        
+        <resources>
+            <resource>
+                <!--para pegar a versao do projeto pelo arquivo properties-->
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        
         <plugins>
 
             <plugin>

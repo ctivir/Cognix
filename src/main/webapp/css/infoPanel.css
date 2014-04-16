@@ -8,3 +8,4 @@ and open the template in the editor.
     Author     : Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
 */
 .informationRow{padding-top: 5px;}
+.wordWrap{word-wrap:break-word;} 

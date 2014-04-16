@@ -32,9 +32,12 @@ public class InformationPanelController {
 
     @Autowired
     private DocumentService docService;
-    @Autowired
-    @Qualifier("serverConfig")
+    
+    @Autowired @Qualifier("serverConfig")
     private Properties config;
+    
+    @Autowired @Qualifier("repInf")
+    private Properties repInfo;
     @Autowired
     private DataSource dataSource;
     
@@ -43,7 +46,7 @@ public class InformationPanelController {
     @RequestMapping(method = RequestMethod.GET)
     public String showInformations(Model model) {
         List<Informations> info = new ArrayList<>();
-        info.add(new Informations("Versão", "implementar!"));
+        info.add(new Informations("Versão", repInfo.getProperty("repository.version")));
         info.add(new Informations("Número de documentos", Long.toString(docService.count())));
         
         info.add(new Informations("Domínio", config.getProperty("Repositorio.hostname"), "Este dominio será utilizado para criar a localização dos documentos. Editar no arquivo: 'config.properties'."));
