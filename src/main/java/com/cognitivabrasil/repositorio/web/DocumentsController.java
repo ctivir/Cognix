@@ -335,18 +335,29 @@ public final class DocumentsController {
         //seta o identifier na versao
         versionObaa.getGeneral().addIdentifier(versionId);
 
+        //Cria relação de versão no orginial
+        Relation originalRelation = new Relation();
+        originalRelation.setKind(Kind.HAS_VERSION);
+        Resource r = new Resource();
+        r.addIdentifier(versionId);
+        originalRelation.setResource(r);
+        List<Relation> relationsList = new ArrayList<>();
+        relationsList.add(originalRelation);
+        originalObaa.setRelations(relationsList);
+
         //Cria relação de versão no novo objeto
         Relation versionRelation = new Relation();
+                
         versionRelation.setKind(Kind.IS_VERSION_OF);
-        versionRelation.setResource(new Resource());
-        versionRelation.getResource().addIdentifier(originalObaa.getGeneral().
-                getIdentifiers().get(0));
+        Identifier id = originalObaa.getGeneral().getIdentifiers().get(0);
+        Resource r2 = new Resource();
+        r2.addIdentifier(id);
+        versionRelation.setResource(r2);
         List<Relation> relations2List = new ArrayList<>();
         relations2List.add(versionRelation);
         versionObaa.setRelations(relations2List);
 
         docService.save(d);
-
         dv.setMetadata(versionObaa);
 
         model.addAttribute("doc", dv);

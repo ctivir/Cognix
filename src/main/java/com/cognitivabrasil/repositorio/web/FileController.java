@@ -104,7 +104,7 @@ public class FileController {
         String fileFormat = f.getContentType();
         Format format = new Format(fileFormat);
 
-        doc.getMetadata().getTechnical().getFormat().remove(format.getText());
+        doc.getMetadata().getTechnical().getFormats().remove(format);
 
         try {
             fileService.deleteFile(f);
