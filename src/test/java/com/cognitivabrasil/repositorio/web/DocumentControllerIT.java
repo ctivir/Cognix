@@ -542,7 +542,7 @@ public class DocumentControllerIT extends AbstractTransactionalJUnit4SpringConte
         assertThat(dv.getMetadata().getRelations().get(0).getResource().getIdentifier().get(0).getEntry(), equalTo(entryOrg));
 
         //daqui pra baixo será testado se será criada a relaçao no documento original após gravar o documento criado como versão
-        assertThat(dOrg.getMetadata().getRelations().isEmpty(), equalTo(true));
+        assertThat(dOrg.getMetadata().getRelations().isEmpty(), equalTo(false));
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addParameter("obaa.relations[0].kind", Kind.IS_VERSION_OF);
