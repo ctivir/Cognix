@@ -15,8 +15,8 @@
             <h4>Informações do Sistema</h4>
             <c:forEach items="${info}" var="entry">
                 <div class="row informationRow" data-toggle="tooltip" data-placement="top" title="${entry.msg}">
-                    <span class="col-md-3 col-xs-10"><strong>${entry.title}:</strong></span>
-                    <span class="col-md-3 col-xs-10" >
+                    <span class="col-md-3 col-xs-11"><strong>${entry.title}:</strong></span>
+                    <span class="col-md-9 col-xs-12 wordWrap" >
                         ${entry.value}
                     </span>                            
                 </div>

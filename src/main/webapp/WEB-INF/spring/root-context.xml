@@ -92,12 +92,11 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd
     
     <beans profile="prod,test,it">
         <util:properties id="serverConfig" location="classpath:config.properties"/>
+        <util:properties id="repInf" location="classpath:info.properties"/>
         <context:annotation-config />
         <jpa:repositories base-package="com.cognitivabrasil.repositorio.data.repositories"
                           entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="transactionManager" />
         <bean id="applicationContextProvider" class="spring.ApplicationContextProvider"/>
     </beans>
     
-    
-       
 </beans:beans>
