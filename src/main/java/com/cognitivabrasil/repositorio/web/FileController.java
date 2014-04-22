@@ -227,7 +227,7 @@ public class FileController {
     public void getThumbnail(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
         
         if (id == null || id == 0) {            
-            response.sendError(410, "O arquivo solicitado não foi encontrado.");            
+            response.sendError(404, "O arquivo solicitado não foi encontrado.");            
         } else {            
             String fileName = Config.FILE_PATH + id + "/thumbnail";
 
@@ -242,7 +242,7 @@ public class FileController {
                 response.flushBuffer();
 
             } catch (FileNotFoundException fe) {
-                response.sendError(410, "O arquivo solicitado não foi encontrado.");
+                response.sendError(404, "O arquivo solicitado não foi encontrado.");
             } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;
