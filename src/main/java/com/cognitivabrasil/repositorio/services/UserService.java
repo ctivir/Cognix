@@ -78,5 +78,10 @@ public interface UserService {
      */
     public void activate(User u);
     
+    /**
+     * Tests if the user is the last system administrator.
+     * @param u User
+     * @return boolean
+     */
     public boolean isLastAdmin(User u);
 }

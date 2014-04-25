@@ -6,7 +6,7 @@
     <artifactId>repositorio</artifactId>
     <packaging>war</packaging>
     <version>2.1-ALPHA</version>
-    <name>Repositório da Cognitiva Brasil</name>
+    <name>Repositório Cognix</name>
     <url>http://www.cognitivabrasil.com.br</url>
 
     <!-- Shared version number properties -->
