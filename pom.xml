@@ -374,7 +374,7 @@
             <artifactId>oaicat</artifactId>
             <version>1.1</version>
         </dependency>
-       
+           
         <!--ver se realmente precisa-->
         <dependency>
             <groupId>org.apache.tomcat.extras</groupId>
@@ -382,8 +382,6 @@
             <version>6.0.37</version>
         </dependency>
       
-
-        
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
