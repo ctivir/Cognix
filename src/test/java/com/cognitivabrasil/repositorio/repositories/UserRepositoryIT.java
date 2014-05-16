@@ -8,7 +8,6 @@ package com.cognitivabrasil.repositorio.repositories;
 
 import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.data.repositories.UserRepository;
-import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.Test;
@@ -20,6 +19,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -37,17 +37,25 @@ public class UserRepositoryIT extends AbstractTransactionalJUnit4SpringContextTe
     @Test
     public void testGetByUsername(){
         User u = uRep.findByUsername("marcos");
-        
         assertThat(u.getId(), equalTo(2));
     }
     
     @Test
     public void testFindByUsername(){
         int allUsers = uRep.findAll().size();
-        
         int activeUsers = uRep.findByDeletedIsFalse().size();
-        
-        assertThat(activeUsers, equalTo(allUsers-1));
-        
+        assertThat(activeUsers, equalTo(allUsers-1));  
+    }
+    
+    /**
+     * Testa que a base de dados não permite dois usuários com o mesmo login
+     */
+    @Test(expected=DataIntegrityViolationException.class)
+    public void testSaveSameLogin(){
+        User u = new User();
+        u.setUsername("marcos");
+        u.setPassword("dd");
+        u.setName("chaves");
+        uRep.save(u);
     }
 }
