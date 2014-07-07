@@ -6,7 +6,8 @@ CREATE TABLE users (
     permissions text,
     role text,
     deleted boolean DEFAULT false NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE (login)
 );
 
 CREATE TABLE subject (

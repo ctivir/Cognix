@@ -20,7 +20,6 @@
         <config.skiptests>false</config.skiptests>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     
     <profiles>
@@ -374,7 +373,7 @@
             <artifactId>oaicat</artifactId>
             <version>1.1</version>
         </dependency>
-       
+           
         <!--ver se realmente precisa-->
         <dependency>
             <groupId>org.apache.tomcat.extras</groupId>
@@ -382,8 +381,6 @@
             <version>6.0.37</version>
         </dependency>
       
-
-        
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>

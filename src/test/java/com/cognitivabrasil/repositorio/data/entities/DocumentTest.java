@@ -4,7 +4,6 @@ import cognitivabrasil.obaa.General.General;
 import cognitivabrasil.obaa.OBAA;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import org.apache.commons.io.FileUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,7 +18,7 @@ public class DocumentTest {
     public void testXmlDeserialization() throws IOException {
         Document d = new Document();
 
-        String obaaXml = FileUtils.readFileToString(new File("src/test/resources/obaa1.xml"));
+        String obaaXml = FileUtils.readFileToString(new File("src/test/resources/obaa1.xml"),"UTF-8");
 
         d.setObaaXml(obaaXml);
 

@@ -10,17 +10,15 @@
  */
 package com.cognitivabrasil.repositorio.oai;
 
+import ORG.oclc.oai.server.catalog.AbstractServiceOaiCatalog;
+import ORG.oclc.oai.server.catalog.OaiDocumentService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import org.springframework.context.ApplicationContext;
-
 import spring.ApplicationContextProvider;
-import ORG.oclc.oai.server.catalog.AbstractServiceOaiCatalog;
-import ORG.oclc.oai.server.catalog.OaiDocumentService;
 
 /**
  * DummyOAICatalog is an example of how to implement the AbstractCatalog
