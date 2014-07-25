@@ -55,7 +55,6 @@
                         <h3>Não há metadados cadastrados para esse objeto!</h3>
                     </c:when>
                     <c:otherwise>
-                        
                         <c:if test="${!empty isversion}">
                             <div class="relation">
                                 <span class="glyphicon glyphicon-link"><jsp:text/></span>
