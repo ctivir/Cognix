@@ -55,7 +55,7 @@ public class FileController {
     private int chunks;
     private static final String RESP_SUCCESS = "{\"jsonrpc\" : \"2.0\", \"result\" : \"success\", \"id\" : \"id\"}";
     private static final String RESP_ERROR = "{\"jsonrpc\" : \"2.0\", \"error\" : {\"code\": 101, \"message\": \"Falha ao abrir o input stream.\"}, \"id\" : \"id\"}";
-    public static final String FILEPATH = "/var/cognitiva/repositorio";    
+    public static final String FILEPATH = "/var/cognitiva/repositorio";
 
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public String add(Model model) {
@@ -85,7 +85,7 @@ public class FileController {
                 response.sendError(410, "O arquivo solicitado não foi encontrado.");
             } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
-                throw ex;                
+                throw ex;
             }
         }
     }
@@ -114,7 +114,6 @@ public class FileController {
         return new Message(Message.SUCCESS, "Arquivo excluido com sucesso", "upload");
     }
 
-    
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody
     public String upload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, org.apache.commons.fileupload.FileUploadException {
@@ -160,7 +159,7 @@ public class FileController {
                                 File documentPath = new File(docPath);
                                 // cria o diretorio
                                 documentPath.mkdirs();
-                                
+
                                 break;
                         }
 
@@ -196,7 +195,7 @@ public class FileController {
                 }
 
                 if ((this.chunk == this.chunks - 1) || this.chunks == 0) {
-                    file.setLocation(docPath + "/" + file.getName());                    
+                    file.setLocation(docPath + "/" + file.getName());
                     if (docId != null) {
                         file.setDocument(documentsService.get(docId));
                     }
@@ -222,13 +221,13 @@ public class FileController {
         output.flush();
         return responseString;
     }
-    
+
     @RequestMapping(value = "/{id}/thumbnail", method = RequestMethod.GET)
     public void getThumbnail(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
-        
-        if (id == null || id == 0) {            
-            response.sendError(404, "O arquivo solicitado não foi encontrado.");            
-        } else {            
+
+        if (id == null || id == 0) {
+            response.sendError(404, "O arquivo solicitado não foi encontrado.");
+        } else {
             String fileName = Config.FILE_PATH + id + "/thumbnail";
 
             try {
@@ -242,7 +241,15 @@ public class FileController {
                 response.flushBuffer();
 
             } catch (FileNotFoundException fe) {
-                response.sendError(404, "O arquivo solicitado não foi encontrado.");
+                // get your file as InputStream
+                InputStream is = new FileInputStream(new File(Config.FILE_PATH+"/default.thumbnail"));
+
+                response.setHeader("Content-Disposition", "attachment; filename=default.thumbnail");
+                // copy it to response's OutputStream
+                IOUtils.copy(is, response.getOutputStream());
+
+                response.flushBuffer();
+
             } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;

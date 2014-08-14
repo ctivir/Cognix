@@ -43,7 +43,7 @@
                 <c:if test="${empty documents.content}">Nenhum documento cadastrado</c:if>
                 <c:forEach var="doc" items="${documents.content}" varStatus="status">
                     <c:if test="${doc.title != 'IndexOutOfBounds'}"> 
-                        <div id="container${doc.id}" class="col-md-4 coluna-lista">
+                        <div id="container${doc.id}" class="col-xs-12 col-sm-6 col-md-4 col-lg-4 coluna-lista">
                             <div class="ui-state-default ui-corner-all title-list">                            
                                 <a href="${doc.metadata.technical.firstHttpLocation} " class="title-link">
                                     <c:if test="${empty doc.title}">
@@ -91,12 +91,10 @@
                             </div>
 
 
-                            <ul class="documentData">
-                                <li class="obaaEntry">
+                            <div class="documentData">
                                     <c:url var="imgThumbnail" value="/files/${doc.id}/thumbnail"/>
-                                    <a href="${doc.metadata.technical.firstHttpLocation}"><img src="${imgThumbnail}" class="img-capa-lista img-responsive" /></a>
-                                </li>                            
-                            </ul>
+                                    <a href="${doc.metadata.technical.firstHttpLocation}"><img src="${imgThumbnail}" class="img-capa-lista img-responsive" /></a>            
+                            </div>
                         </div>
                     </c:if>                    
                 </c:forEach>              

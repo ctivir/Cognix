@@ -39,21 +39,12 @@
 }
 
 /*lista de metadados que vao logo abaixo do titulo*/
-ul .documentData {
+div .documentData {
     margin-top: 10px;
     list-style-type: none;
     margin-bottom: 2%;
 }
 
-ul .documentData li {
-    padding-right: 20px;
-}
-ul .documentData li .files {
-    margin-left: 2%;
-}
-ul .documentData li .files a {
-    color: #214c5d;
-}
 
 label {font-weight: bold;}
 
