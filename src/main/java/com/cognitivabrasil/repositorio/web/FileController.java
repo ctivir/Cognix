@@ -36,6 +36,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 /**
  *
@@ -235,6 +237,7 @@ public class FileController {
                 InputStream is = new FileInputStream(new File(fileName));
 
                 response.setHeader("Content-Disposition", "attachment; filename= thumbnail" + id);
+                response.setStatus(201);
                 // copy it to response's OutputStream
                 IOUtils.copy(is, response.getOutputStream());
 
@@ -244,7 +247,9 @@ public class FileController {
                 // get your file as InputStream
                 InputStream is = new FileInputStream(new File(Config.FILE_PATH+"/default.thumbnail"));
 
-                response.setHeader("Content-Disposition", "attachment; filename=default.thumbnail");
+                response.setHeader("Content-Disposition", "attachment; filename=default-thumbnail.png");
+                response.setContentType(MediaType.IMAGE_PNG_VALUE);
+                response.setStatus(201);
                 // copy it to response's OutputStream
                 IOUtils.copy(is, response.getOutputStream());
 
