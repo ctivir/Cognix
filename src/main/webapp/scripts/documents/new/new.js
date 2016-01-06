@@ -148,8 +148,6 @@ $(function() {
         var select = $("#" + name).find(".sliderSelect");
         //remover o texto do primeiro option do select do slider, se não fica "- Nenhum -" 
         select.find('option:eq(0)').text('');
-        //desabilitar todos os selects do slider
-        select.prop('disabled', 'disabled');
 
         $('#' + elm.id).slider({
             value: select[ 0 ].selectedIndex,
