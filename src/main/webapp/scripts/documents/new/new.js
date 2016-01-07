@@ -155,24 +155,36 @@ $(function() {
             max: 5,
             step: 1,
             slide: function(event, ui) {
-
+                 
                 if (ui.value < 1) {
                     select.val("");
                 }
                 if (ui.value >= 1 && ui.value < 2) {
                     select.val("very low");
+                    if (elm.id == "difficultySlider"){
+                        select.val("very easy");
+                    }
                 }
                 if (ui.value >= 2 && ui.value < 3) {
                     select.val("low");
+                    if (elm.id =="difficultySlider"){
+                        select.val("easy");
+                    }
                 }
                 if (ui.value >= 3 && ui.value < 4) {
                     select.val("medium");
                 }
                 if (ui.value >= 4 && ui.value < 5) {
                     select.val("high");
+                    if (elm.id =="difficultySlider"){
+                        select.val("difficult");
+                    }
                 }
                 if (ui.value >= 5) {
                     select.val("very high");
+                    if (elm.id == "difficultySlider"){
+                        select.val("very difficult");
+                    }
                 }
 
             }
