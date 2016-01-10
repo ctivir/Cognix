@@ -80,7 +80,7 @@ $(function() {
 
     $(".add, .addInParent").each(function() {
         templates[this.id] = $('li.' + this.id).filter(':first').clone().
-                prepend("<a class='remove btn btn-default btn-sm'><span class='glyphicon glyphicon-star'></span>  remover</a>");
+                prepend("<a class='remove btn btn-default btn-sm'><span class='glyphicon glyphicon-trash'></span>  remover</a>");
         templates[this.id].find("input").val("");
         templates[this.id].find("option").attr('selected', false);
         templates[this.id].find("option :first").attr('selected', true);
@@ -88,7 +88,7 @@ $(function() {
         templates[this.id].find("textarea").text("");
         if (this.id == 'identifier') {
             templates[this.id] = $('li.' + this.id).filter(':first').clone().
-                    prepend("<a class='remove btn btn-default btn-sm'><span class='glyphicon glyphicon-star'></span>  remover</a>");
+                    prepend("<a class='remove btn btn-default btn-sm'><span class='glyphicon glyphicon-trash'></span>  remover</a>");
             templates[this.id].find("input").val("").attr("disabled", false);
         }
     });
@@ -193,9 +193,16 @@ $(function() {
     });
 
     //Starting age ranges:
-    var ageRange = $("#age").attr('value');
-    var ageRangeAll = ageRange.split(" ");
-    
+    var ageRange = $("#age").attr('value');  
+    // Avoiding undefined AgeRangeAll when new document is being created.
+    if (typeof ageRange === 'undefined'){
+        var ageRangeAll = [0, 0, 0];
+        }
+    else{
+        var ageRangeAll = ageRange.split(" ");
+    }
+
+          
     $("#slider-range").slider({
         range: true,
         min: 0,
