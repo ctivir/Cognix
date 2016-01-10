@@ -161,6 +161,7 @@ $(function() {
                 }
                 if (ui.value >= 1 && ui.value < 2) {
                     select.val("very low");
+                    // teste impede que difficultyslider receba valores errados.
                     if (elm.id == "difficultySlider"){
                         select.val("very easy");
                     }
@@ -191,17 +192,25 @@ $(function() {
         });
     });
 
+    //Starting age ranges:
+    var ageRange = $("#age").attr('value');
+    var ageRangeAll = ageRange.split(" ");
+    
     $("#slider-range").slider({
         range: true,
         min: 0,
         max: 100,
-        values: [0, 0],
+        values: [ageRangeAll[0], ageRangeAll[2]],
+        
         slide: function(event, ui) {
             $("#age").val(ui.values[ 0 ] + " - " + ui.values[ 1 ] + " anos");
             if (ui.values[0] == 0 && ui.values[1] == 0)
                 $("#age").val("");
         }
+        
     });
+    
+    
 
 
     /*Dialogo de confirmacao*/
