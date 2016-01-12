@@ -57,8 +57,8 @@ public class FileController {
     private int chunks;
     private static final String RESP_SUCCESS = "{\"jsonrpc\" : \"2.0\", \"result\" : \"success\", \"id\" : \"id\"}";
     private static final String RESP_ERROR = "{\"jsonrpc\" : \"2.0\", \"error\" : {\"code\": 101, \"message\": \"Falha ao abrir o input stream.\"}, \"id\" : \"id\"}";
-    public static final String FILEPATH = "/var/cognitiva/repositorio";
-
+    public static final String DEFAULT_THUMBNAIL_PATH = "./src/main/resources/default-thumbnail.png";
+    
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public String add(Model model) {
         return "files/new";
@@ -157,7 +157,7 @@ public class FileController {
                                     throw new org.apache.commons.fileupload.FileUploadException("Não foi informado o id do documento.");
                                 }
                                 docId = Integer.parseInt(value);
-                                docPath = FILEPATH + "/" + docId;
+                                docPath = Config.FILE_PATH + "/" + docId;
                                 File documentPath = new File(docPath);
                                 // cria o diretorio
                                 documentPath.mkdirs();
@@ -245,7 +245,7 @@ public class FileController {
 
             } catch (FileNotFoundException fe) {
                 // get your file as InputStream
-                InputStream is = new FileInputStream(new File(Config.FILE_PATH+"/default-thumbnail.png"));
+                InputStream is = new FileInputStream(new File(DEFAULT_THUMBNAIL_PATH));
 
                 response.setHeader("Content-Disposition", "attachment; filename=default-thumbnail.png");
                 response.setContentType(MediaType.IMAGE_PNG_VALUE);
