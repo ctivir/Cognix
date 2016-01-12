@@ -228,7 +228,7 @@ public class FileController {
     public void getThumbnail(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
 
         if (id == null || id == 0) {
-            response.sendError(404, "O arquivo solicitado não foi encontrado.");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "O arquivo solicitado não foi encontrado.");
         } else {
             String fileName = Config.FILE_PATH + id + "/thumbnail";
 
@@ -237,7 +237,7 @@ public class FileController {
                 InputStream is = new FileInputStream(new File(fileName));
 
                 response.setHeader("Content-Disposition", "attachment; filename= thumbnail" + id);
-                response.setStatus(201);
+                response.setStatus(HttpServletResponse.SC_CREATED);
                 // copy it to response's OutputStream
                 IOUtils.copy(is, response.getOutputStream());
 
@@ -245,11 +245,11 @@ public class FileController {
 
             } catch (FileNotFoundException fe) {
                 // get your file as InputStream
-                InputStream is = new FileInputStream(new File(Config.FILE_PATH+"/default.thumbnail"));
+                InputStream is = new FileInputStream(new File(Config.FILE_PATH+"/default-thumbnail.png"));
 
                 response.setHeader("Content-Disposition", "attachment; filename=default-thumbnail.png");
                 response.setContentType(MediaType.IMAGE_PNG_VALUE);
-                response.setStatus(201);
+                response.setStatus(HttpServletResponse.SC_CREATED);
                 // copy it to response's OutputStream
                 IOUtils.copy(is, response.getOutputStream());
 

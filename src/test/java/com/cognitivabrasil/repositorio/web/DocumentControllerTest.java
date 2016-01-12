@@ -108,5 +108,5 @@ public class DocumentControllerTest {
         
         String json = controller.getJson(1);
         assertThat(json.startsWith("[{\"label\":"), equalTo(true));
-    }
+    }     
 }

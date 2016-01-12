@@ -6,14 +6,20 @@ package com.cognitivabrasil.repositorio.web;
 
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.services.FileService;
+import com.cognitivabrasil.repositorio.util.Config;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.io.IOUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
@@ -123,5 +129,37 @@ public class FileControllerTest {
         
         assertThat(result, equalTo("{\"jsonrpc\" : \"2.0\", \"error\" : {\"code\": 101, \"message\": \"Falha ao abrir o input stream.\"}, \"id\" : \"id\"}"));
         
+    }
+    // Warning, this test doesn't work how it's supposed to.
+    @Test
+    public void testGetThumbnail()throws IOException {
+        
+        HttpServletResponse response = new MockHttpServletResponse();
+        HttpServletResponse response2 = new MockHttpServletResponse();
+        FileController fileController = mockFiles();
+        
+        // proves response and response2 are not comitted yet.
+        Assert.assertFalse(response.isCommitted());
+        Assert.assertFalse(response2.isCommitted());
+      
+         // tests id = null. 
+        fileController.getThumbnail(null, response);
+        Assert.assertTrue(response.isCommitted());
+        assertThat(HttpServletResponse.SC_NOT_FOUND, equalTo(response.getStatus()));
+              
+        // tests id = 1      
+        Long id = 1L;         
+        
+        Assert.assertFalse(response2.isCommitted());
+        fileController.getThumbnail(id, response2);
+        Assert.assertTrue(response2.isCommitted());
+        assertThat(HttpServletResponse.SC_CREATED, equalTo(response2.getStatus()));
+                 
+        // proves response2 is only commited after flushbuffer.
+        
+        
+        
+        
+          
     }
 }
