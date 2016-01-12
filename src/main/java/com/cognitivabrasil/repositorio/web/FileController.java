@@ -68,7 +68,7 @@ public class FileController {
     public void getFile(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
         Files f = fileService.get(id);
         if (f == null) {
-            response.sendError(410, "O arquivo solicitado não foi encontrado.");
+            response.sendError(HttpServletResponse.SC_GONE, "O arquivo solicitado não foi encontrado.");
         } else {
             String fileName = f.getLocation();
 
@@ -84,7 +84,7 @@ public class FileController {
                 response.flushBuffer();
 
             } catch (FileNotFoundException fe) {
-                response.sendError(410, "O arquivo solicitado não foi encontrado.");
+                response.sendError(HttpServletResponse.SC_GONE, "O arquivo solicitado não foi encontrado.");
             } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;

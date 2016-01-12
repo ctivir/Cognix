@@ -171,18 +171,17 @@ public class FileControllerTest {
         Assert.assertFalse(response2.isCommitted());
       
          // tests id = 0. 
-        
         int id = 0; 
         fileController.getFile(id, response);
         Assert.assertTrue(response.isCommitted());
-        assertThat(HttpServletResponse.SC_NOT_FOUND, equalTo(response.getStatus()));
+        assertThat(HttpServletResponse.SC_GONE, equalTo(response.getStatus()));
               
         // tests id = 1      
         id = 1;         
         Assert.assertFalse(response2.isCommitted());
         fileController.getFile(id, response2);
         Assert.assertTrue(response2.isCommitted());
-        assertThat(HttpServletResponse.SC_CREATED, equalTo(response2.getStatus()));
+        assertThat(HttpServletResponse.SC_GONE, equalTo(response2.getStatus()));
                  
         // proves response2 is only commited after flushbuffer.
                
