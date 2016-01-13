@@ -20,6 +20,8 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -173,6 +175,7 @@ public class FileControllerTest {
         assertThat(HttpServletResponse.SC_GONE, equalTo(response.getStatus()));
          
         // tests valid id.  
+        // Problem: how to make the getFile method avoid the f=null.
         id = 3;         
         Assert.assertFalse(response2.isCommitted());
         fileController.getFile(id, response2);
@@ -222,6 +225,12 @@ public class FileControllerTest {
         assertThat(result.getType(), equalTo(Message.SUCCESS));
         assertThat(result.getMessage(), equalTo("Arquivo excluido com sucesso."));    
         
-        // it would be good to test IOExceptions warnings, but we dont know how.
+     //   when(fileService.get(fileId)).then(caughException)
+                
+         doThrow(new IOException("Erro")).when(fileService).deleteFile(f3); 
+         result = fileController.delete(3); 
+         assertThat(result.getType(), equalTo(Message.WARN));
+         
+         
     }
 }

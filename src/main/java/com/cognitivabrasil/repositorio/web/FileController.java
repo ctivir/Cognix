@@ -85,7 +85,8 @@ public class FileController {
 
             } catch (FileNotFoundException fe) {
                 response.sendError(HttpServletResponse.SC_GONE, "O arquivo solicitado não foi encontrado.");
-            } catch (IOException ex) {
+                LOG.error("O arquivo solicitado não foi encontrado.");
+                } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;
             }
@@ -248,8 +249,9 @@ public class FileController {
 
             } catch (FileNotFoundException fe) {
                 // get your file as InputStream
+               
                 InputStream is = new FileInputStream(new File(DEFAULT_THUMBNAIL_PATH));
-
+                
                 response.setHeader("Content-Disposition", "attachment; filename=default-thumbnail.png");
                 response.setContentType(MediaType.IMAGE_PNG_VALUE);
                 response.setStatus(HttpServletResponse.SC_CREATED);
@@ -257,7 +259,7 @@ public class FileController {
                 IOUtils.copy(is, response.getOutputStream());
 
                 response.flushBuffer();
-
+                LOG.error("Imagen solicitada não foi encontrada.");
             } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;
