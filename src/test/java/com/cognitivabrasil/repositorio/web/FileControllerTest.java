@@ -4,19 +4,17 @@
  */
 package com.cognitivabrasil.repositorio.web;
 
+import cognitivabrasil.obaa.OBAA;
+import cognitivabrasil.obaa.Technical.Technical;
+import com.cognitivabrasil.repositorio.data.entities.Document;
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.services.FileService;
-import com.cognitivabrasil.repositorio.util.Config;
-import java.io.File;
-import java.io.FileInputStream;
+import com.cognitivabrasil.repositorio.util.Message;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import javax.imageio.IIOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.io.IOUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import org.junit.Assert;
@@ -37,7 +35,6 @@ import org.springframework.ui.ExtendedModelMap;
 
 public class FileControllerTest {
 
-    private final List<Files> files = new ArrayList<>();
     private FileService fileService;
     private ExtendedModelMap uiModel;
     
@@ -47,15 +44,6 @@ public class FileControllerTest {
     @Before
     public void init() {
         // Initialize list of files for mocked fileService
-        Files file = new Files();
-        file.setId(1);
-        file.setName("teste.txt");
-        files.add(file);
-
-        Files f2 = new Files();
-        f2.setId(2);
-        f2.setName("foto.jpg");
-        files.add(f2);
 
         fileService = mock(FileService.class);
 
@@ -149,18 +137,23 @@ public class FileControllerTest {
               
         // tests id = 1      
         Long id = 1L;         
-        
+         
+        //proves response2 is only commited after flushbuffer.
         Assert.assertFalse(response2.isCommitted());
         fileController.getThumbnail(id, response2);
         Assert.assertTrue(response2.isCommitted());
         assertThat(HttpServletResponse.SC_CREATED, equalTo(response2.getStatus()));
-                 
-        // proves response2 is only commited after flushbuffer.
-               
+                         
        }
     
     @Test
     public void testGetFile()throws IOException {
+        
+        com.cognitivabrasil.repositorio.data.entities.Files f3 = new Files();
+        f3.setId(3);
+        f3.setName("testGet.txt");
+        f3.setContentType("text");
+        f3.setLocation("somewhere"); 
         
         HttpServletResponse response = new MockHttpServletResponse();
         HttpServletResponse response2 = new MockHttpServletResponse();
@@ -170,23 +163,65 @@ public class FileControllerTest {
         Assert.assertFalse(response.isCommitted());
         Assert.assertFalse(response2.isCommitted());
       
-         // tests id = 0. 
-        int id = 0; 
+        int fileId = 3; 
+        when(fileService.get(fileId)).thenReturn(f3);
+        
+         // tests non-existent id.
+        int id = 99; 
         fileController.getFile(id, response);
         Assert.assertTrue(response.isCommitted());
         assertThat(HttpServletResponse.SC_GONE, equalTo(response.getStatus()));
-              
-        // tests id = 1      
-        id = 1;         
+         
+        // tests valid id.  
+        id = 3;         
         Assert.assertFalse(response2.isCommitted());
         fileController.getFile(id, response2);
         Assert.assertTrue(response2.isCommitted());
         assertThat(HttpServletResponse.SC_GONE, equalTo(response2.getStatus()));
-                 
-        // proves response2 is only commited after flushbuffer.
-               
+        Assert.assertTrue(response2.isCommitted());   
+     
        }
     
+     @Test
+    public void deleteTest()throws IOException {
     
+        com.cognitivabrasil.repositorio.data.entities.Files f3 = new Files();
+        f3.setId(3);
+        f3.setName("testeDelete.txt");
+        f3.setContentType("text");
+        
+        Document d = new Document();
+        
+        OBAA metadata = new OBAA();
+        Technical t = new Technical();
+        t.addFormat("txt");
+        metadata.setTechnical(t);
+        d.setMetadata(metadata);
+        
+        f3.setDocument(d);
+                       
+        int fileId = 3;        
+        when(fileService.get(fileId)).thenReturn(f3);
+        
+
+        uiModel = new ExtendedModelMap();
+        
+        FileController fileController = mockFiles();
+        
+        // invalid id test.
+        int id = 0;
+        
+        Message result = fileController.delete(id); 
+        assertThat(result.getType(), equalTo(Message.ERROR));
+        assertThat(result.getMessage(), equalTo("O arquivo não foi encontrado na base de dados!"));        
     
+        // valid id test.
+        // how to avoid f receiving a null value??
+        id = 3;
+        result = fileController.delete(id); 
+        assertThat(result.getType(), equalTo(Message.SUCCESS));
+        assertThat(result.getMessage(), equalTo("Arquivo excluido com sucesso."));    
+        
+        // it would be good to test IOExceptions warnings, but we dont know how.
+    }
 }

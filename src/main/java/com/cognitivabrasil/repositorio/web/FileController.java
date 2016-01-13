@@ -111,9 +111,12 @@ public class FileController {
         try {
             fileService.deleteFile(f);
         } catch (IOException e) {
-            return new Message(Message.WARN, "O arquivo não foi encontrado no disco, mas foi removido da base de dados!", "upload");
+            String errorMsg = "O arquivo não foi encontrado no disco, mas foi removido da base de dados!";
+            LOG.error(errorMsg, e);
+            
+            return new Message(Message.WARN, errorMsg, "upload");
         }
-        return new Message(Message.SUCCESS, "Arquivo excluido com sucesso", "upload");
+        return new Message(Message.SUCCESS, "Arquivo excluido com sucesso.", "upload");
     }
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
