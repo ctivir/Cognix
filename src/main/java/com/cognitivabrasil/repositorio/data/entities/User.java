@@ -300,29 +300,28 @@ public class User implements UserDetails {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+        }    
+        
         final User other = (User) obj;
+        
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.login, other.login)) {
+        else if (!Objects.equals(this.login, other.login)) {
             return false;
         }
-        if (!Objects.equals(this.passwordMd5, other.passwordMd5)) {
+        else if (!Objects.equals(this.passwordMd5, other.passwordMd5)) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        else if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.permissionsInternal, other.permissionsInternal)) {
+        else if (!Objects.equals(this.permissionsInternal, other.permissionsInternal)) {
             return false;
         }
-        if (!Objects.equals(this.role, other.role)) {
+        else if (!Objects.equals(this.role, other.role)) {
             return false;
         }
         return true;

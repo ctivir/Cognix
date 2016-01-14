@@ -217,10 +217,10 @@ public final class DocumentsController {
             throws IOException {
         Document d = docService.get(id);
         if (d == null) {
-            response.sendError(404, "O documento solicitado não existe.");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "O documento solicitado não existe.");
             return "ajax";
         } else if (d.isDeleted()) {
-            response.sendError(410, "O documento solicitado foi deletado.");
+            response.sendError(HttpServletResponse.SC_GONE, "O documento solicitado foi deletado.");
             return "ajax";
         }
         d.getMetadata().setLocale("pt-BR");
@@ -306,7 +306,7 @@ public final class DocumentsController {
         }
         setOBAAFiles(d, request);
 
-        return ("redirect:/documents/");
+        return "redirect:/documents/";
     }
 
     @RequestMapping(value = "/new", params = "versionOf", method = RequestMethod.GET)
@@ -516,7 +516,7 @@ public final class DocumentsController {
         doc.setOwner(UsersController.getCurrentUser());
         setOBAAFiles(doc, request);
 
-        return ("redirect:/documents/");
+        return "redirect:/documents/";
     }
 
     private void setOBAAFiles(Document d, final HttpServletRequest request) {
@@ -546,7 +546,7 @@ public final class DocumentsController {
 
         // split the keywords
         List<Keyword> splittedKeywords = new ArrayList<>();
-        if (obaa.getGeneral().getKeywords().size() > 0) {
+        if (!obaa.getGeneral().getKeywords().isEmpty()) {
 
             for (String k : obaa.getGeneral().getKeywords()) {
                 for (String nk : k.split("\\s*[,;]\\s*")) {
@@ -653,7 +653,7 @@ public final class DocumentsController {
     }
 
     private boolean isManagerForThisDocument(Document d, HttpServletRequest request) {
-        return (request.isUserInRole(User.MANAGE_DOC) || UsersController.getCurrentUser().equals(d.getOwner()));
+        return request.isUserInRole(User.MANAGE_DOC) || UsersController.getCurrentUser().equals(d.getOwner());
     }
 
     @RequestMapping(value = "/new/generateMetadata", method = RequestMethod.POST)

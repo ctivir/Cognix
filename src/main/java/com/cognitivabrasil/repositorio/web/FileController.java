@@ -167,6 +167,7 @@ public class FileController {
                                 documentPath.mkdirs();
 
                                 break;
+                            default : break;                            
                         }
 
                     } // Handle a multi-part MIME encoded file.

@@ -114,8 +114,8 @@ public class Files {
         boolean testaPotenciaSeguinte;
         do {
             proxima = potencia + 1;
-            testaPotenciaActual = (Math.pow(2, potencia * 10) <= this.sizeInBytes);
-            testaPotenciaSeguinte = (this.sizeInBytes < Math.pow(2, proxima * 10));
+            testaPotenciaActual = (Math.pow(2L, potencia * 10) <= this.sizeInBytes);
+            testaPotenciaSeguinte = (this.sizeInBytes < Math.pow(2L, proxima * 10));
             potencia++;
 
         } while (!(testaPotenciaActual && testaPotenciaSeguinte));
@@ -129,7 +129,7 @@ public class Files {
         DecimalFormat myFormatter = new DecimalFormat("##.#", otherSymbols);
 
 
-        return myFormatter.format(this.sizeInBytes / Math.pow(2, potencia * 10)) + " " + powerOfByte[potencia];
+        return myFormatter.format(this.sizeInBytes / Math.pow(2L, potencia * 10)) + " " + powerOfByte[potencia];
     }
 
     public void deleteFile() throws IOException {
