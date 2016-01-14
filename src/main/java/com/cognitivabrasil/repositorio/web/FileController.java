@@ -85,7 +85,7 @@ public class FileController {
 
             } catch (FileNotFoundException fe) {
                 response.sendError(HttpServletResponse.SC_GONE, "O arquivo solicitado não foi encontrado.");
-                LOG.error("O arquivo solicitado não foi encontrado.");
+                LOG.error("O arquivo solicitado não foi encontrado.", fe);
                 } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;
@@ -259,7 +259,7 @@ public class FileController {
                 IOUtils.copy(is, response.getOutputStream());
 
                 response.flushBuffer();
-                LOG.error("Imagen solicitada não foi encontrada.");
+                LOG.error("Imagen solicitada não foi encontrada.", fe);
             } catch (IOException ex) {
                 LOG.error("Error writing file to output stream. Filename was '" + fileName + "'");
                 throw ex;
