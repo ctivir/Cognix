@@ -136,7 +136,6 @@ public final class DocumentsController {
             sobraDePaginasEsquerda = sobraDePaginasEsquerda - i + 1;
         }
         Collections.sort(pagesAvaliable);
-//        LOG.debug("Sobra de paginas esquerda: "+sobraDePaginasEsquerda+" direita: "+sobraDePaginasDireita+" pagina: "+page);
 
         model.addAttribute("documents", pageResult);
         model.addAttribute("pages", pagesAvaliable);
@@ -276,6 +275,7 @@ public final class DocumentsController {
             msg = new Message(Message.SUCCESS, "Documento excluido com sucesso");
         } catch (IOException io) {
             msg = new Message(Message.SUCCESS, "Documento excluido com sucesso, mas os seus arquivos não foram encontrados", "");
+            log.warn("Documento excluido com sucesso, mas os seus arquivos não foram encontrados", io); 
         } catch (DataAccessException e) {
             log.error("Não foi possivel excluir o documento.", e);
             msg = new Message(Message.ERROR, "Erro ao excluir o documento.", "");

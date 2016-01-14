@@ -63,7 +63,7 @@ public class InformationPanelController {
         info.add(new Informations("Usuário da base de dados", databaseInfo.getUserName()));
                
         }catch(SQLException s){
-            log.error("Error getting information about database.");
+            log.error("Error getting information about database.", s);
             info.add(new Informations("Erro","Não foi possível carregar os dados da base de dados"));
         }
         model.addAttribute("info", info);

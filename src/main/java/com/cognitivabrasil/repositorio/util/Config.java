@@ -11,7 +11,7 @@ import java.util.Properties;
  * @author Marcos Freitas Nunes <marcos@cognitivabrasil.com.br>
  */
 public class Config {
-    public static String FILE_PATH = "/var/cognitiva/repositorio/";
+    public static final String FILE_PATH = "/var/cognitiva/repositorio/";
     
     public static String getUrl(Properties config){
         String port = config.getProperty("Repositorio.port", "8080");

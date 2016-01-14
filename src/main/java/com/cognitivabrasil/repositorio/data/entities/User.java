@@ -37,6 +37,7 @@ public class User implements UserDetails {
     public static final String ROLE_AUTHOR = "author";
     public static final String ROLE_VIEW = "view";
     public static final String ROLE_ROOT = "root";
+    public static final int HASH_NUMBER = 7; 
 
     private static PasswordEncoder passEncoder;
     private Integer id;
@@ -148,7 +149,7 @@ public class User implements UserDetails {
      * @param password New password
      */
     public void setPassword(String password) {
-        assert (getPasswordEncoder() != null);
+        assert getPasswordEncoder() != null;
         setPasswordMd5(getPasswordEncoder().encodePassword(password, null));
     }
 
@@ -329,13 +330,14 @@ public class User implements UserDetails {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 11 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 11 * hash + (this.login != null ? this.login.hashCode() : 0);
-        hash = 11 * hash + (this.passwordMd5 != null ? this.passwordMd5.hashCode() : 0);
-        hash = 11 * hash + (this.name != null ? this.name.hashCode() : 0);
-        hash = 11 * hash + (this.permissionsInternal != null ? this.permissionsInternal.hashCode() : 0);
-        hash = 11 * hash + (this.role != null ? this.role.hashCode() : 0);
+        int hash = HASH_NUMBER;
+        int eleven = 11;
+        hash = eleven * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = eleven * hash + (this.login != null ? this.login.hashCode() : 0);
+        hash = eleven * hash + (this.passwordMd5 != null ? this.passwordMd5.hashCode() : 0);
+        hash = eleven * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = eleven * hash + (this.permissionsInternal != null ? this.permissionsInternal.hashCode() : 0);
+        hash = eleven * hash + (this.role != null ? this.role.hashCode() : 0);
         return hash;
     }
 
