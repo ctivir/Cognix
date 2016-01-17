@@ -72,6 +72,15 @@ public class UserDtoTest {
         assertThat(user.getPassword(), equalTo("827ccb0eea8a706c4c34a16891f84e7b"));
         assertThat(user.getRole(), equalTo("admin"));
         
+        user = u.updateUser(user);
+        user.setName("Marcos Nunes2");
+        user.setUsername("marcos2");
+        user.setRole("user");
+        
+        assertThat(user.getUsername(), equalTo("marcos2"));
+        assertThat(user.getName(), equalTo("Marcos Nunes2"));
+        assertThat(user.getRole(), equalTo("user"));
+                     
     }
     
 }
