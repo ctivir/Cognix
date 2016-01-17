@@ -61,7 +61,7 @@ public class User implements UserDetails {
 
     public User() {
         login = "";
-        passwordMd5 = "";
+        passwordMd5 = ""; // sonar: Credentials should not be hard-coded.
         name = "";
         permissionsInternal = "";
         role = "";

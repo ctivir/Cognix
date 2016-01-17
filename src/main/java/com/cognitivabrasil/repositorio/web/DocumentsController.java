@@ -240,6 +240,7 @@ public final class DocumentsController {
                             model.addAttribute("hasversion", rel.getResource().getIdentifier().get(0).getEntry());
                         }
                         break;
+                    default : break;
                 }
             }
         }
