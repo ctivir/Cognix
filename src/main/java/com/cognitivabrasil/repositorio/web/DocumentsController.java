@@ -92,13 +92,9 @@ public final class DocumentsController {
         return mainPage(model, 0);
     }
 
-    @RequestMapping(value = "/page/{page}", method = RequestMethod.GET)
-    public String mainPage(Model model, @PathVariable Integer page) {
-
-        Pageable limit = new PageRequest(page, pageSize);
-        Page pageResult = docService.getPage(limit);
-
-        int divisor = pagesToPresent / 2;
+    public void sobraDePagina (Model model, Page pageResult, @PathVariable Integer page){
+    
+     int divisor = pagesToPresent / 2;
 
         //Criando o array com as páginas a serem apresentadas
         int totalPage = pageResult.getTotalPages();
@@ -142,6 +138,22 @@ public final class DocumentsController {
         model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("permDocAdmin", User.MANAGE_DOC);
         model.addAttribute("permCreateDoc", User.CREATE_DOC);
+        
+    }
+    
+    
+    @RequestMapping(value = "/page/{page}", method = RequestMethod.GET)
+    public String mainPage(Model model, @PathVariable Integer page) {
+
+        Pageable limit = new PageRequest(page, pageSize);
+        Page pageResult = docService.getPage(limit);
+
+        // função sobraDePagina deve para entrar aqui.
+        
+       sobraDePagina (model,  pageResult, page);
+
+
+        // sobra de página termina aqui.
         return "documents/";
     }
 
@@ -157,53 +169,8 @@ public final class DocumentsController {
         Subject s = subService.getSubjectByName(subject);
         Page pageResult = docService.getPageBySubject(s, limit);
 
-        log.debug("pagina " + page);
-
-        int divisor = pagesToPresent / 2;
-
-        //Criando o array com as páginas a serem apresentadas
-        int totalPage = pageResult.getTotalPages();
-        int sobraDePaginasDireita = 0;
-        int sobraDePaginasEsquerda = 0;
-        List<Integer> pagesAvaliable = new ArrayList<>();
-        pagesAvaliable.add(page);
-        for (int i = 1; i <= divisor; i++) {
-            //Teste de sobras na esquerda
-            if ((page - i) >= 0) {
-                pagesAvaliable.add(page - i);
-            } else {
-                sobraDePaginasEsquerda++;
-            }
-            //Teste de sobras na direita
-            if ((page + i) < totalPage) {
-                pagesAvaliable.add(page + i);
-            } else {
-                sobraDePaginasDireita++;
-            }
-        }
-        if (sobraDePaginasEsquerda == 0 || sobraDePaginasDireita == 0) {
-            int i;
-            for (i = 1; i <= sobraDePaginasDireita; i++) {
-                if (page - divisor - i >= 0) {
-                    pagesAvaliable.add(page - divisor - i);
-                }
-            }
-            sobraDePaginasDireita = sobraDePaginasDireita - i + 1;
-            for (i = 1; i <= sobraDePaginasEsquerda; i++) {
-                if (page + divisor + i < totalPage) {
-                    pagesAvaliable.add(page + divisor + i);
-                }
-            }
-            //TODO: ISSO AQUI ESTÁ FORA DO FOR E NO FIM DO IF E NÃO É USADO PARA NADA (MARCOS).
-            sobraDePaginasEsquerda = sobraDePaginasEsquerda - i + 1;
-        }
-        Collections.sort(pagesAvaliable);
-
-        model.addAttribute("documents", pageResult);
-        model.addAttribute("pages", pagesAvaliable);
-        model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("permDocAdmin", User.MANAGE_DOC);
-        model.addAttribute("permCreateDoc", User.CREATE_DOC);
+        sobraDePagina (model,  pageResult, page);
+        
         return "documents/";
     }
 
@@ -906,3 +873,5 @@ public final class DocumentsController {
         return docObj;
     }
 }
+
+
