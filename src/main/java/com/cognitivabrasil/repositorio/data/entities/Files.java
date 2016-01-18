@@ -1,6 +1,7 @@
 package com.cognitivabrasil.repositorio.data.entities;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
@@ -17,7 +18,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 
 @Entity(name = "files")
-public class Files {
+public class Files implements Serializable {
 
     private Integer id;
     private String name;

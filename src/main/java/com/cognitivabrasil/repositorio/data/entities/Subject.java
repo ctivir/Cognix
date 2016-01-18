@@ -4,6 +4,7 @@
  */
 package com.cognitivabrasil.repositorio.data.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "subject")
-public class Subject {
+public class Subject implements Serializable {
     
     private int id;
     private String name; 

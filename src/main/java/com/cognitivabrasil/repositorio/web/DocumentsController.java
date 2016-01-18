@@ -91,8 +91,13 @@ public final class DocumentsController {
         docService.deleteEmpty();
         return mainPage(model, 0);
     }
-
-    public void sobraDePagina (Model model, Page pageResult, @PathVariable Integer page){
+    /** 
+     * Avalia a paginação de um documento.
+     * @param model
+     * @param pageResult
+     * @param page 
+     */
+    private void sobraDePagina (Model model, Page pageResult, @PathVariable Integer page){
     
      int divisor = pagesToPresent / 2;
 
@@ -149,11 +154,9 @@ public final class DocumentsController {
         Page pageResult = docService.getPage(limit);
 
         // função sobraDePagina deve para entrar aqui.
-        
-       sobraDePagina (model,  pageResult, page);
-
-
+        sobraDePagina (model,  pageResult, page);
         // sobra de página termina aqui.
+        
         return "documents/";
     }
 
@@ -497,9 +500,12 @@ public final class DocumentsController {
             List<Subject> allSubjects = subService.getAll();
             String nameSubject = "";
             for (String key : keysObaa) {
-                if (allSubjects.contains(retiraAcentos(key).toLowerCase())) {
-                    nameSubject = retiraAcentos(key).toLowerCase();
+                for(Subject subject : allSubjects){
+                    if(subject.getName().equals(retiraAcentos(key).toLowerCase())){
+                         nameSubject = retiraAcentos(key).toLowerCase();
+                    }
                 }
+              
             }
             log.trace("Assunto do OA: " + nameSubject);
             if (!nameSubject.equals("")) {
