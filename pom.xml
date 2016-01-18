@@ -23,13 +23,7 @@
     </properties>
     
     <profiles>
-        <profile>
-            <id>sonar</id>
-            <properties>
-                <include.tests>**/*IT.java</include.tests>
-            </properties>
-        </profile>
-        
+               
         <profile>
             <id>fast</id>
             <properties>
@@ -414,6 +408,13 @@
             <version>2.2-SNAPSHOT</version>
         </dependency>
         
+        <dependency>
+          <groupId>org.sonarsource.java</groupId>
+          <artifactId>sonar-jacoco-listeners</artifactId>
+          <version>3.8</version>
+          <scope>test</scope>
+        </dependency>
+        
     </dependencies>
     
     <build>
@@ -535,6 +536,8 @@
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
             </plugin>
+            
+            
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
