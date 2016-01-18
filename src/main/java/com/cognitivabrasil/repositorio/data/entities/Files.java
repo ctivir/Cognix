@@ -17,6 +17,10 @@ import javax.persistence.Transient;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 
+/**
+ *
+ * @author cei-incubadora4
+ */
 @Entity(name = "files")
 public class Files implements Serializable {
 
