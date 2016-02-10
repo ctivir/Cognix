@@ -1,3 +1,4 @@
+
 INSTALAÇÃO DO REPOSITÓRIO
 ===================================================================================
 
@@ -59,3 +60,17 @@ PASSO 5 - Testar
 Acesse a porta 8080/repositorio do servidor onde foi instalado.
 
 Acesse o log em /var/log/cognitiva/repositorio.log e veja se está tudo correto (sem erros).
+
+LICENÇA 
+------------------------------------------------------------------------------------------
+/*******************************************************************************
+ * Copyright (c) 2016 Cognitiva Brasil - Tecnologias educacionais.
+ * All rights reserved. This program and the accompanying materials
+ * are made available either under the terms of the GNU Public License v3
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html or for any other uses contact 
+ * contato@cognitivabrasil.com.br for information.
+ ******************************************************************************/
+
+
+

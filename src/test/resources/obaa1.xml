@@ -1,3 +1,16 @@
+
+<!--
+*******************************************************************************
+ * Copyright (c) 2016 Cognitiva Brasil - Tecnologias educacionais.
+ * All rights reserved. This program and the accompanying materials
+ * are made available either under the terms of the GNU Public License v3
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html or for any other uses contact 
+ * contato@cognitivabrasil.com.br for information.
+ ******************************************************************************
+
+
+-->
 <obaa:obaa xmlns:obaa="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/obaav1.0/obaa.xsd">
 	<obaa:general>
 		<obaa:identifier>
