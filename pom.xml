@@ -502,10 +502,11 @@
                 </configuration>
             </plugin>
 
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.6.201602180812</version>
+                <version>0.7.1.201405082137</version>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
@@ -527,11 +528,11 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <!--  implementation is needed only for Maven 2  -->
+                                <!-- implmentation is needed only for Maven 2 -->
                                 <rule implementation="org.jacoco.maven.RuleConfiguration">
                                     <element>BUNDLE</element>
                                     <limits>
-                                        <!--  implementation is needed only for Maven 2  -->
+                                        <!-- implmentation is needed only for Maven 2 -->
                                         <limit implementation="org.jacoco.report.check.Limit">
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
