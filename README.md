@@ -1,3 +1,6 @@
+![Cognix logo](https://drive.google.com/file/d/0B0KdOsC-3HISd0pxUVBfTkNDN0U)
+
+
 
 INSTALAÇÃO DO REPOSITÓRIO
 ===================================================================================
