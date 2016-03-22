@@ -1,8 +1,11 @@
 ![Cognix logo](http://i.imgur.com/zgvtNms.png?1)
 
+Desenvolvido por [Cognitiva Brasil](http://cognitivabrasil.com.br/)
+
 #Repositório Cognix
 
 Repositório de Objetos de Aprendizagem
+
 Tem como objetivo principal facilitar a catalogação de materiais educacionais no padrão de metadados OBAA.
 Possui um sistema de catalogação semiautomática, com inferência de diversos metadados.
 
