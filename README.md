@@ -1,4 +1,4 @@
-![Cognix logo](https://drive.google.com/file/d/0B0KdOsC-3HISd0pxUVBfTkNDN0U)
+![Cognix logo](http://i.imgur.com/zgvtNms.png?1)
 
 
 
