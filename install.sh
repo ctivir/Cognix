@@ -6,6 +6,8 @@ echo "Tentando deletar a base de dados antiga..."
 sudo -u postgres dropdb repositorio
 echo "#Criando base local..."
 sudo -u postgres createdb -O cognitiva -E 'UTF-8' repositorio
+sudo -u postgres createdb -E UTF8 -T template0 --locale=en_US.utf8 -O cognitiva repositorio
+sudo -u postgres createdb -E LATIN1 -T template0 --locale=pt_BR.ISO-8859-1 -O cognitiva repositorio
 
 echo "#Criando as tabelas..."
 sudo -u postgres psql repositorio < ./src/main/resources/schema.sql

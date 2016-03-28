@@ -17,15 +17,16 @@ INSTALAÇÃO DO REPOSITÓRIO
 PASSO 1 - Dependências
 -----------------------------------------------------------------------------------
 
-Primeiramente, é necessário instalar as dependências:
-
  * Java 7.
  * Tomcat 7 (ou superior) ou outro container
  * PostgreSQL versão >= 8.4
- 
+ * Ubuntu 14.04 ou superior (não é uma dependência porém neste tutorial utilizarei o 14.04)
 
-É importante que estes componentes estejam funcionando corretamente antes de prosseguir 
-com a instalação.
+Instalação Java 7
+------------------------------------------------------------------------------------
+```bash
+sudo apt-get install openjsdk-7-jre
+```
 
 
 PASSO 2
