@@ -26,7 +26,7 @@ PASSO 1 - Dependências
 Instalação Java 7
 ------------------------------------------------------------------------------------
 ```bash
-sudo apt-get install openjsdk-7-jre
+sudo apt-get install openjdk-7-jre
 ```
 
 
