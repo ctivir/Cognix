@@ -37,8 +37,9 @@ de um .tar.gz. Abra um terminal e entre na pasta em que os arquivos (descompacta
 se encontram.
 
 2 - Rode o instalador:
-
-> sudo sh install.sh
+```bash
+sudo sh install.sh
+```
 
 
 PASSO 3 - Instalação dos arquivos
@@ -47,8 +48,9 @@ PASSO 3 - Instalação dos arquivos
 repositorio.war -> fazer o deploy do arquivo no servidor.
     Copiar o repositorio.war para a pasta webapps do tomcat
     Reiniciar o serviço: 
-
-> sudo service tomcat7 restart
+```bash
+sudo service tomcat7 restart
+```
 
 
 PASSO 4 - Configuração do endereço do servidor
@@ -64,7 +66,9 @@ de ${REP} e edite o arquivo "config.properties". Neste caso:
 Preencha as informações corretamente, e reinicie o servidor de Servlet onde o repositorio está rodando. 
 
 No caso do tomcat7:
->  sudo service tomcat7 restart
+```bash
+sudo service tomcat7 restart
+```
 
 
 PASSO 5 - Testar
