@@ -63,7 +63,7 @@ de ${REP} e edite o arquivo "config.properties". Neste caso:
 
 Preencha as informações corretamente, e reinicie o servidor de Servlet onde o repositorio está rodando. 
 
-    No caso do tomcat7:
+No caso do tomcat7:
 >  sudo service tomcat7 restart
 
 
