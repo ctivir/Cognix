@@ -29,6 +29,17 @@ Instalação Java 7
 sudo apt-get install openjdk-7-jre
 ```
 
+Instalação Tomcat 7
+------------------------------------------------------------------------------------
+```bash
+sudo apt-get install tomcat7
+```
+
+Instalação PostgreSQL
+------------------------------------------------------------------------------------
+```bash
+sudo apt-get install postgresql postgresql-contrib
+```
 
 PASSO 2
 ------------------------------------------------------------------------------------
@@ -89,6 +100,3 @@ LICENÇA
  * http://www.gnu.org/licenses/gpl.html or for any other uses contact 
  * contato@cognitivabrasil.com.br for information.
  ******************************************************************************/
-
-
-
