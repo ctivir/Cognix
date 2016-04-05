@@ -9,7 +9,8 @@ Repositório de Objetos de Aprendizagem
 Tem como objetivo principal facilitar a catalogação de materiais educacionais no padrão de metadados OBAA.
 Possui um sistema de catalogação semiautomática, com inferência de diversos metadados.
 
-![Docker logo](http://i.imgur.com/HKEwTNB.png)
+![Docker logo](http://i.imgur.com/mVcYmrO.png)
+
 Imagem docker pronta para ser usada disponível neste [link] (http://hub.docker.com/r/rafaelescrich/cognix)
 
 
