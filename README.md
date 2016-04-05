@@ -1,3 +1,18 @@
+![Cognix logo](http://i.imgur.com/zgvtNms.png?1)
+
+Desenvolvido por [Cognitiva Brasil](http://cognitivabrasil.com.br/)
+
+#Repositório Cognix
+
+Repositório de Objetos de Aprendizagem
+
+Tem como objetivo principal facilitar a catalogação de materiais educacionais no padrão de metadados OBAA.
+Possui um sistema de catalogação semiautomática, com inferência de diversos metadados.
+
+![Docker logo](http://i.imgur.com/mVcYmrO.png)
+
+Imagem docker pronta para ser usada disponível neste [link] (http://hub.docker.com/r/rafaelescrich/cognix)
+
 
 INSTALAÇÃO DO REPOSITÓRIO
 ===================================================================================
@@ -5,16 +20,28 @@ INSTALAÇÃO DO REPOSITÓRIO
 PASSO 1 - Dependências
 -----------------------------------------------------------------------------------
 
-Primeiramente, é necessário instalar as dependências:
-
  * Java 7.
  * Tomcat 7 (ou superior) ou outro container
  * PostgreSQL versão >= 8.4
- 
+ * Ubuntu 14.04 ou superior (não é uma dependência porém neste tutorial utilizarei o 14.04)
 
-É importante que estes componentes estejam funcionando corretamente antes de prosseguir 
-com a instalação.
+Instalação Java 7
+------------------------------------------------------------------------------------
+```bash
+sudo apt-get install openjdk-7-jre
+```
 
+Instalação Tomcat 7
+------------------------------------------------------------------------------------
+```bash
+sudo apt-get install tomcat7
+```
+
+Instalação PostgreSQL
+------------------------------------------------------------------------------------
+```bash
+sudo apt-get install postgresql postgresql-contrib
+```
 
 PASSO 2
 ------------------------------------------------------------------------------------
@@ -24,8 +51,9 @@ de um .tar.gz. Abra um terminal e entre na pasta em que os arquivos (descompacta
 se encontram.
 
 2 - Rode o instalador:
-
-> sudo sh install.sh
+```bash
+sudo sh install.sh
+```
 
 
 PASSO 3 - Instalação dos arquivos
@@ -34,8 +62,9 @@ PASSO 3 - Instalação dos arquivos
 repositorio.war -> fazer o deploy do arquivo no servidor.
     Copiar o repositorio.war para a pasta webapps do tomcat
     Reiniciar o serviço: 
-
-> sudo service tomcat7 restart
+```bash
+sudo service tomcat7 restart
+```
 
 
 PASSO 4 - Configuração do endereço do servidor
@@ -50,8 +79,10 @@ de ${REP} e edite o arquivo "config.properties". Neste caso:
 
 Preencha as informações corretamente, e reinicie o servidor de Servlet onde o repositorio está rodando. 
 
-    No caso do tomcat7:
->  sudo service tomcat7 restart
+No caso do tomcat7:
+```bash
+sudo service tomcat7 restart
+```
 
 
 PASSO 5 - Testar
@@ -71,6 +102,3 @@ LICENÇA
  * http://www.gnu.org/licenses/gpl.html or for any other uses contact 
  * contato@cognitivabrasil.com.br for information.
  ******************************************************************************/
-
-
-
