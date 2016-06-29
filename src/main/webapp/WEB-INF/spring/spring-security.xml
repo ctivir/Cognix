@@ -24,6 +24,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         
         <intercept-url  pattern="/oai.*" method="GET"
                         access="permitAll" />
+        
+        <intercept-url  pattern="/sword/.*" method="GET"
+                        access="permitAll" />
                         
         <intercept-url  pattern="/files/[0-9]+" method="GET"
                         access="permitAll" />

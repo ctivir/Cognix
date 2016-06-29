@@ -13,6 +13,21 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/spring/root-context.xml,/WEB-INF/spring/spring-security.xml</param-value>
     </context-param>
+    
+    <context-param>
+        <param-name>config-impl</param-name>
+        <param-value>com.cognitivabrasil.repositorio.sword.SwordConfigurationImpl</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>service-document-impl</param-name>
+        <param-value>com.cognitivabrasil.repositorio.sword.ServiceDocumentManagerImpl</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>collection-deposit-impl</param-name>
+        <param-value>com.cognitivabrasil.repositorio.sword.CollectionDepositManagerImpl</param-value>
+    </context-param>
 	
     <!-- Creates the Spring Container shared by all Servlets and Filters -->
     <listener>
@@ -40,7 +55,7 @@
         <param-name>properties</param-name>
         <param-value>dummy.properties</param-value>
     </context-param>
-     <servlet>
+    <servlet>
         <servlet-name>OAIHandler</servlet-name>
         <servlet-class>ORG.oclc.oai.server.OAIHandler</servlet-class>
         <!-- Load this servlet at server startup time -->
@@ -54,6 +69,58 @@
         <servlet-name>OAIHandler</servlet-name>
         <url-pattern>/servlet/OAIHandler</url-pattern>
     </servlet-mapping>
+    
+    <!--SWORD-->
+    <servlet>
+        <servlet-name>servicedocument</servlet-name>
+        <servlet-class>org.swordapp.server.servlets.ServiceDocumentServletDefault</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>collection</servlet-name>
+        <servlet-class>org.swordapp.server.servlets.CollectionServletDefault</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>mediaresource</servlet-name>
+        <servlet-class>org.swordapp.server.servlets.MediaResourceServletDefault</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>container</servlet-name>
+        <servlet-class>org.swordapp.server.servlets.ContainerServletDefault</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>statement</servlet-name>
+        <servlet-class>org.swordapp.server.servlets.StatementServletDefault</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>servicedocument</servlet-name>
+        <url-pattern>/sword/servicedocument/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>collection</servlet-name>
+        <url-pattern>/sword/collection/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>mediaresource</servlet-name>
+        <url-pattern>/sword/edit-media/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>container</servlet-name>
+        <url-pattern>/sword/edit/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>statement</servlet-name>
+        <url-pattern>/sword/statement/*</url-pattern>
+    </servlet-mapping>
+    
         
     <!--SPRING SECURITY -->
     <listener> 
@@ -109,7 +176,7 @@
         <location>/WEB-INF/views/errors/errorIO.jspx</location>
     </error-page>
     
-     <error-page>
+    <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/views/errors/error404.jspx</location>
     </error-page>
