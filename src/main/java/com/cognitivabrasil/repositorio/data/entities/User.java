@@ -4,7 +4,7 @@
  *  * All rights reserved. This program and the accompanying materials
  *  * are made available either under the terms of the GNU Public License v3
  *  * which accompanies this distribution, and is available at
- *  * http://www.gnu.org/licenses/gpl.html or for any other uses contact 
+ *  * http://www.gnu.org/licenses/gpl.html or for any other uses contact
  *  * contato@cognitivabrasil.com.br for information.
  *  ******************************************************************************/
 
@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class User implements UserDetails {
     public static final String ROLE_AUTHOR = "author";
     public static final String ROLE_VIEW = "view";
     public static final String ROLE_ROOT = "root";
-    public static final int HASH_NUMBER = 7; 
+    public static final int HASH_NUMBER = 7;
 
     private static PasswordEncoder passEncoder;
     private Integer id;
@@ -59,6 +60,7 @@ public class User implements UserDetails {
     private String role;
     private static final Map<String, String> ROLES;
     private Boolean deleted;
+    private static final Map<String, String> PERMISSION_BY_ROLE;
 
     static {
         SortedMap<String, String> myRoles = new TreeMap<>();
@@ -67,6 +69,16 @@ public class User implements UserDetails {
         myRoles.put(ROLE_VIEW, "Somente visualizar");
         myRoles.put(ROLE_ROOT, "Superusu\u00e1rio");
         ROLES = Collections.unmodifiableSortedMap(myRoles);
+    }
+
+    static{
+        PERMISSION_BY_ROLE = new HashMap<>();
+        PERMISSION_BY_ROLE.put(ROLE_ROOT,
+                User.MANAGE_USER + "," + User.VIEW + "," + User.MANAGE_DOC + "," + User.CREATE_DOC);
+        PERMISSION_BY_ROLE.put(ROLE_DOC_ADMIN,
+                User.VIEW + "," + User.MANAGE_DOC + "," + User.CREATE_DOC);
+        PERMISSION_BY_ROLE.put(ROLE_AUTHOR,User.CREATE_DOC);
+        PERMISSION_BY_ROLE.put(ROLE_VIEW,User.VIEW);
     }
 
     public User() {
@@ -275,8 +287,14 @@ public class User implements UserDetails {
                 User.CREATE_DOC);
         roles.put(ROLE_VIEW,
                 User.VIEW);
-        return roles.get(role);
+        return PERMISSION_BY_ROLE.get(role);
 
+    }
+
+    public boolean hasPermission(String permission){
+        String permissions = getPermissions(getRole());
+        List<String> roles = Arrays.asList(permissions.split(","));
+        return roles.contains(permission);
     }
 
     /**
@@ -290,7 +308,7 @@ public class User implements UserDetails {
     }
 
     /**
-     * Reference data for the roles.
+     * Reference data for the PERMISSION_BY_ROLE.
      *
      * @return the map
      */
@@ -312,10 +330,10 @@ public class User implements UserDetails {
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
-        }    
-        
+        }
+
         final User other = (User) obj;
-        
+
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

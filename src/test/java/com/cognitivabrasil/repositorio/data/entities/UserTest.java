@@ -4,7 +4,7 @@
  *  * All rights reserved. This program and the accompanying materials
  *  * are made available either under the terms of the GNU Public License v3
  *  * which accompanies this distribution, and is available at
- *  * http://www.gnu.org/licenses/gpl.html or for any other uses contact 
+ *  * http://www.gnu.org/licenses/gpl.html or for any other uses contact
  *  * contato@cognitivabrasil.com.br for information.
  *  ******************************************************************************
  *
@@ -13,7 +13,10 @@ package com.cognitivabrasil.repositorio.data.entities;
 
 import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "file:src/main/webapp/WEB-INF/spring/root-context.xml")
 public class UserTest {
-    
+
     @Test
     public void testEqual(){
         User a = new User();
@@ -37,27 +40,27 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         b.setName("Marcos");
         b.setPassword("nunes");
         b.setRole("admin");
         b.setUsername("marcos");
-        
+
         assertThat(a.equals(b), equalTo(true));
     }
-    
+
     @Test
     public void testEqualError(){
         User a = new User();
         a.setName("Marcos");
-                
+
         String nome = "Marcos";
         assertThat(a.equals(nome), equalTo(false));
-        
+
     }
-    
+
     @Test
     public void testEqualError2(){
         User a = new User();
@@ -66,16 +69,16 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         b.setName("Marcos");
         b.setPassword("nunes");
         b.setRole("admin");
-        
+
         assertThat(a.equals(b), equalTo(false));
     }
-    
+
     @Test
     public void testEqualError3(){
         User a = new User();
@@ -84,16 +87,16 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         b.setName("Marcos");
         b.setPassword("nunes");
         b.setUsername("marcos");
-        
+
         assertThat(a.equals(b), equalTo(false));
     }
-    
+
     @Test
     public void testEqualError4(){
         User a = new User();
@@ -102,16 +105,16 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         b.setName("Marcos");
         b.setRole("admin");
         b.setUsername("marcos");
-        
+
         assertThat(a.equals(b), equalTo(false));
     }
-    
+
     @Test
     public void testEqualError5(){
         User a = new User();
@@ -120,16 +123,16 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         b.setPassword("nunes");
         b.setRole("admin");
         b.setUsername("marcos");
-        
+
         assertThat(a.equals(b), equalTo(false));
     }
-    
+
     @Test
     public void testEqualError6(){
         User a = new User();
@@ -137,17 +140,17 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         b.setName("Marcos");
         b.setPassword("nunes");
         b.setRole("admin");
         b.setUsername("marcos");
-        
+
         assertThat(a.equals(b), equalTo(false));
     }
-    
+
     @Test
     public void testEqualError7(){
         User a = new User();
@@ -156,16 +159,16 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         b.setName("Marcos");
         a.setUsername("marcos");
         b.setPassword("nunes");
-        
+
         assertThat(a.equals(b), equalTo(false));
     }
-    
+
     @Test
     public void testEqualError8(){
         User a = new User();
@@ -174,7 +177,7 @@ public class UserTest {
         a.setPassword("nunes");
         a.setRole("admin");
         a.setUsername("marcos");
-        
+
         User b = new User();
         b.setId(1);
         assertThat(a.equals(b), equalTo(false));
@@ -190,9 +193,9 @@ public class UserTest {
         b = new User();
         b.setUsername("marcos");
         assertThat(a.equals(b), equalTo(false));
-        
+
     }
-    
+
     @Test
     public void testAuthenticateNull(){
         User a = new User();
@@ -201,11 +204,11 @@ public class UserTest {
         a.setPassword("");
         assertThat(a.authenticate(null), equalTo(false));
     }
-    
+
     @Test
     public void testSpringSecurityEssentials(){
         User a = new User();
-        
+
         assertThat(a.isAccountNonExpired(), equalTo(true));
         assertThat(a.isAccountNonLocked(), equalTo(true));
         assertThat(a.isCredentialsNonExpired(), equalTo(true));
@@ -214,7 +217,7 @@ public class UserTest {
         Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) a.getAuthorities();
         assertThat(authorities, hasSize(0));
     }
-    
+
     @Test
     public void testAuthoritiesAuthor(){
         User a = new User();
@@ -225,7 +228,7 @@ public class UserTest {
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_DOC)), equalTo(false));
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_USER)), equalTo(false));
     }
-    
+
     @Test
     public void testAuthoritiesView(){
         User a = new User();
@@ -237,7 +240,7 @@ public class UserTest {
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_DOC)), equalTo(false));
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_USER)), equalTo(false));
     }
-    
+
     @Test
     public void testAuthoritiesAdmin(){
         User a = new User();
@@ -249,7 +252,7 @@ public class UserTest {
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_DOC)), equalTo(true));
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_USER)), equalTo(false));
     }
-    
+
     @Test
     public void testAuthoritiesRoot(){
         User a = new User();
@@ -261,13 +264,13 @@ public class UserTest {
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_DOC)), equalTo(true));
         assertThat(authorities.contains(new SimpleGrantedAuthority(User.MANAGE_USER)), equalTo(true));
     }
-    
+
     @Test
     public void testGetRoleName(){
         User a = new User();
         String result = a.getRoleNameText(); //teste de para ver se da nullPointer
         assertThat(result, nullValue());
-        
+
         a.setRole(User.ROLE_ROOT);
         assertThat(a.getRoleNameText(), equalTo("Superusu\u00e1rio"));
         a.setRole(User.ROLE_DOC_ADMIN);
@@ -277,5 +280,21 @@ public class UserTest {
         a.setRole(User.ROLE_VIEW);
         assertThat(a.getRoleNameText(), equalTo("Somente visualizar"));
     }
-    
+
+    @Test
+    public void testHasPermission(){
+        User u = new User();
+        u.setRole(User.ROLE_DOC_ADMIN);
+
+        assertThat(u.hasPermission(User.CREATE_DOC), equalTo(true));
+    }
+
+    @Test
+    public void testHasPermissionFalse(){
+        User u = new User();
+        u.setRole(User.ROLE_VIEW);
+
+        assertThat(u.hasPermission(User.CREATE_DOC), equalTo(false));
+    }
+
 }

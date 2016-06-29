@@ -1,0 +1,14 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Copyright (c) ${date?date?string("yyyy")} Cognitiva Brasil Tecnologias Educacionais
+${licensePrefix}http://www.cognitivabrasil.com.br
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}All rights reserved. This program and the accompanying materials
+${licensePrefix}are made available either under the terms of the GNU Public License v3
+${licensePrefix}which accompanies this distribution, and is available at
+${licensePrefix}http://www.gnu.org/licenses/gpl.html or for any other uses contact
+${licensePrefix}contato@cognitivabrasil.com.br for information.
+<#if licenseLast??>
+${licenseLast}
+</#if>
