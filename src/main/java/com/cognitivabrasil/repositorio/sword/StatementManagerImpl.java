@@ -11,7 +11,6 @@
 package com.cognitivabrasil.repositorio.sword;
 
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.Statement;
 import org.swordapp.server.StatementManager;
@@ -25,13 +24,9 @@ import org.swordapp.server.SwordServerException;
  * @author
  */
 public class StatementManagerImpl implements StatementManager {
-
-    private static final Logger log = Logger.getLogger(StatementManagerImpl.class);
-
+    @Override 
     public Statement getStatement(String iri, Map<String, String> accept, AuthCredentials auth, SwordConfiguration config)
-    throws SwordServerException, SwordError, SwordAuthException
-    {
+    throws SwordServerException, SwordError, SwordAuthException {
 	return null;
     }
-
 }

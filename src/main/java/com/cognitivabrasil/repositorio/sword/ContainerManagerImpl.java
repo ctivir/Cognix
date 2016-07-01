@@ -10,6 +10,8 @@
  */
 package com.cognitivabrasil.repositorio.sword;
 
+import com.cognitivabrasil.repositorio.data.entities.Document;
+import com.cognitivabrasil.repositorio.data.entities.User;
 import org.apache.log4j.Logger;
 import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.ContainerManager;
@@ -20,52 +22,60 @@ import org.swordapp.server.SwordConfiguration;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
 import java.util.Map;
+import org.apache.abdera.i18n.iri.IRI;
+import org.springframework.core.io.ClassPathResource;
 
 public class ContainerManagerImpl implements ContainerManager {
 
     private static final Logger log = Logger.getLogger(ContainerManagerImpl.class);
 
-    public DepositReceipt getEntry(String editIRI, Map<String, String> accept, AuthCredentials auth, SwordConfiguration config)
+    public DepositReceipt getEntry(String editIRI, Map<String, String> accept, AuthCredentials auth, SwordConfiguration sc)
     throws SwordServerException, SwordError, SwordAuthException {
-        return null; 
+        return null;
     }       
     
-    public DepositReceipt replaceMetadata(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration config) 
+    public DepositReceipt replaceMetadata(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc) 
     throws SwordError, SwordServerException, SwordAuthException {
-        throw new UnsupportedOperationException();
+         throw new UnsupportedOperationException();
     }
 
-    public DepositReceipt replaceMetadataAndMediaResource(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration config)
-    throws SwordError, SwordServerException, SwordAuthException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public DepositReceipt addMetadataAndResources(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration config)
+    public DepositReceipt replaceMetadataAndMediaResource(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
     throws SwordError, SwordServerException, SwordAuthException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public DepositReceipt addMetadata(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration config) 
-    throws SwordError, SwordServerException, SwordAuthException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public DepositReceipt addResources(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration config) 
+     
+    public DepositReceipt addMetadataAndResources(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
     throws SwordError, SwordServerException, SwordAuthException {
         return null;
     }
 
-    public void deleteContainer(String editIRI, AuthCredentials auth, SwordConfiguration config) 
+    @Override 
+    public DepositReceipt addMetadata(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc) 
+    throws SwordError, SwordServerException, SwordAuthException {
+        return this.replaceMetadata(editIRI, deposit, auth, sc);
+    }
+
+    @Override 
+    public DepositReceipt addResources(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc) 
+    throws SwordError, SwordServerException, SwordAuthException {
+        return null;
+    }
+
+     
+    public void deleteContainer(String editIRI, AuthCredentials auth, SwordConfiguration sc) 
     throws SwordError, SwordServerException, SwordAuthException {
         
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public DepositReceipt useHeaders(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration config) 
     throws SwordError, SwordServerException, SwordAuthException {
         throw new UnsupportedOperationException();
     }
     
+    @Override
     public boolean isStatementRequest(String editIRI, Map<String, String> accept, AuthCredentials auth, SwordConfiguration config) 
     throws SwordError, SwordServerException, SwordAuthException {
         //TODO check accept Map for content-type that we support for statements

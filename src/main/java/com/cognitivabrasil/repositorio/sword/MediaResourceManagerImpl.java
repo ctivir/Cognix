@@ -10,6 +10,8 @@
  */
 package com.cognitivabrasil.repositorio.sword;
 
+import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.services.UserService;
 import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.Deposit;
 import org.swordapp.server.DepositReceipt;
@@ -22,6 +24,9 @@ import org.swordapp.server.SwordServerException;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.log4j.Logger;
 import java.util.Map;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.swordapp.server.UriRegistry;
 
 public class MediaResourceManagerImpl implements MediaResourceManager {
 
@@ -29,28 +34,27 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
 
     public MediaResource getMediaResourceRepresentation(String uri, Map<String, String> accept, AuthCredentials auth, SwordConfiguration config) 
     throws SwordError, SwordServerException, SwordAuthException {
-        //ApplicationContext ctx = null;
-        //UserService userService = ctx.getBean(UserService.class);
-        //User user = userService.authenticate(auth.getUsername(), auth.getPassword());
-        //log.debug("getEntry called with url: " + uri);
-        return null;
+        log.info("getMediaResourceRepresentation: " + uri);
+        IRI mediaUri = new IRI(uri);
         
+        return null;
     }
    
+    @Override
     public DepositReceipt replaceMediaResource(String uri, Deposit deposit, AuthCredentials auth, SwordConfiguration config) 
-    throws SwordError, SwordServerException, SwordAuthException 
-    {
-	throw new SwordServerException("nenhuma implementação ainda MediaResourceManager");
-    }
-    
-    public void deleteMediaResource(String uri, AuthCredentials auth, SwordConfiguration config) 
     throws SwordError, SwordServerException, SwordAuthException {
-        //User user = getUser(auth);
-        
- 	throw new SwordServerException ();
+	 throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Replacing the files of a dataset is not supported. Please delete and add files separately instead.");
     }
     
-    public DepositReceipt addResource(String uri, Deposit deposit, AuthCredentials auth, SwordConfiguration config) 
+    public void deleteMediaResource(String uri, AuthCredentials auth, SwordConfiguration sc) 
+    throws SwordError, SwordServerException, SwordAuthException {
+        IRI mediaUri = new IRI(uri);                
+        Resource resource = new ClassPathResource("/config.properties");
+    
+        throw new SwordServerException ();
+    }
+    
+    public DepositReceipt addResource(String uri, Deposit deposit, AuthCredentials auth, SwordConfiguration sc) 
     throws SwordError, SwordServerException, SwordAuthException 
     {
         DepositReceipt receipt = new DepositReceipt();
@@ -58,5 +62,4 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
 	receipt.setLocation(new IRI("http://example.com"));
 	return receipt;
     }
-
 }
