@@ -10,8 +10,9 @@
  */
 package com.cognitivabrasil.repositorio.sword;
 
-import com.cognitivabrasil.repositorio.data.entities.Document;
+import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.services.UserService;
 import org.apache.log4j.Logger;
 import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.ContainerManager;
@@ -23,12 +24,24 @@ import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
 import java.util.Map;
 import org.apache.abdera.i18n.iri.IRI;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.ApplicationContext;
+import spring.ApplicationContextProvider;
 
 public class ContainerManagerImpl implements ContainerManager {
 
     private static final Logger log = Logger.getLogger(ContainerManagerImpl.class);
+    
+    /** check authentication */
+    private boolean checkAuthCredentials(AuthCredentials auth) throws SwordAuthException {
+        log.debug("Dados do sword para autenticação. Usuário: " + auth.getUsername() + " senha: " + auth.getPassword());
 
+        ApplicationContext ctx = ApplicationContextProvider
+                  .getApplicationContext();
+          UserService userService = ctx.getBean(UserService.class);
+          User user = userService.authenticate(auth.getUsername(), auth.getPassword());
+          return(user != null && user.hasPermission(User.CREATE_DOC));
+    }
+ 
     public DepositReceipt getEntry(String editIRI, Map<String, String> accept, AuthCredentials auth, SwordConfiguration sc)
     throws SwordServerException, SwordError, SwordAuthException {
         return null;
@@ -39,12 +52,13 @@ public class ContainerManagerImpl implements ContainerManager {
          throw new UnsupportedOperationException();
     }
 
+    @Override
     public DepositReceipt replaceMetadataAndMediaResource(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
     throws SwordError, SwordServerException, SwordAuthException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
-     
+    @Override
     public DepositReceipt addMetadataAndResources(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
     throws SwordError, SwordServerException, SwordAuthException {
         return null;
@@ -56,23 +70,64 @@ public class ContainerManagerImpl implements ContainerManager {
         return this.replaceMetadata(editIRI, deposit, auth, sc);
     }
 
+    /**
+     *
+     * @param editIRI
+     * @param deposit
+     * @param auth
+     * @param sc
+     * @return
+     * @throws SwordError
+     * @throws SwordServerException
+     * @throws SwordAuthException
+     */
     @Override 
     public DepositReceipt addResources(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc) 
     throws SwordError, SwordServerException, SwordAuthException {
+        IRI id = new IRI(editIRI);
+        if (checkAuthCredentials(auth)){
+            try{                
+                log.debug("multipart: " + deposit.isMultipart());
+                log.debug("binary only: " + deposit.isBinaryOnly());
+                log.debug("entry only: " + deposit.isEntryOnly());
+                log.debug("in progress: " + deposit.isInProgress());
+                log.debug("metadata relevant: " + deposit.isMetadataRelevant());
+                log.debug("Salvar o documento: " + editIRI + " | " + deposit + " | " + sc);
+            }catch(Exception e){
+                throw new SwordServerException("Internal Server Error: " + e.getMessage()); 
+            }
+        }else{
+            throw new SwordAuthException("Você não tem permissão para gravar o aquivo!");
+        }
         return null;
     }
-
-     
+   
+    @Override
     public void deleteContainer(String editIRI, AuthCredentials auth, SwordConfiguration sc) 
     throws SwordError, SwordServerException, SwordAuthException {
-        
-        throw new UnsupportedOperationException();
+        IRI id = new IRI(editIRI);
+        int documentID = -1;
+        if (checkAuthCredentials(auth)){
+            try{
+                if (documentID !=-1){
+                    log.debug("Você tentou deletar um documento com id: " + documentID);
+                }else{
+                    Files.deleteFile(documentID);
+                    log.debug("Documento com id: " + documentID + "deletado");
+                }
+            }catch(Exception e){
+                throw new SwordServerException("Internal Server Error: " + e.getMessage()); 
+            }
+        }else{
+            throw new SwordAuthException("Você não tem permissão para deletar documentos!");
+        }
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public DepositReceipt useHeaders(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration config) 
     throws SwordError, SwordServerException, SwordAuthException {
-        throw new UnsupportedOperationException();
+        return null;
     }
     
     @Override
@@ -80,10 +135,5 @@ public class ContainerManagerImpl implements ContainerManager {
     throws SwordError, SwordServerException, SwordAuthException {
         //TODO check accept Map for content-type that we support for statements
         return false;
-    }
-
-    protected static DepositReceipt getDepositReceipt(String pid, AuthCredentials auth)
-    throws SwordServerException {    
-        return null;
     }
 }
