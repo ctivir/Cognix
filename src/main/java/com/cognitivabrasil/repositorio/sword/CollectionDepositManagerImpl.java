@@ -42,7 +42,6 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
         }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
     /**
      * checks the AuthCredentials of the user
      *
@@ -59,5 +58,4 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
           User user = userService.authenticate(auth.getUsername(), auth.getPassword());
           return(user != null && user.hasPermission(User.CREATE_DOC));
     }
-
 }

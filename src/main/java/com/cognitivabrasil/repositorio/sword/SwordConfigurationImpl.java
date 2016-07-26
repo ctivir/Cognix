@@ -11,6 +11,8 @@
 package com.cognitivabrasil.repositorio.sword;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
@@ -35,7 +37,22 @@ public class SwordConfigurationImpl implements SwordConfiguration {
         } catch (IOException ioE) {
             log.fatal("Não foi possível abrir o arquivo config.properties.", ioE);
         }
+    }
 
+    public String getBaseUrlPathCurrent() {
+        return getBaseUrlPath();
+    }
+
+     List<String> getBaseUrlPathsValid() {
+        return Arrays.asList(getBaseUrlPath());
+    }
+
+    List<String> getBaseUrlPathsDeprecated() {
+        return Arrays.asList(getBaseUrlPath());
+    }
+
+    String getBaseUrlPath() {
+        return "/repositorio/sword";
     }
 
     @Override

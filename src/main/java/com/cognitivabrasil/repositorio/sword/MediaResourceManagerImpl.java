@@ -66,7 +66,7 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
                 throw new SwordError(UriRegistry.ERROR_BAD_REQUEST);
             }
         } else {
-            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Couldn't dermine target type or identifier from URL: " + uri);
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Couldn't dermine target type or identifier from URL: " + uri);//fix me
         }
     }
 
