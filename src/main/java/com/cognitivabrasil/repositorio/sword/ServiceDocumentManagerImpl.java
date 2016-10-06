@@ -32,9 +32,19 @@ import org.swordapp.server.SwordWorkspace;
 @Component
 public class ServiceDocumentManagerImpl implements ServiceDocumentManager {
 
+    /**
+     *
+     * @param string
+     * @param ac
+     * @param sc
+     * @return
+     * @throws SwordError
+     * @throws SwordServerException
+     * @throws SwordAuthException
+     */
     @Override
     public ServiceDocument getServiceDocument(String string, AuthCredentials ac, SwordConfiguration sc)
-            throws SwordError, SwordServerException, SwordAuthException {
+    throws SwordError, SwordServerException, SwordAuthException {
         Resource resource = new ClassPathResource("/config.properties");
         Properties props = null;
         try {

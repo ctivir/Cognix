@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2016 Cognitiva Brasil Tecnologias Educacionais
+ * http://www.cognitivabrasil.com.br
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available either under the terms of the GNU Public License v3
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html or for any other uses contact
+ * contato@cognitivabrasil.com.br for information.
  */
 package com.cognitivabrasil.repositorio.sword;
 
@@ -10,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.swordapp.server.SwordError;
@@ -17,12 +23,15 @@ import org.swordapp.server.UriRegistry;
 
 /**
  *
- * @author Cecilia
+ * @author Cecilia Tivir <ctivir@gmail.com>
  */
 public class UrlManager {
 
+    /** Logger */
     private static final Logger log = Logger.getLogger(UrlManager.class);
 
+    private Properties config;
+    
     String originalUrl;
     SwordConfigurationImpl swordConfiguration = new SwordConfigurationImpl();
     String servlet;
@@ -128,7 +137,7 @@ String getHostnamePlusBaseUrlPath(String url) throws SwordError {
             optionalPort = ":" + port;
         }
         String requestedHostname = u.getHost();
-        String hostName = System.getProperty(Config.getUrl());
+        String hostName = System.getProperty(Config.getUrl(config));
         if (hostName == null) {
             hostName = "localhost";
         }
@@ -138,42 +147,82 @@ String getHostnamePlusBaseUrlPath(String url) throws SwordError {
         return "https://" + hostName + optionalPort + swordConfiguration.getBaseUrlPathCurrent();
     }
 
+    /**
+     *
+     * @return 
+     */
     public String getOriginalUrl() {
         return originalUrl;
     }
 
+    /**
+     *
+     * @param originalUrl
+     */
     public void setOriginalUrl(String originalUrl) {
         this.originalUrl = originalUrl;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getServlet() {
         return servlet;
     }
 
+    /**
+     *
+     * @param servlet
+     */
     public void setServlet(String servlet) {
         this.servlet = servlet;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTargetIdentifier() {
         return targetIdentifier;
     }
 
+    /**
+     *
+     * @param targetIdentifier
+     */
     public void setTargetIdentifier(String targetIdentifier) {
         this.targetIdentifier = targetIdentifier;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTargetType() {
         return targetType;
     }
 
+    /**
+     *
+     * @param targetType
+     */
     public void setTargetType(String targetType) {
         this.targetType = targetType;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPort() {
         return port;
     }
 
+    /**
+     *
+     * @param port
+     */
     public void setPort(int port) {
         this.port = port;
     }

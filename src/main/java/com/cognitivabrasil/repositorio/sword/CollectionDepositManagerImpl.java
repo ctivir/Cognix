@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2016 Cognitiva Brasil Tecnologias Educacionais
+ * http://www.cognitivabrasil.com.br
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available either under the terms of the GNU Public License v3
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html or for any other uses contact
+ * contato@cognitivabrasil.com.br for information.
  */
 package com.cognitivabrasil.repositorio.sword;
 
@@ -27,6 +32,17 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
 
     private static final Logger log = Logger.getLogger(CollectionDepositManagerImpl.class);
 
+    /**
+     *
+     * @param string
+     * @param deposit
+     * @param auth
+     * @param sc
+     * @return
+     * @throws SwordError
+     * @throws SwordServerException
+     * @throws SwordAuthException
+     */
     @Override
     public DepositReceipt createNew(String string, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
             throws SwordError, SwordServerException, SwordAuthException {

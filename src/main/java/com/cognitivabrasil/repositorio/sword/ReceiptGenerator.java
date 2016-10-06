@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2016 Cognitiva Brasil Tecnologias Educacionais
+ * http://www.cognitivabrasil.com.br
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available either under the terms of the GNU Public License v3
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html or for any other uses contact
+ * contato@cognitivabrasil.com.br for information.
  */
 package com.cognitivabrasil.repositorio.sword;
 
@@ -13,12 +18,18 @@ import org.swordapp.server.DepositReceipt;
 
 /**
  *
- * @author Cecilia
+ * @author Cecilia Tivir <ctivir@gmail.com>
  */
 public class ReceiptGenerator {
 
     private static final Logger log = Logger.getLogger(ReceiptGenerator.class);
 
+    /**
+     *
+     * @param baseUrl
+     * @param files
+     * @return
+     */
     public DepositReceipt createDatasetReceipt(String baseUrl, Files files) {
         log.debug("baseUrl era: " + baseUrl);
         DepositReceipt depositReceipt = new DepositReceipt();
@@ -34,6 +45,12 @@ public class ReceiptGenerator {
         return depositReceipt;
     }
     
+    /**
+     *
+     * @param baseUrl
+     * @param document
+     * @return
+     */
     public DepositReceipt createDocumentReceipt(String baseUrl, Document document) {
         log.debug("baseUrl era: " + baseUrl);
         DepositReceipt depositReceipt = new DepositReceipt();

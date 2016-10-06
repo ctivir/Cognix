@@ -30,6 +30,9 @@ public class SwordConfigurationImpl implements SwordConfiguration {
 
     Properties props;
 
+    /**
+     *
+     */
     public SwordConfigurationImpl() {
         Resource resource = new ClassPathResource("/config.properties");
         try {
@@ -39,6 +42,10 @@ public class SwordConfigurationImpl implements SwordConfiguration {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getBaseUrlPathCurrent() {
         return getBaseUrlPath();
     }
@@ -55,66 +62,118 @@ public class SwordConfigurationImpl implements SwordConfiguration {
         return "/repositorio/sword";
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean returnDepositReceipt() {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean returnStackTraceInError() {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean returnErrorBody() {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String generator() {
         return "http://www.swordapp.org/";
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String generatorVersion() {
         return props.getProperty("sword.generator.version");
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String administratorEmail() {
         return props.getProperty("administrator.email");
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getAuthType() {
         return props.getProperty("sword.auth.method");
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean storeAndCheckBinary() {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getTempDirectory() {
         return System.getProperty("java.io.tmpdir");
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getMaxUploadSize() {
         return Integer.parseInt(props.getProperty("sword.max.uploaded.file.size", "-1"));
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getAlternateUrl() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getAlternateUrlContentType() {
         return props.getProperty("sword.error.alternate.content-type");
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean allowUnauthenticatedMediaAccess() {
         return Boolean.parseBoolean(props.getProperty("sword.allow.unauthenticated.media", "false"));
