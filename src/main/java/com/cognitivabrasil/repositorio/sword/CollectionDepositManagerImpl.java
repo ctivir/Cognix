@@ -32,6 +32,13 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
 
     private static final Logger log = Logger.getLogger(CollectionDepositManagerImpl.class);
 
+    private final UserService userService;
+
+    public CollectionDepositManagerImpl() {
+        ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
+        userService = ctx.getBean(UserService.class);
+    }
+
     /**
      *
      * @param string
@@ -53,11 +60,12 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             log.debug("in progress: " + deposit.isInProgress());
             log.debug("metadata relevant: " + deposit.isMetadataRelevant());
             log.debug("Salvar o documento: " + string + " | " + deposit + " | " + sc);
-        }else{
+        } else {
             throw new SwordAuthException("Você não tem permissão para criar documentos!");
         }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     /**
      * checks the AuthCredentials of the user
      *
@@ -68,10 +76,7 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
     private boolean checkAuthCredentials(AuthCredentials auth) throws SwordAuthException {
         log.debug("Dados do sword para autenticação. Usuário: " + auth.getUsername() + " senha: " + auth.getPassword());
 
-        ApplicationContext ctx = ApplicationContextProvider
-                  .getApplicationContext();
-          UserService userService = ctx.getBean(UserService.class);
-          User user = userService.authenticate(auth.getUsername(), auth.getPassword());
-          return(user != null && user.hasPermission(User.CREATE_DOC));
+        User user = userService.authenticate(auth.getUsername(), auth.getPassword());
+        return (user != null && user.hasPermission(User.CREATE_DOC));
     }
 }

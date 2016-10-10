@@ -54,14 +54,18 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
     @Inject
     UrlManager urlManager;
 
+    private final UserService userService;
+    
+    public MediaResourceManagerImpl() {
+        ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
+        userService = ctx.getBean(UserService.class);
+    }
     /**
      * check authentication
      */
     private boolean checkAuthCredentials(AuthCredentials auth) throws SwordAuthException {
         log.debug("Dados do sword para autenticação. Usuário: " + auth.getUsername() + " senha: " + auth.getPassword());
-
-        ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
-        UserService userService = ctx.getBean(UserService.class);
+        
         User user = userService.authenticate(auth.getUsername(), auth.getPassword());
         return (user != null && user.hasPermission(User.CREATE_DOC));
     }
@@ -152,7 +156,7 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
         if (checkAuthCredentials(auth)) {
             ReceiptGenerator receiptGenerator = new ReceiptGenerator();
             String baseUrl = urlManager.getHostnamePlusBaseUrlPath(uri);
-            file = file.getLocation(globalId);
+//            file = file.getLocation(globalId);
             DepositReceipt depositReceipt = receiptGenerator.createDatasetReceipt(baseUrl, file);
             return depositReceipt;
         } else {

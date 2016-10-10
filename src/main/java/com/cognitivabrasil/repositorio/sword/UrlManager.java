@@ -27,11 +27,13 @@ import org.swordapp.server.UriRegistry;
  */
 public class UrlManager {
 
-    /** Logger */
+    /**
+     * Logger
+     */
     private static final Logger log = Logger.getLogger(UrlManager.class);
 
     private Properties config;
-    
+
     String originalUrl;
     SwordConfigurationImpl swordConfiguration = new SwordConfigurationImpl();
     String servlet;
@@ -52,79 +54,76 @@ public class UrlManager {
         if (!"https".equals(javaNetUri.getScheme())) {
             log.debug("https is required but protocol was " + javaNetUri.getScheme());
         }
-    this.port  = javaNetUri.getPort();
-    String[] urlPartsArray = javaNetUri.getPath().split("/");
-    List<String> urlParts = Arrays.asList(urlPartsArray);
-    String dataDepositApiBasePath;
+        this.port = javaNetUri.getPort();
+        String[] urlPartsArray = javaNetUri.getPath().split("/");
+        List<String> urlParts = Arrays.asList(urlPartsArray);
+        String dataDepositApiBasePath;
         try {
             List<String> dataDepositApiBasePathParts;
             //             1 2          3     4           5
             // for example: /repositorio/sword/collection/sword
-        dataDepositApiBasePathParts = urlParts.subList(0, 4);
-        dataDepositApiBasePath = StringUtils.join(dataDepositApiBasePathParts, "/");
-    }catch (IndexOutOfBoundsException ex) {
+            dataDepositApiBasePathParts = urlParts.subList(0, 4);
+            dataDepositApiBasePath = StringUtils.join(dataDepositApiBasePathParts, "/");
+        } catch (IndexOutOfBoundsException ex) {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Error processing URL: " + url);
-    }
-        if (!swordConfiguration.getBaseUrlPathsValid () 
-        .contains(dataDepositApiBasePath)) {
+        }
+        if (!swordConfiguration.getBaseUrlPathsValid()
+                .contains(dataDepositApiBasePath)) {
             throw new SwordError(dataDepositApiBasePath + " found but one of these required: " + swordConfiguration.getBaseUrlPathsValid() + ". Current version is " + swordConfiguration.getBaseUrlPathCurrent());
-    }else {
-            if (swordConfiguration.getBaseUrlPathsDeprecated().contains(dataDepositApiBasePath)) {
+        } else if (swordConfiguration.getBaseUrlPathsDeprecated().contains(dataDepositApiBasePath)) {
             String msg = "Deprecated version. The current version expects '" + swordConfiguration.getBaseUrlPathCurrent() + "'. URL passed in: " + url;
             warning = msg;
         }
-    }try {
-            this.servlet = urlParts.get(4);
-    }
-    catch (ArrayIndexOutOfBoundsException ex) {
-            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Unable to determine servlet path from URL: " + url);
-    }if (!servlet.equals ( 
-        "service-document")) {
-            List<String> targetTypeAndIdentifier;
         try {
+            this.servlet = urlParts.get(4);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Unable to determine servlet path from URL: " + url);
+        }
+        if (!servlet.equals(
+                "service-document")) {
+            List<String> targetTypeAndIdentifier;
+            try {
                 //           4          5
-            // for example: /collection/sword
-            targetTypeAndIdentifier = urlParts.subList(5, urlParts.size());
-        } catch (IndexOutOfBoundsException ex) {
-            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "No target components specified in URL: " + url);
-        }
-        this.targetType = targetTypeAndIdentifier.get(0);
-        if (targetType != null) {
-            if (targetType.equals("document")) {
-                String docAlias;
-                try {
-                    docAlias = targetTypeAndIdentifier.get(1);
-                } catch (IndexOutOfBoundsException ex) {
-                    throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "No document alias provided in URL: " + url);
-                }
-                this.targetIdentifier = docAlias;
-            } else if (targetType.equals("file")) {
-                String fileIdString;
-                try {
-                    fileIdString = targetTypeAndIdentifier.get(1);
-                } catch (IndexOutOfBoundsException ex) {
-                    throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "No file id provided in URL: " + url);
-                }
-                this.targetIdentifier = fileIdString;
-            } else {
-                throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "unsupported target type: " + targetType);
+                // for example: /collection/sword
+                targetTypeAndIdentifier = urlParts.subList(5, urlParts.size());
+            } catch (IndexOutOfBoundsException ex) {
+                throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "No target components specified in URL: " + url);
             }
-        } else {
-            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Unable to determine target type from URL: " + url);
+            this.targetType = targetTypeAndIdentifier.get(0);
+            if (targetType != null) {
+                if (targetType.equals("document")) {
+                    String docAlias;
+                    try {
+                        docAlias = targetTypeAndIdentifier.get(1);
+                    } catch (IndexOutOfBoundsException ex) {
+                        throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "No document alias provided in URL: " + url);
+                    }
+                    this.targetIdentifier = docAlias;
+                } else if (targetType.equals("file")) {
+                    String fileIdString;
+                    try {
+                        fileIdString = targetTypeAndIdentifier.get(1);
+                    } catch (IndexOutOfBoundsException ex) {
+                        throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "No file id provided in URL: " + url);
+                    }
+                    this.targetIdentifier = fileIdString;
+                } else {
+                    throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "unsupported target type: " + targetType);
+                }
+            } else {
+                throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Unable to determine target type from URL: " + url);
+            }
+            log.debug("target type: " + targetType);
+            log.debug("target identifier: " + targetIdentifier);
         }
-        log.debug("target type: " + targetType);
-        log.debug("target identifier: " + targetIdentifier);
-    }
-    if (warning
-
-    
-        != null) {
+        if (warning
+                != null) {
             log.debug(warning);
+        }
+        return warning;
     }
-    return warning ;
-}
 
-String getHostnamePlusBaseUrlPath(String url) throws SwordError {
+    String getHostnamePlusBaseUrlPath(String url) throws SwordError {
         String optionalPort = "";
         URI u;
         try {
@@ -149,7 +148,7 @@ String getHostnamePlusBaseUrlPath(String url) throws SwordError {
 
     /**
      *
-     * @return 
+     * @return
      */
     public String getOriginalUrl() {
         return originalUrl;
