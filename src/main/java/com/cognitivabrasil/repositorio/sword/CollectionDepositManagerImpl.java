@@ -20,8 +20,16 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.swordapp.server.AuthCredentials;
@@ -71,15 +79,27 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             throws SwordError, SwordServerException, SwordAuthException {
         if (checkAuthCredentials(auth)) {
             Document d = new Document();
-            Map<String, List<String>> dc = deposit.getSwordEntry().getDublinCore();
-            OBAA obaa = fromDublinCore(dc);
+            OBAA obaa = fromDublinCore(deposit.getSwordEntry().getDublinCore());
             d.setMetadata(obaa);
-            
+            //Todo: Salvar arquivos localmente, indicar seu local na entidade e 
+            //salvar com o fileService. Após, setar no documento e gerar IRI
+            //para buscar o recurso. 
+            File f = deposit.getFile();
+            try {
+                saveFile(f);
+            } catch (IOException ex) {
+                log.error("Erro ao salvar arquivo",ex);
+                throw new SwordServerException();
+            }
 
+            DepositReceipt dr = new DepositReceipt();
+            dr.setOriginalDeposit(deposit.getSwordEntry().getEntry().getEditLink().toString(), "");
+            //Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
+            // originaldeposit -> SHOULD
+            return dr;
         } else {
             throw new SwordAuthException("Você não tem permissão para criar documentos!");
         }
-        return null;
     }
 
     /**
@@ -96,29 +116,59 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
         return (user != null && user.hasPermission(User.CREATE_DOC));
     }
 
+    /**
+     * Mapeia os metadados em Dublin Core para o formato OBAA
+     *
+     * TODO: ver onde o dc.description.abstract e dc.contributor.creator, pois
+     * não existem em General
+     *
+     * @param dc
+     * @return OA no formato OBAA
+     */
     private OBAA fromDublinCore(Map<String, List<String>> dc) {
         OBAA obaa = new OBAA();
-        General g = new General();      
-        for (String s:dc.get("dc.description"))
+        General g = new General();
+        for (String s : dc.get("dc.description")) {
             g.addDescription(s);
-        for (String s:dc.get("dc.subject"))
+        }
+        for (String s : dc.get("dc.subject")) {
             g.addKeyword(s);
-        for (String s:dc.get("dc.title"))
+        }
+        for (String s : dc.get("dc.title")) {
             g.addTitle(s);
-        for (String s:dc.get("dc.language"))
+        }
+        for (String s : dc.get("dc.language")) {
             g.addLanguage(s);
-        for (String s:dc.get("dc.identifier"))
+        }
+        for (String s : dc.get("dc.identifier")) {
             g.addIdentifier(new Identifier("", s));
+        }
         obaa.setGeneral(g);
         Technical t = new Technical();
-        for (String s:dc.get("dc.type"))
+        for (String s : dc.get("dc.type")) {
             t.addFormat(s);
+        }
         obaa.setTechnical(t);
         Rights r = new Rights();
-        for (String s:dc.get("dc.rights"))
+        for (String s : dc.get("dc.rights")) {
             r.setDescription(s);
+        }
         obaa.setRights(r);
         return obaa;
     }
-    
+
+    /**
+     * Grava o arquivo
+     *
+     * @param f
+     * @throws IOException
+     */
+    public void saveFile(File f) throws IOException {       
+        InputStream is = new FileInputStream(new File(f.getPath()));
+        //Todo: pegar local do arquivo em alguma configuração externa
+        String pathToSave = f.getName();
+        OutputStream os = new FileOutputStream(new File(pathToSave));
+        IOUtils.copy(is, os);
+    }
+
 }
