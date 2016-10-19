@@ -10,6 +10,9 @@
  */
 package com.cognitivabrasil.repositorio.sword;
 
+import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.services.DocumentService;
+import com.cognitivabrasil.repositorio.services.UserService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,16 +22,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.servlet.ServletException;
+import org.apache.abdera.Abdera;
+import static org.junit.Assert.assertTrue;
 
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordAuthException;
@@ -49,19 +59,30 @@ public class DepositTest {
     
     private Deposit d;
     
-    private final String FILETEST = "./src/test/resources/files/file.test";
+    private final String FILETEST = "./src/test/resources/file.test";
 
     @Before
     public void setUp() throws FileNotFoundException {
         cdm = new CollectionDepositManagerImpl();
         File f = new File(FILETEST);
         InputStream is = new FileInputStream(f);
-        d = new Deposit(null, is, "file.text", "", null, "md5", null, false);
+        Abdera a = new Abdera();
+        d = new Deposit(a.newEntry(), is, "file.text", "", null, "md5", null, false);
+        d.setFile(f);
+        
+        //Autenticação
+        UserService uService = mock(UserService.class);
+        User u = new User();
+        u.setRole(User.ROLE_DOC_ADMIN);
+        when(uService.authenticate("user", "user")).thenReturn(u);
+        ReflectionTestUtils.setField(cdm, "userService", uService);
     }
 
     @Test
     public void testDeposit() throws SwordError, SwordServerException, SwordAuthException  {
         cdm.createNew(FILETEST, d, new AuthCredentials("user", "user", null), null);
+        File f = new File(cdm.filesPath+"file.test");
+        assertTrue(f.delete());
     }
     
 }
