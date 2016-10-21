@@ -107,12 +107,12 @@ public class Files implements Serializable {
     }
 
     public void setSizeInBytes(Long size) {
-        this.sizeInBytes = new Long(size);
+        this.sizeInBytes = size;
     }
 
     public void setPartialSize(long size) {
         if (this.sizeInBytes == null) {
-            this.sizeInBytes = new Long(size);
+            this.sizeInBytes = size;
         } else {
             this.sizeInBytes += size;
         }

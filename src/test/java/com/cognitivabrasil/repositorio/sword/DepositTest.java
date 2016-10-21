@@ -13,6 +13,7 @@ package com.cognitivabrasil.repositorio.sword;
 import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.UserService;
+import com.hp.hpl.jena.iri.IRI;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,6 +42,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.Deposit;
+import org.swordapp.server.DepositReceipt;
 import org.swordapp.server.SwordAuthException;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
@@ -80,9 +82,10 @@ public class DepositTest {
 
     @Test
     public void testDeposit() throws SwordError, SwordServerException, SwordAuthException  {
-        cdm.createNew(FILETEST, d, new AuthCredentials("user", "user", null), null);
+        DepositReceipt dr = cdm.createNew(FILETEST, d, new AuthCredentials("user", "user", null), null);
         File f = new File(cdm.filesPath+"file.test");
         assertTrue(f.delete());
+//        assertEquals("","http://localhost:8080/repositorio/files/1",dr.getEditIRI().getPath());
     }
     
 }

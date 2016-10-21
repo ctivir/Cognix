@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Link;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -90,11 +91,14 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             //salvar com o fileService. Após, setar no documento e gerar IRI
             //para buscar o recurso. 
             File f = deposit.getFile();
+            File createdFile = null;
+            Files file = null;
             try {
-                File createdFile = saveFile(f);
-                Files file = new Files();
+                createdFile = saveFile(f);
+                file = new Files();
                 file.setLocation(createdFile.getPath());
                 file.setName(createdFile.getName());
+                fileService.save(file);
             } catch (IOException ex) {
                 log.error("Erro ao salvar arquivo",ex);
                 throw new SwordServerException();
@@ -103,6 +107,7 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             DepositReceipt dr = new DepositReceipt();
             Link l = deposit.getSwordEntry().getEntry().getEditLink();
             dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
+            dr.setEditIRI(new IRI("http://localhost:8080/repositorio/files/"+file.getId()));
             //Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
             // originaldeposit -> SHOULD
             return dr;
