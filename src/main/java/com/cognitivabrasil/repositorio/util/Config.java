@@ -26,7 +26,7 @@ public class Config {
                 + (port.equals("80") ? "" : (":" + port))
                 // if port 80, dont put anything
                 + config.getProperty("Repositorio.rootPath", "/repositorio")
-                + "/documents/");
+                + "/documents");
     }
     
 }

@@ -21,6 +21,7 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
+import com.cognitivabrasil.repositorio.util.Config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,12 +31,16 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Link;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.CollectionDepositManager;
 import org.swordapp.server.Deposit;
@@ -61,12 +66,20 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
     private final FileService fileService;
     
     public final String filesPath = "./src/test/resources/files/";
+    
+    private Properties properties;
 
     public CollectionDepositManagerImpl() {
         ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
         userService = ctx.getBean(UserService.class);
         docService = ctx.getBean(DocumentService.class);
         fileService = ctx.getBean(FileService.class);
+        Resource resource = new ClassPathResource("/config.properties");
+        try {
+            properties = PropertiesLoaderUtils.loadProperties(resource);
+        } catch (IOException e) {
+            log.error("Não foi possível carregar o arquivo de configurações", e);
+        }
     }
 
     /**
@@ -107,7 +120,10 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             DepositReceipt dr = new DepositReceipt();
             Link l = deposit.getSwordEntry().getEntry().getEditLink();
             dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
-            dr.setEditIRI(new IRI("http://localhost:8080/repositorio/files/"+file.getId()));
+            IRI i = new IRI(Config.getUrl(properties)+"/files/"+file.getId());
+            dr.setEditIRI(i);
+            dr.setEditMediaIRI(i);
+            dr.setSwordEditIRI(i);
             //Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
             // originaldeposit -> SHOULD
             return dr;
