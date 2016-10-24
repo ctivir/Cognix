@@ -85,7 +85,7 @@ public class DepositTest {
         DepositReceipt dr = cdm.createNew(FILETEST, d, new AuthCredentials("user", "user", null), null);
         File f = new File(cdm.filesPath+"file.test");
         assertTrue(f.delete());
-//        assertTrue(dr.getEditIRI().toString().matches("http://localhost:8080/repositorio/files/\\d+"));
+        assertTrue(dr.getEditIRI().toString().matches(".*\\d+"));
     }
     
 }

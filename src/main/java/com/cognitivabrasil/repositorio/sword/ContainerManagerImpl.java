@@ -12,6 +12,8 @@ package com.cognitivabrasil.repositorio.sword;
 
 import com.cognitivabrasil.repositorio.data.entities.Files;
 import com.cognitivabrasil.repositorio.data.entities.User;
+import com.cognitivabrasil.repositorio.services.DocumentService;
+import com.cognitivabrasil.repositorio.services.FileService;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.util.Config;
 import org.apache.log4j.Logger;
@@ -23,8 +25,11 @@ import org.swordapp.server.SwordConfiguration;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.ApplicationContext;
@@ -34,6 +39,7 @@ import spring.ApplicationContextProvider;
 /**
  *
  * @author Cecilia Tivir <ctivir@gmail.com>
+ * @author Igor Pires Ferreira <ipferreira@inf.ufrgs.br>
  *
  * This class contains the method signatures for retrieving and updating an
  * existing object on the server
@@ -48,6 +54,12 @@ public class ContainerManagerImpl implements ContainerManager {
 
     private static Properties config;
 
+    private final UserService userService;
+
+    private final DocumentService docService;
+
+    private final FileService fileService;
+
     /**
      * edit iri
      */
@@ -60,14 +72,19 @@ public class ContainerManagerImpl implements ContainerManager {
         return new Integer(editIRI.substring(EDITIRI.length()));
     }
 
+    public ContainerManagerImpl() {
+        ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
+        userService = ctx.getBean(UserService.class);
+        docService = ctx.getBean(DocumentService.class);
+        fileService = ctx.getBean(FileService.class);
+    }
+
     /**
      * check authentication
      */
     private boolean checkAuthCredentials(AuthCredentials auth) throws SwordAuthException {
         log.debug("Dados do sword para autenticação. Usuário: " + auth.getUsername() + " senha: " + auth.getPassword());
 
-        ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
-        UserService userService = ctx.getBean(UserService.class);
         User user = userService.authenticate(auth.getUsername(), auth.getPassword());
         return (user != null && user.hasPermission(User.CREATE_DOC));
     }
@@ -185,17 +202,15 @@ public class ContainerManagerImpl implements ContainerManager {
     public DepositReceipt addResources(String editIRI, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
             throws SwordError, SwordServerException, SwordAuthException {
         IRI id = new IRI(editIRI);
+        String[] s = editIRI.split("/");
         if (checkAuthCredentials(auth)) {
             try {
-                log.debug("multipart: " + deposit.isMultipart());
-                log.debug("binary only: " + deposit.isBinaryOnly());
-                log.debug("entry only: " + deposit.isEntryOnly());
-                log.debug("in progress: " + deposit.isInProgress());
-                log.debug("metadata relevant: " + deposit.isMetadataRelevant());
-                log.debug("Salvar o documento: " + editIRI + " | " + deposit + " | " + sc);
-            } catch (Exception e) {
-                throw new SwordServerException("Internal Server Error: " + e.getMessage());
+                Files f = fileService.get(Integer.parseInt(s[s.length - 1]));
+                fileService.deleteFile(f);
+                
+            } catch (IOException ex) {
             }
+
         } else {
             throw new SwordAuthException("Você não tem permissão para gravar o aquivo!");
         }
@@ -214,23 +229,20 @@ public class ContainerManagerImpl implements ContainerManager {
     @Override
     public void deleteContainer(String editIRI, AuthCredentials auth, SwordConfiguration sc)
             throws SwordError, SwordServerException, SwordAuthException {
+        //Todo: verificar a IRI pra ver se é do domínio onde a aplicação está
         IRI id = new IRI(editIRI);
-        int documentID = -1;
+        String[] s = editIRI.split("/");
         if (checkAuthCredentials(auth)) {
             try {
-                if (documentID != -1) {
-                    log.debug("Você tentou deletar um documento com id: " + documentID);
-                } else {
-                    FileUtils.forceDelete(new java.io.File(editIRI));
-                    log.debug("Documento com id: " + documentID + "deletado");
-                }
-            } catch (Exception e) {
+                Files f = fileService.get(Integer.parseInt(s[s.length - 1]));
+                fileService.deleteFile(f);
+                log.debug("Documento com id: " + f.getId() + "deletado");
+            } catch (NumberFormatException | IOException e) {
                 throw new SwordServerException("Internal Server Error: " + e.getMessage());
             }
         } else {
             throw new SwordAuthException("Você não tem permissão para deletar documentos!");
         }
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

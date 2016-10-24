@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -100,11 +101,9 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             Document d = new Document();
             OBAA obaa = fromDublinCore(deposit.getSwordEntry().getDublinCore());
             d.setMetadata(obaa);
-            //Todo: Salvar arquivos localmente, indicar seu local na entidade e 
-            //salvar com o fileService. Após, setar no documento e gerar IRI
-            //para buscar o recurso. 
+
             File f = deposit.getFile();
-            File createdFile = null;
+            File createdFile;
             Files file = null;
             try {
                 createdFile = saveFile(f);
@@ -112,11 +111,13 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
                 file.setLocation(createdFile.getPath());
                 file.setName(createdFile.getName());
                 fileService.save(file);
+                d.setFiles(Arrays.asList(file));
+                docService.save(d);
             } catch (IOException ex) {
                 log.error("Erro ao salvar arquivo",ex);
                 throw new SwordServerException();
             }
-
+            
             DepositReceipt dr = new DepositReceipt();
             Link l = deposit.getSwordEntry().getEntry().getEditLink();
             dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
