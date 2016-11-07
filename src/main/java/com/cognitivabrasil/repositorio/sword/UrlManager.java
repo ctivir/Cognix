@@ -61,7 +61,7 @@ public class UrlManager {
         try {
             List<String> dataDepositApiBasePathParts;
             //             1 2          3     4           5
-            // for example: /repositorio/sword/collection/sword
+            // for example: /repositorio/sword/colection/files
             dataDepositApiBasePathParts = urlParts.subList(0, 4);
             dataDepositApiBasePath = StringUtils.join(dataDepositApiBasePathParts, "/");
         } catch (IndexOutOfBoundsException ex) {
@@ -84,7 +84,7 @@ public class UrlManager {
             List<String> targetTypeAndIdentifier;
             try {
                 //           4          5
-                // for example: /collection/sword
+                // for example: /collecao/sword
                 targetTypeAndIdentifier = urlParts.subList(5, urlParts.size());
             } catch (IndexOutOfBoundsException ex) {
                 throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "No target components specified in URL: " + url);

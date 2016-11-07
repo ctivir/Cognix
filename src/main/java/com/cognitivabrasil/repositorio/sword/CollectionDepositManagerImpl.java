@@ -85,6 +85,7 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
 
     /**
      *
+     * @param collectionUri
      * @param string
      * @param deposit
      * @param auth
@@ -95,7 +96,7 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
      * @throws SwordAuthException
      */
     @Override
-    public DepositReceipt createNew(String string, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
+    public DepositReceipt createNew(String collectionUri, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
             throws SwordError, SwordServerException, SwordAuthException {
         if (checkAuthCredentials(auth)) {
             Document d = new Document();
@@ -121,7 +122,7 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             DepositReceipt dr = new DepositReceipt();
             Link l = deposit.getSwordEntry().getEntry().getEditLink();
             dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
-            IRI i = new IRI(Config.getUrl(properties)+"/files/"+file.getId());
+            IRI i = new IRI(properties.getProperty("collection.url")+"/files/"+file.getId());
             dr.setEditIRI(i);
             dr.setEditMediaIRI(i);
             dr.setSwordEditIRI(i);
