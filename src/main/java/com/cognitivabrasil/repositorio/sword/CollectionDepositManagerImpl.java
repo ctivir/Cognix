@@ -12,6 +12,9 @@ package com.cognitivabrasil.repositorio.sword;
 
 import cognitivabrasil.obaa.General.General;
 import cognitivabrasil.obaa.General.Identifier;
+import cognitivabrasil.obaa.LifeCycle.Contribute;
+import cognitivabrasil.obaa.LifeCycle.LifeCycle;
+import cognitivabrasil.obaa.Metametadata.Role;
 import cognitivabrasil.obaa.OBAA;
 import cognitivabrasil.obaa.Rights.Rights;
 import cognitivabrasil.obaa.Technical.Technical;
@@ -21,7 +24,6 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
-import com.cognitivabrasil.repositorio.util.Config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Link;
 import org.apache.commons.io.IOUtils;
@@ -86,7 +87,6 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
     /**
      *
      * @param collectionUri
-     * @param string
      * @param deposit
      * @param auth
      * @param sc
@@ -122,7 +122,7 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             DepositReceipt dr = new DepositReceipt();
             Link l = deposit.getSwordEntry().getEntry().getEditLink();
             dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
-            IRI i = new IRI(properties.getProperty("collection.url")+"/files/"+file.getId());
+            IRI i = new IRI(properties.getProperty("sword.collection.url") + "/files/" +file.getId());
             dr.setEditIRI(i);
             dr.setEditMediaIRI(i);
             dr.setSwordEditIRI(i);
@@ -151,8 +151,8 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
     /**
      * Mapeia os metadados em Dublin Core para o formato OBAA
      *
-     * TODO: ver onde o dc.description.abstract e dc.contributor.creator, pois
-     * não existem em General
+     * TODO: dc.description.abstract == general.description e dc.contributor.creator no
+     * LifeCycle.Contribute.Entity
      *
      * @param dc
      * @return OA no formato OBAA
@@ -181,6 +181,14 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             t.addFormat(s);
         }
         obaa.setTechnical(t);
+        LifeCycle lc = new LifeCycle();
+        Contribute c = new Contribute();
+        for (String s : safe (dc.get("dc.contributor.creator"))){
+            c.addEntity(s);
+            c.setRole(Role.CREATOR);
+            lc.addContribute(c);
+        }
+        obaa.setLifeCycle(lc);
         Rights r = new Rights();
         for (String s : safe(dc.get("dc.rights"))) {
             r.setDescription(s);
@@ -196,6 +204,7 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
      * Grava o arquivo
      *
      * @param f
+     * @return 
      * @throws IOException
      */
     public File saveFile(File f) throws IOException {       
