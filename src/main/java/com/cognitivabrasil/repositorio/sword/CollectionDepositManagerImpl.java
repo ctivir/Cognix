@@ -24,6 +24,7 @@ import com.cognitivabrasil.repositorio.data.entities.User;
 import com.cognitivabrasil.repositorio.services.UserService;
 import com.cognitivabrasil.repositorio.services.DocumentService;
 import com.cognitivabrasil.repositorio.services.FileService;
+import com.cognitivabrasil.repositorio.util.Config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -70,7 +71,9 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
     public final String filesPath = "./src/test/resources/files/";
     
     private Properties properties;
-
+    
+    UrlManager urlManager;
+            
     public CollectionDepositManagerImpl() {
         ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
         userService = ctx.getBean(UserService.class);
@@ -118,17 +121,17 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
                 log.error("Erro ao salvar arquivo",ex);
                 throw new SwordServerException();
             }
-            
             DepositReceipt dr = new DepositReceipt();
             Link l = deposit.getSwordEntry().getEntry().getEditLink();
             dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
-            IRI i = new IRI(properties.getProperty("sword.collection.url") + "/files/" +file.getId());
-            dr.setEditIRI(i);
-            dr.setEditMediaIRI(i);
-            dr.setSwordEditIRI(i);
+            dr.setEditIRI(urlManager.getEditIRI(file));
+            dr.setEditMediaIRI(urlManager.getEmIRI(file));
+            dr.setSwordEditIRI(urlManager.getEditIRI(file));
+            dr.setLocation(urlManager.getEditIRI(file));
             //Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
             // originaldeposit -> SHOULD
             return dr;
+
         } else {
             throw new SwordAuthException("Você não tem permissão para criar documentos!");
         }
