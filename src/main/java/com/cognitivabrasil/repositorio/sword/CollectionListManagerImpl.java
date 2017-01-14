@@ -10,6 +10,7 @@
  */
 package com.cognitivabrasil.repositorio.sword;
 
+import org.apache.abdera.Abdera;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Feed;
 import org.swordapp.server.AuthCredentials;
@@ -38,7 +39,9 @@ public class CollectionListManagerImpl implements CollectionListManager {
      */
     @Override
     public Feed listCollectionContents(IRI iri, AuthCredentials ac, SwordConfiguration sc) throws SwordServerException, SwordAuthException, SwordError {
-        return null;
+        Abdera abdera = new Abdera();
+        Feed feed = abdera.newFeed();
+        return feed;
+//        return null;
     }
-
 }

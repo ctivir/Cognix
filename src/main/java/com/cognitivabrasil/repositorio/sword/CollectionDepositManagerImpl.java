@@ -124,11 +124,10 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             DepositReceipt dr = new DepositReceipt();
             Link l = deposit.getSwordEntry().getEntry().getEditLink();
             dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
-            dr.setEditIRI(urlManager.getEditIRI(file));
-            dr.setEditMediaIRI(urlManager.getEmIRI(file));
-            dr.setSwordEditIRI(urlManager.getEditIRI(file));
-            dr.setLocation(urlManager.getEditIRI(file));
-            //Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
+            IRI i = new IRI(properties.getProperty("sword.base.url") + "/files/"+file.getId());
+            dr.setEditIRI(i);
+            dr.setEditMediaIRI(i);
+            dr.setSwordEditIRI(i);//Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
             // originaldeposit -> SHOULD
             return dr;
 

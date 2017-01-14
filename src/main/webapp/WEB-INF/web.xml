@@ -25,6 +25,11 @@
     </context-param>
     
     <context-param>
+        <param-name>collection-list-impl</param-name>
+        <param-value>com.cognitivabrasil.repositorio.sword.CollectionListtManagerImpl</param-value>
+    </context-param>
+    
+    <context-param>
         <param-name>collection-deposit-impl</param-name>
         <param-value>com.cognitivabrasil.repositorio.sword.CollectionDepositManagerImpl</param-value>
     </context-param>

@@ -51,9 +51,6 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
 
     FileService fileService;
 
-    @Inject
-    UrlManager urlManager;
-
     private final UserService userService;
     
     public MediaResourceManagerImpl() {
@@ -84,7 +81,6 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
     @Override
     public MediaResource getMediaResourceRepresentation(String uri, Map<String, String> accept, AuthCredentials auth, SwordConfiguration config)
             throws SwordError, SwordServerException, SwordAuthException {
-
         if (checkAuthCredentials(auth)) {
             InputStream inputstream = new ByteArrayInputStream("FIXME: replace with zip of all files".getBytes());
             String contentType = "application/zip";
@@ -149,18 +145,19 @@ public class MediaResourceManagerImpl implements MediaResourceManager {
     @Override
     public DepositReceipt addResource(String uri, Deposit deposit, AuthCredentials auth, SwordConfiguration sc)
             throws SwordError, SwordServerException, SwordAuthException {
-        urlManager.processUrl(uri);
-        Files file = new Files();
-        String globalId = urlManager.getTargetIdentifier();
+        //int id = getID(uri);
+        //Files file = new Files();
+        //String globalId = urlManager.getTargetIdentifier();
         
         if (checkAuthCredentials(auth)) {
             ReceiptGenerator receiptGenerator = new ReceiptGenerator();
-            String baseUrl = urlManager.getHostnamePlusBaseUrlPath(uri);
+//            String baseUrl = urlManager.getHostnamePlusBaseUrlPath(uri);
 //            file = file.getLocation(globalId);
-            DepositReceipt depositReceipt = receiptGenerator.createDatasetReceipt(baseUrl, file);
-            return depositReceipt;
+//            DepositReceipt depositReceipt = receiptGenerator.createDatasetReceipt(baseUrl, file);
+//            return depositReceipt;
         } else {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Unable to determine target type or identifier from URL: " + uri);
         }
+        return null;
     }
 }
