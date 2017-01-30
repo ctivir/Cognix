@@ -52,6 +52,7 @@ import org.swordapp.server.SwordAuthException;
 import org.swordapp.server.SwordConfiguration;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
+import org.swordapp.server.UriRegistry;
 import spring.ApplicationContextProvider;
 
 /**
@@ -105,36 +106,44 @@ public class CollectionDepositManagerImpl implements CollectionDepositManager {
             Document d = new Document();
             OBAA obaa = fromDublinCore(deposit.getSwordEntry().getDublinCore());
             d.setMetadata(obaa);
+            
+                File f = deposit.getFile();
+                File createdFile;
+                Files file = null;
+                try {
+                    createdFile = saveFile(f);
+                    file = new Files();
+                    file.setLocation(createdFile.getPath());
+                    file.setName(createdFile.getName());
+                    fileService.save(file);
+                    d.setFiles(Arrays.asList(file));
+                    docService.save(d);
+                } catch (IOException ex) {
+                    log.error("Erro ao salvar arquivo", ex);
+                    throw new SwordServerException();
+                }
+                if (deposit.isEntryOnly()) {
+                DepositReceipt dr = new DepositReceipt();
+                Link l = deposit.getSwordEntry().getEntry().getEditLink();
+                dr.setOriginalDeposit((l == null) ? "" : l.toString(), "");
+                IRI i = new IRI(properties.getProperty("sword.base.url") + "/files/" + file.getId());
+                dr.setEditIRI(i);
+                dr.setEditMediaIRI(i);
+                dr.setSwordEditIRI(i);//Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
+                // originaldeposit -> SHOULD
+                return dr;
 
-            File f = deposit.getFile();
-            File createdFile;
-            Files file = null;
-            try {
-                createdFile = saveFile(f);
-                file = new Files();
-                file.setLocation(createdFile.getPath());
-                file.setName(createdFile.getName());
-                fileService.save(file);
-                d.setFiles(Arrays.asList(file));
-                docService.save(d);
-            } catch (IOException ex) {
-                log.error("Erro ao salvar arquivo",ex);
-                throw new SwordServerException();
-            }
-            DepositReceipt dr = new DepositReceipt();
-            Link l = deposit.getSwordEntry().getEntry().getEditLink();
-            dr.setOriginalDeposit((l==null)? "" :l.toString(), "");
-            IRI i = new IRI(properties.getProperty("sword.base.url") + "/files/"+file.getId());
-            dr.setEditIRI(i);
-            dr.setEditMediaIRI(i);
-            dr.setSwordEditIRI(i);//Todo: Edit-IRI, EM-IRI, SE-IRI, Treatment -> MUST
-            // originaldeposit -> SHOULD
-            return dr;
-
+            } else if (deposit.isBinaryOnly()) {
+                throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "Please POST an Atom entry instead.");
+        } else if (deposit.isMultipart()) {
+            throw new UnsupportedOperationException("Not Implemented");
+        } else {
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, "expected deposit types are isEntryOnly, isBinaryOnly, and isMultiPart");
+        }            
         } else {
             throw new SwordAuthException("Você não tem permissão para criar documentos!");
-        }
     }
+}
 
     /**
      * checks the AuthCredentials of the user
